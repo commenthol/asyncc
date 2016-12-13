@@ -1,0 +1,60 @@
+{
+  "name": "asyncc",
+  "version": "0.1.0-0",
+  "description": "Just asynchronous patterns",
+  "main": "lib",
+  "jsnext:main": "src",
+  "keywords": [
+    "async",
+    "callback"
+  ],
+  "homepage": "https://github.com/commenthol/asyncc",
+  "bugs": {
+    "url": "https://github.com/commenthol/asyncc/issues"
+  },
+  "license": "MIT",
+  "author": "commenthol <commenthol@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/commenthol/asyncc.git"
+  },
+  "scripts": {
+    "dist": "npm run clean && npm run lint && npm run build && npm test && npm version",
+    "test": "npm run mocha",
+    "mocha": "mocha",
+    "build": "babel -d lib src",
+    "doc": "jsdoc -c scripts/jsdoc/jsdoc.json",
+    "lint": "eslint --quiet '**/*.js'",
+    "readme": "markedpp --githubid -i README.md -o README.md",
+    "clean": "rimraf lib docs coverage"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "babel-cli": "^6.18.0",
+    "babel-preset-es2015": "^6.18.0",
+    "babel-preset-stage-2": "^6.18.0",
+    "babel-register": "^6.18.0",
+    "eslint": "^3.12.1",
+    "eslint-config-standard": "^6.2.1",
+    "eslint-plugin-promise": "^3.4.0",
+    "eslint-plugin-standard": "^2.0.1",
+    "istanbul": "^0.4.5",
+    "jsdoc": "^3.4.3",
+    "minami": "^1.1.1",
+    "mocha": "^3.2.0",
+    "rimraf": "^2.5.4"
+  },
+  "eslintConfig": {
+    "extends": "standard",
+    "plugins": [
+      "standard"
+    ],
+    "rules": {}
+  },
+  "babel": {
+    "presets": [
+      "es2015",
+      "stage-2"
+    ]
+  }
+}

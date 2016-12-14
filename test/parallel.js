@@ -2,36 +2,37 @@
 
 import assert from 'assert'
 import {Timeout} from './src/helper'
-import parallel from '../src/parallel'
+import {parallel} from '../src'
 
 describe('#parallel', function () {
   it('parallel', function (done) {
     let t = new Timeout()
     parallel([
-      t.task(50),
-      t.task(11),
-      t.task(52),
-      t.task(23),
-      t.task(54)
+      t.task(40),
+      t.task(31),
+      t.task(22),
+      t.task(13),
+      t.task(4)
     ], function (err, res) {
-      assert.deepEqual(t.order, [11, 23, 50, 52, 54])
-      assert.deepEqual(err, null)
-      assert.deepEqual(res, [50, 11, 52, 23, 54])
+      assert.deepEqual(t.order, [4, 13, 22, 31, 40])
+      assert.equal(err, null)
+      assert.deepEqual(res, [40, 31, 22, 13, 4])
       done()
     })
   })
   it('with errors', function (done) {
     let t = new Timeout()
     parallel([
-      t.task(50),
-      t.task(11, 'error1'),
-      t.task(52),
-      t.task(23, 'error2'),
-      t.task(54)
-    ], function (err, res) {
-      assert.deepEqual(t.order, [11, 23, 50, 52, 54])
+      t.task(40),
+      t.task(31, 'error1'),
+      t.task(22),
+      t.task(13, 'error2'),
+      t.task(4)
+    ], function (err, res, errpos) {
+      assert.deepEqual(t.order, [4, 13, 22, 31, 40])
       assert.deepEqual(err, [undefined, 'error1', undefined, 'error2', undefined])
-      assert.deepEqual(res, [50, 11, 52, 23, 54])
+      assert.deepEqual(res, [40, 31, 22, 13, 4])
+      assert.deepEqual(errpos, [3, 1])
       done()
     })
   })

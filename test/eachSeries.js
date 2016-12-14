@@ -2,7 +2,8 @@
 
 import assert from 'assert'
 import {Timeout} from './src/helper'
-import eachSeries from '../src/eachSeries'
+import {eachSeries} from '../src'
+require('core-js/es6/array.js')
 
 describe('#eachSeries', function () {
   it('eachSeries', function (done) {
@@ -11,7 +12,7 @@ describe('#eachSeries', function () {
       t.task(item)(cb)
     }, function (err, res) {
       assert.deepEqual(t.order, [14, 13, 12, 11, 10])
-      assert.deepEqual(err, null)
+      assert.equal(err, null)
       assert.deepEqual(res, [14, 13, 12, 11, 10])
       done()
     })
@@ -33,8 +34,8 @@ describe('#eachSeries', function () {
   })
   it('can process a very huge array', function (done) {
     var size = 100000
-    var arr = new Array(100000).fill(1)
-    eachSeries(arr, function (item, cb, index) {
+    var items = new Array(size).fill(1)
+    eachSeries(items, function (item, cb, index) {
       cb(null, item)
     }, function (err, res) {
       assert.ok(!err, '' + err)

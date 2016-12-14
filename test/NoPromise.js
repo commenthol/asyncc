@@ -1,79 +1,114 @@
 /* global describe, it */
 
 import assert from 'assert'
-import {Timeout, asyn} from './src/helper'
-import NoPromise from '../src/NoPromise'
+import {Step, asyn} from './src/helper'
+import {NoPromise} from '../src'
 
 describe('#NoPromise', function () {
+  let s = new Step()
   it('can run a number of tasks', function (done) {
-    let t = new Timeout()
-    let p = new NoPromise([])
-    p.then(t.taskArg(14))
-    .then(t.taskArg(13))
-    .catch(t.trapError())
-    .then(t.taskArg(12))
-    .then(t.taskArg(11))
-    .catch(t.trapError())
-    .then(t.taskArg(10))
+    let arg = {}
+    let p = new NoPromise(arg)
+    p
+    .then(s.step)
+    .then(s.step)
+    .catch(s.trap)
+    .then(s.step)
+    .catch(s.trap)
+    .then(s.step)
     .end((err, res) => {
-      assert.deepEqual(err, null)
-      assert.deepEqual(t.order, [14, 13, 12, 11, 10])
-      assert.deepEqual(res, [14, 13, 12, 11, 10])
+      assert.equal(err, null)
+      assert.deepEqual(res, {value: 4})
+      assert.ok(arg === res)
       done()
     })
   })
   it('can run a number of tasks deferred', function (done) {
-    let t = new Timeout()
-    let p = new NoPromise([])
-    p.then(t.taskArg(14))
-    .then(t.taskArg(13))
-    .catch(t.trapError())
+    let p = new NoPromise({})
+    p
+    .then(s.step)
+    .then(s.step)
+    .catch(s.trap)
 
     setTimeout(() => {
-      p.then(t.taskArg(12))
-      .then(t.taskArg(11))
-      .catch(t.trapError())
-      .then(t.taskArg(10))
+      p
+      .then(s.step)
+      .then(s.step)
+      .catch(s.trap)
+      .then(s.step)
       .end((err, res) => {
-        assert.deepEqual(err, null)
-        assert.deepEqual(t.order, [14, 13, 12, 11, 10])
-        assert.deepEqual(res, [14, 13, 12, 11, 10])
+        assert.equal(err, null)
+        assert.deepEqual(res, {value: 5})
         done()
       })
-    }, 50)
+    }, 20)
+  })
+  it('can run a number of tasks deferred throwing an error', function (done) {
+    let p = new NoPromise({})
+    p
+    .then(s.step)
+    .then(s.step)
+    .then(s.error('error'))
+
+    setTimeout(() => {
+      p
+      .then(s.neverReach)
+      .catch(s.trap)
+      .then(s.step)
+      .end((err, res) => {
+        assert.equal(err, null)
+        assert.deepEqual(res, {value: 14, trap: ['error']})
+        done()
+      })
+    }, 20)
   })
   it('can catch an error', function (done) {
-    let t = new Timeout()
-    let p = new NoPromise([])
-    p.then(t.taskArg(14))
-    .then(t.taskArg(13, 'error1'))
-    .then(t.taskArg(12))
-    .catch(t.trapError())
-    .then(t.taskArg(11, 'error2'))
-    .then(t.taskArg(10))
-    .then(t.taskArg(9))
+    let p = new NoPromise({})
+    p
+    .then(s.step)
+    .then(s.error('error1'))
+    .then(s.neverReach)
+    .catch(s.trap)
+    .then(s.step)
+    .then(s.error('error2'))
+    .then(s.neverReach)
     .end((err, res) => {
-      assert.deepEqual(t.order, [14, 13, 'error1', 11])
       assert.deepEqual(err, 'error2')
-      assert.deepEqual(res, [14, 13, 11])
+      assert.deepEqual(res, {value: 23, trap: ['error1']})
       done()
     })
   })
+  it('can catch a thrown error', function (done) {
+    let p = new NoPromise({})
+    p.then(s.step)
+    .then(s.throw('error1'))
+    .then(s.neverReach)
+    setTimeout(() => {
+      p.catch(s.trap)
+      .then(s.step)
+      .then(s.throw('error2'))
+      .then(s.neverReach)
+      .end((err, res) => {
+        assert.deepEqual(err, new Error('error2'))
+        assert.deepEqual(res, {value: 3, trap: [new Error('error1')]})
+        done()
+      })
+    }, 10)
+  })
   it('can catch two errors', function (done) {
-    let t = new Timeout()
-    let p = new NoPromise([])
-    p.then(t.taskArg(14))
-    .then(t.taskArg(13, 'error1'))
-    .then(t.taskArg(12))
-    .catch(t.trapError())
-    .then(t.taskArg(11, 'error2'))
-    .then(t.taskArg(10))
-    .catch(t.trapError())
-    .then(t.taskArg(9))
+    let p = new NoPromise({})
+    p
+    .then(s.step)
+    .then(s.error('error1'))
+    .then(s.neverReach)
+    .catch(s.trap)
+    .then(s.error('error2'))
+    .then(s.neverReach)
+    .catch(s.trap)
+    .then(s.step)
     .end((err, res) => {
-      assert.deepEqual(t.order, [14, 13, 'error1', 11, 'error2', 9])
-      assert.deepEqual(err, null)
-      assert.deepEqual(res, [14, 13, 11, 9])
+      assert.equal(err, null)
+      assert.deepEqual(res, {value: 24, trap: ['error1', 'error2']})
       done()
     })
   })
@@ -88,7 +123,7 @@ describe('#NoPromise', function () {
     .then((res, cb) => { res.arr.push(5); cb() })
     .then((res, cb) => { res.arr.push(6); cb() })
     .end((err, res) => {
-      assert.deepEqual(err, null)
+      assert.equal(err, null)
       assert.deepEqual(res.arr, [1, 2, 3, 4, 5, 6])
       done()
     })
@@ -106,7 +141,7 @@ describe('#NoPromise', function () {
     .then((res, cb) => { res.arr.push(6); cb() })
     .catch((err, res, cb) => { res.err.push(err); cb() })
     .end((err, res) => {
-      assert.deepEqual(err, null)
+      assert.equal(err, null)
       assert.deepEqual(res, {arr: [1, 2, 3, 5, 6], err: ['error1', 'error2']})
       done()
     })
@@ -122,7 +157,7 @@ describe('#NoPromise', function () {
     .then((res, cb) => { res.arr.push(5); asyn(cb) })
     .then((res, cb) => { res.arr.push(6); asyn(cb) })
     .end((err, res) => {
-      assert.deepEqual(err, null)
+      assert.equal(err, null)
       assert.deepEqual(res.arr, [1, 2, 3, 4, 5, 6])
       done()
     })
@@ -140,7 +175,7 @@ describe('#NoPromise', function () {
     .then((res, cb) => { res.arr.push(6); asyn(cb) })
     .catch((err, res, cb) => { res.err.push(err); asyn(cb) })
     .end((err, res) => {
-      assert.deepEqual(err, null)
+      assert.equal(err, null)
       assert.deepEqual(res, {arr: [1, 2, 3, 5, 6], err: ['error1', 'error2']})
       done()
     })

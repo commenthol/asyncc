@@ -2,13 +2,12 @@
  * This is not a `Promise`.
  * Chain callback functions with `.then(function (res, cb))` and execute them
  * until the previous callbacks have finished.
- * Catch errors with `.catch(function (err, res, cb))` as they may occur.
+ * Catch passed or thrown errors with `.catch(function (err, res, cb))` as they may occur.
  * End the chain with `.end(function (err, res))`
  * @name NoPromise
  * @class
  * @param {Any} arg - initial argument which is passed to first chain
  * @example
- *
  * var c = new NoPromise(1)
  * c.then((res, cb) => { cb(null, res + 1) })
  * .then((res, cb) => { cb('error', res + 2) })      // signalled error
@@ -38,14 +37,9 @@ NoPromise.prototype = {
     if (this._lock) return
     this._lock = true
     let task = this._tasks.shift()
-    if (this.error) {
-      while (task && !~['catch', 'end'].indexOf(task.type)) {
-        task = this._tasks.shift()
-      }
-    } else {
-      while (task && !~['then', 'end'].indexOf(task.type)) {
-        task = this._tasks.shift()
-      }
+    let tstType = this.error ? ['catch', 'end'] : ['then', 'end']
+    while (task && !~tstType.indexOf(task.type)) {
+      task = this._tasks.shift()
     }
     if (task) {
       let cb = (err, res) => {
@@ -54,12 +48,19 @@ NoPromise.prototype = {
         this._lock = false
         this._run()
       }
-      if (task.type === 'end') {
-        task.fn(this.error, this.result)
-      } else if (task.fn.length === 3) {
-        task.fn(this.error, this.result, cb)
+      let fn = task.fn
+      if (task.type === 'end') {      // .end
+        fn(this.error, this.result)
       } else {
-        task.fn(this.result, cb)
+        try {
+          if (fn.length === 3) {      // .catch
+            fn(this.error, this.result, cb)
+          } else {                    // .then
+            fn(this.result, cb)
+          }
+        } catch (e) {
+          cb(e)
+        }
       }
     } else {
       this._lock = false
@@ -67,8 +68,8 @@ NoPromise.prototype = {
   },
   /**
    * Chain the next async function
-   * @param {Function} fn - async function `function (res, cb)`.
-   * Never forget to call `cb(err, res)` inside `fn`
+   * @param {Function} fn - async function `function (res: any, cb: Function)`.
+   * Never forget to call `cb(err: <Error>, res: any)` inside `fn`
    */
   then: function (fn) {
     this._tasks.push({type: 'then', fn: fn})
@@ -77,8 +78,8 @@ NoPromise.prototype = {
   },
   /**
    * Catch any previous errors from the chain
-   * @param {Function} fn - async function `function (err, res, cb)`.
-   * Never forget to call `cb(err, res)` inside `fn`
+   * @param {Function} fn - async function `function (err: <Error>, res: any, cb: Function)`.
+   * Never forget to call `cb(err: <Error>, res: any)` inside `fn`
    */
   catch: function (fn) {
     this._tasks.push({type: 'catch', fn: fn})
@@ -87,7 +88,7 @@ NoPromise.prototype = {
   },
   /**
    * End the chain
-   * @param {Function} fn - `function (err, res)`
+   * @param {Function} fn - `function (err: <Error>, res: any)`
    */
   end: function (fn) {
     this._tasks.push({type: 'end', fn: fn})

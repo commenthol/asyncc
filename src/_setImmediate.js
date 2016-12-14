@@ -1,9 +1,11 @@
 /**
  * setImmediate wrapper for different environments
- * @private
+ * @method _setImmediate
+ * @static
  */
-export var _setImmediate
+var _setImmediate
 
+/* istanbul ignore else */
 if (typeof process === 'object' && typeof process.nextTick === 'function') {
   // nodejs
   _setImmediate = process.nextTick
@@ -16,3 +18,5 @@ if (typeof process === 'object' && typeof process.nextTick === 'function') {
     setTimeout(fn, 0)
   }
 }
+
+export default _setImmediate

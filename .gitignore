@@ -3,5 +3,6 @@ coverage/
 docs/
 tmp/
 lib/
+.nyc_output/
 *.log
 *.tgz

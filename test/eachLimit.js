@@ -4,24 +4,25 @@ import fs from 'fs'
 import path from 'path'
 import assert from 'assert'
 import {Timeout} from './src/helper'
-import compose from '../src/compose'
-import eachLimit from '../src/eachLimit'
+import {compose, eachLimit} from '../src'
 
 describe('#eachLimit', function () {
+  let items = [40, 31, 22, 3, 14]
   it('eachLimit', function (done) {
     let t = new Timeout()
-    eachLimit(3, [50, 11, 52, 23, 54], function (item, cb) {
+    eachLimit(2, items, function (item, cb) {
       t.task(item)(cb)
-    }, function (err, res) {
-      assert.deepEqual(t.order, [11, 23, 50, 52, 54])
-      assert.deepEqual(err, null)
-      assert.deepEqual(res, [50, 11, 52, 23, 54])
+    }, function (err, res, errpos) {
+      assert.deepEqual(t.order, [31, 40, 3, 22, 14])
+      assert.equal(err, null)
+      assert.deepEqual(res, items)
+      assert.deepEqual(errpos, [])
       done()
     })
   })
   it('with errors', function (done) {
     let t = new Timeout()
-    eachLimit(3, [50, 11, 52, 23, 54], function (item, cb, index) {
+    eachLimit(2, items, function (item, cb, index) {
       let err
       if (index === 1) {
         err = 'error1'
@@ -29,10 +30,11 @@ describe('#eachLimit', function () {
         err = 'error2'
       }
       t.task(item, err)(cb)
-    }, function (err, res) {
-      assert.deepEqual(t.order, [11, 23, 50, 52, 54])
+    }, function (err, res, errpos) {
+      assert.deepEqual(t.order, [31, 40, 3, 22, 14])
       assert.deepEqual(err, [undefined, 'error1', undefined, 'error2', undefined])
-      assert.deepEqual(res, [50, 11, 52, 23, 54])
+      assert.deepEqual(res, items)
+      assert.deepEqual(errpos, [1, 3])
       done()
     })
   })

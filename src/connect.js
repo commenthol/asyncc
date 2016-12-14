@@ -1,6 +1,9 @@
 /**
- * Run composed `tasks` callback functions in series. Traps errors with
+ * Run composed `tasks` callback functions in series.
+ * Results from a task are passed no the next task.
+ * Passed or thrown errors in tasks get trapped with
  * functions of arity 3 `function (err, res, cb)`.
+ * In case that no trap is defined then chain exits to the optional `callback`.
  * @name connect
  * @static
  * @method
@@ -11,7 +14,7 @@
  * `cb` - the callback function which needs to be called on completion
  * @return {Function} - composed function of `function (arg, cb)` where
  * `arg` - initial argument which is passed from one task to the other
- * `[cb]` - optional callback function `function(err: <Error>, res: any)`
+ * `[callback]` - optional callback function `function(err: <Error>, res: any)`
  * @example
  * var c = connect(
  *   (res, cb) => { cb(null, res + 1) },
@@ -26,7 +29,7 @@
  * @example
  * // using error traps
  * var c = connect(
- *   (res, cb) => { cb('error', res + 1) },
+ *   (res, cb) => { cb('error', res + 1) },   // error is passed to next task
  *   (res, cb) => { cb(null, res * 2) },      // jumps over this task
  *   (err, res, cb) => { cb(null, res + 3) }, // gets trapped here (arity === 3)
  *   (res, cb) => { cb(null, res * 2) }       // continues
@@ -47,16 +50,22 @@ export default function connect (...tasks) {
 
     function run (err, res) {
       let fn = tasks[i++]
-      if (err) {
-        while (fn && fn.length !== 3) {
-          fn = tasks[i++]
+      try {
+        if (err) {
+          // search for next function of arity 3
+          while (fn && fn.length !== 3) {
+            fn = tasks[i++]
+          }
+          fn && fn(err, res, run)
+        } else {
+          // jump over all error traps
+          while (fn && fn.length > 2) {
+            fn = tasks[i++]
+          }
+          fn && fn(res, run) // step
         }
-        fn && fn(err, res, run)
-      } else {
-        while (fn && fn.length > 2) {
-          fn = tasks[i++]
-        }
-        fn && fn(res, run)
+      } catch (e) {
+        run(e, res)
       }
       if (!fn) {
         callback && callback(err, res)

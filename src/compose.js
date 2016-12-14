@@ -1,5 +1,6 @@
 /**
  * Run composed `tasks` callback functions in series.
+ * Stops on errors and immediatelly calls optional `callback` in this case.
  * @name compose
  * @static
  * @method
@@ -9,7 +10,7 @@
  * `cb` - the callback function which needs to be called on completion
  * @return {Function} - composed function of `function (arg: any, cb: function)` where
  * `arg` - initial argument which is passed from one task to the other
- * `[cb]` - optional callback `function(err: <Error>, res: any)`
+ * `[callback]` - optional callback `function(err: <Error>, res: any)`
  * @example
  * var c = compose(
  *   (res, cb) => { setImmediate(() => { cb(null, res + 1) }) },

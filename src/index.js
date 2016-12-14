@@ -1,3 +1,4 @@
+import _setImmediate from './_setImmediate'
 import compose from './compose'
 import connect from './connect'
 import each from './each'
@@ -9,6 +10,7 @@ import parallelLimit from './parallelLimit'
 import series from './series'
 
 export default {
+  _setImmediate: _setImmediate,
   compose: compose,
   connect: connect,
   each: each,
@@ -21,6 +23,7 @@ export default {
 }
 
 export {
+  _setImmediate,
   compose,
   connect,
   each,

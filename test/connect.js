@@ -1,75 +1,85 @@
 /* global describe, it */
 
 import assert from 'assert'
-import {Timeout} from './src/helper'
-import connect from '../src/connect'
+import {Step} from './src/helper'
+import {connect} from '../src'
 
 describe('#connect', function () {
+  let s = new Step()
   it('connect', function (done) {
-    let t = new Timeout()
+    let arg
     let c = connect(
-      t.taskArg(14),
-      t.taskArg(13),
-      t.trapError(),
-      t.taskArg(12),
-      t.taskArg(11),
-      t.trapError(),
-      t.taskArg(10)
+      s.step,
+      s.step,
+      s.trap,
+      s.step,
+      s.step,
+      s.trap,
+      s.step
     )
-    c([], function (err, res) {
-      assert.deepEqual(t.order, [14, 13, 12, 11, 10])
-      assert.deepEqual(err, null)
-      assert.deepEqual(res, [14, 13, 12, 11, 10])
+    c(arg, function (err, res) {
+      assert.equal(err, null)
+      assert.deepEqual(res, {value: 5})
       done()
     })
   })
   it('with errors but no trap', function (done) {
-    let t = new Timeout()
     connect([
-      t.taskArg(14),
-      t.taskArg(13, 'error1'),
-      t.taskArg(12),
-      t.taskArg(11, 'error2'),
-      t.taskArg(10)
-    ])([], function (err, res) {
-      assert.deepEqual(t.order, [14, 13])
-      assert.deepEqual(err, 'error1')
-      assert.deepEqual(res, [14, 13])
+      s.step,
+      s.error('error'),
+      s.neverReach
+    ])({}, function (err, res) {
+      assert.deepEqual(err, 'error')
+      assert.deepEqual(res, {value: 11})
       done()
     })
   })
   it('with errors and trap', function (done) {
-    let t = new Timeout()
-    connect([
-      t.taskArg(14),
-      t.taskArg(13, 'error1'),
-      t.taskArg(12),
-      t.trapError(),
-      t.taskArg(11, 'error2'),
-      t.taskArg(10),
-      t.taskArg(9)
-    ])([], function (err, res) {
-      assert.deepEqual(t.order, [14, 13, 'error1', 11])
+    connect(
+      s.step,
+      s.error('error1'),
+      s.neverReach,
+      s.trap,
+      s.step,
+      s.error('error2'),
+      s.neverReach
+    )({}, function (err, res) {
       assert.deepEqual(err, 'error2')
-      assert.deepEqual(res, [14, 13, 11])
+      assert.deepEqual(res, {value: 23, trap: ['error1']})
       done()
     })
   })
-  it('with errors and two traps', function (done) {
-    let t = new Timeout()
+  it('with 2 errors and two traps', function (done) {
     connect(
-      t.taskArg(14),
-      t.taskArg(13, 'error1'),
-      t.taskArg(12),
-      t.trapError(),
-      t.taskArg(11, 'error2'),
-      t.taskArg(10),
-      t.trapError(),
-      t.taskArg(9)
-    )([], function (err, res) {
-      assert.deepEqual(t.order, [14, 13, 'error1', 11, 'error2', 9])
-      assert.deepEqual(err, null)
-      assert.deepEqual(res, [14, 13, 11, 9])
+      s.step,
+      s.error('error1'),
+      s.neverReach,
+      s.trap,
+      s.step,
+      s.error('error2'),
+      s.neverReach,
+      s.trap,
+      s.step
+    )({}, function (err, res) {
+      assert.equal(err, null)
+      assert.deepEqual(res, {value: 25, trap: ['error1', 'error2']})
+      done()
+    })
+  })
+  it('with 2 thrown errors and two traps', function (done) {
+    connect(
+      s.step,
+      s.throw('error1'),
+      s.neverReach,
+      s.trap,
+      s.step,
+      s.throw('error2'),
+      s.neverReach,
+      s.trap,
+      s.step
+    )({}, function (err, res) {
+      assert.equal(err, null)
+      assert.deepEqual(res, {value: 5, trap: [new Error('error1'), new Error('error2')]})
       done()
     })
   })

@@ -1,38 +1,34 @@
 /* global describe, it */
 
 import assert from 'assert'
-import {Timeout} from './src/helper'
-import compose from '../src/compose'
+import {Step} from './src/helper'
+import {compose} from '../src'
 
 describe('#compose', function () {
+  let s = new Step()
   it('compose', function (done) {
-    let t = new Timeout()
+    let arg = {}
     let c = compose(
-      t.taskArg(14),
-      t.taskArg(13),
-      t.taskArg(12),
-      t.taskArg(11),
-      t.taskArg(10)
+      s.step,
+      s.step,
+      s.step
     )
-    c([], function (err, res) {
-      assert.deepEqual(t.order, [14, 13, 12, 11, 10])
-      assert.deepEqual(err, null)
-      assert.deepEqual(res, [14, 13, 12, 11, 10])
+    c(arg, function (err, res) {
+      assert.equal(err, null)
+      assert.ok(arg === res) // are the same object
+      assert.deepEqual(res, {value: 3})
       done()
     })
   })
   it('with errors', function (done) {
-    let t = new Timeout()
     compose([
-      t.taskArg(14),
-      t.taskArg(13, 'error1'),
-      t.taskArg(12),
-      t.taskArg(11, 'error2'),
-      t.taskArg(10)
+      s.step,
+      s.step,
+      s.error('error'),
+      s.neverReach
     ])([], function (err, res) {
-      assert.deepEqual(t.order, [14, 13])
-      assert.deepEqual(err, 'error1')
-      assert.deepEqual(res, [14, 13])
+      assert.deepEqual(err, 'error')
+      assert.deepEqual(res, {value: 12})
       done()
     })
   })

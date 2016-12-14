@@ -8,3 +8,4 @@ tmp/
 *.tgz
 .*
 Makefile
+karma.conf.js

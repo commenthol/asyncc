@@ -1,13 +1,13 @@
-import {_setImmediate} from './_setImmediate'
+import _setImmediate from './_setImmediate'
 
 /**
- * Run `items` on async `task` function in series.
+ * Run `items` on async `task` function in series. Stops at the first error encountered.
  * @name eachSeries
  * @static
  * @method
  * @param {Array<any>} items - Array of items
  * @param {Function} task - iterator function of type `function (item: any, cb: Function, index: Number)`
- * @param {Function} [callback] - optional callback `function (errors: Array<Error>, result: Array<any>)`
+ * @param {Function} [callback] - optional callback `function (errors: <Error>, result: Array<any>)`
  * @example
  * eachSeries([1, 2, 3],
  *   (item, cb, index) => {
@@ -27,10 +27,11 @@ export default function eachSeries (items, task, callback) {
 
   function cb (err, res) {
     results.push(res)
+    /* istanbul ignore else  */
     if (err || length === i) {
       callback && callback(err, results)
     } else if (i < length) {
-      _setImmediate(() => { // prevents RangeError: Maximum call stack size exceeded
+      _setImmediate(() => { // prevent RangeError: Maximum call stack size exceeded for sync tasks
         run()
       })
     }

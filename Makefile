@@ -9,12 +9,10 @@ v%:
 	npm test
 
 gitChanges:
-	@git diff-files --quiet # fail if unstanged changes
+	@git diff-files --quiet # fail if unstaged changes
 	@git diff-index --quiet HEAD # fail if uncommited changes
 
 gh-pages: src gitChanges
-	git diff-files --quiet # fail if unstanged changes
-	git diff-index --quiet HEAD # fail if uncommited changes
 	git branch -f gh-pages
 	git checkout gh-pages
 	git reset --hard master
@@ -32,4 +30,4 @@ publish: src gitChanges
 	npm run dist
 	npm publish
 
-.PHONY: all test gitChanges push
+.PHONY: all test gitChanges push publish

@@ -89,4 +89,4 @@ const {NoPromise, connect} = require('asyncc')
 <!-- ref! -->
 
 [async]: https://github.com/caolan/async
-[LICENSE]: ./LICENSE
+[LICENSE]: ./LICENSE.txt

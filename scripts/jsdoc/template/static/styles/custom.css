@@ -1,0 +1,15 @@
+/* custom */
+blockquote {
+  padding: 0 1em;
+  color: #777;
+  border-left: 0.25em solid #ddd;
+  margin-left: 0px;
+}
+
+nav h2 {
+  font-size: 18px !important; 
+}
+
+nav > h2 > a {
+  display: inline-block !important;
+}

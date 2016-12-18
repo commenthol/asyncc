@@ -9,12 +9,16 @@
   "plugins": ["plugins/markdown"],
   "opts": {
     "readme": "README.md",
-    "template": "node_modules/minami",
+    "template": "./template",
     "encoding": "utf8",
     "destination": "./docs",
     "recurse": true
   },
   "templates": {
-    "cleverLinks": false
+    "cleverLinks": false,
+    "monospaceLinks": true,
+    "default": {
+      "includeDate": false
+    }
   }
 }

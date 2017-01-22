@@ -4,7 +4,9 @@ import _setImmediate from './_setImmediate'
  * Run `tasks` callback functions in series
  * The function breaks after the first error encountered and calls optional
  * `callback` function
+ *
  * @name series
+ * @memberOf module:serial
  * @static
  * @method
  * @param {Array} tasks - Array of callback functions of type `function (cb: Function)`

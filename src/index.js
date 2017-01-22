@@ -1,4 +1,14 @@
+/**
+* Serial execution patterns
+* @module serial
+*/
+/**
+* Parallel execution patterns
+* @module parallel
+*/
+
 import _setImmediate from './_setImmediate'
+
 import compose from './compose'
 import connect from './connect'
 import each from './each'
@@ -8,6 +18,8 @@ import NoPromise from './NoPromise'
 import parallel from './parallel'
 import parallelLimit from './parallelLimit'
 import series from './series'
+import times from './times'
+import whilst from './whilst'
 
 export default {
   _setImmediate: _setImmediate,
@@ -19,7 +31,9 @@ export default {
   NoPromise: NoPromise,
   parallel: parallel,
   parallelLimit: parallelLimit,
-  series: series
+  series: series,
+  times: times,
+  whilst: whilst
 }
 
 export {
@@ -32,5 +46,7 @@ export {
   NoPromise,
   parallel,
   parallelLimit,
-  series
+  series,
+  times,
+  whilst
 }

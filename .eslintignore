@@ -1,4 +1,5 @@
 coverage/*
+docs/
 scripts/jsdoc/*
 tmp/*
 lib/*

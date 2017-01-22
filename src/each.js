@@ -2,8 +2,11 @@ import eachLimit from './eachLimit'
 
 /**
  * Run `items` on async `task` function in parallel.
- * Does not stop parallel execution on errors. All tasks get executed.
+ *
+ * Does not stop parallel execution on errors. *All tasks get executed.*
+ *
  * @name each
+ * @memberOf module:parallel
  * @static
  * @method
  * @param {Array} items - Array of items `any[]`

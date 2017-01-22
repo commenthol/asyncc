@@ -1,10 +1,13 @@
 import parallelLimit from './parallelLimit'
 
 /**
- * Run `tasks` callback functions in parallel
- * Does not stop parallel execution on errors. All tasks get executed.
+ * Run `tasks` callback functions in parallel.
+ *
+ * Does not stop parallel execution on errors. *All tasks get executed.*
  * The optional `callback` gets called after the longest running task finishes.
+ *
  * @name parallel
+ * @memberOf module:parallel
  * @static
  * @method
  * @param {Array<Function>} tasks - Array of callback functions of type `function (cb: Function)`

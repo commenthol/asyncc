@@ -7,15 +7,19 @@
 
 Asynchronous patterns, no dependencies, no bloat, more isn't needed.
 
+Runs in the browser and on node.
+
 The modules provided are not compatible with [async][] syntax.
 
 # Serial execution patterns
 
-- [eachSeries](https://commenthol.github.io/asyncc/global.html#eachSeries)
-- [series](https://commenthol.github.io/asyncc/global.html#series)
 - [compose](https://commenthol.github.io/asyncc/global.html#compose)
 - [connect](https://commenthol.github.io/asyncc/global.html#connect)
+- [eachSeries](https://commenthol.github.io/asyncc/global.html#eachSeries)
 - [NoPromise](https://commenthol.github.io/asyncc/NoPromise.html)
+- [series](https://commenthol.github.io/asyncc/global.html#series)
+- [times](https://commenthol.github.io/asyncc/global.html#times)
+- [whilst](https://commenthol.github.io/asyncc/global.html#whilst)
 
 # Parallel execution patterns
 
@@ -24,59 +28,22 @@ The modules provided are not compatible with [async][] syntax.
 - [parallel](https://commenthol.github.io/asyncc/global.html#parallel)
 - [parallelLimit](https://commenthol.github.io/asyncc/global.html#parallelLimit)
 
+# Installation
+
+    npm install --save asyncc
+
 # Usage
 
 As ES6 Modules
 
 ```js
 import {NoPromise, connect} from 'asyncc/src'
-
-// async function
-let asy = (res, cb) => {
-  setImmediate(() => { cb(null, res + 3) })
-}
-// async function causes error
-let asyError = (res, cb) => {
-  setImmediate(() => { cb('error', res + 10) })
-}
-// error trap
-let trap = (err, res, cb) => {
-  cb(null, res)
-}
-
-// deferred execution of async chain with error traps
-let p = new NoPromise(101)
-p
-.then(asy)
-.then(asyError)
-
-// connect like async chain with error traps
-connect(
-  asy,
-  asyError,
-  asy,
-  trap,
-  asy
-)(1, (err, res) => {
-  console.log(err, res)
-  //> null 17
-  p // continue execution of NoPromise chain
-  .then(asy)
-  .catch(trap)
-  .then(asy)
-  .end((err, res) => {
-    console.log(err, res)
-    //> null 117
-  })
-})
 ```
 
 As CommonJS Modules
 
 ```js
 const {NoPromise, connect} = require('asyncc')
-
-...
 ```
 
 # References

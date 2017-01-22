@@ -1,6 +1,8 @@
 all: test
 
 test: v0.8 v0.12 v4. v6. v7.
+	npm run clean
+	npm run build
 
 v%:
 	#rm -rf node_modules
@@ -16,6 +18,7 @@ gh-pages: src gitChanges
 	git branch -f gh-pages
 	git checkout gh-pages
 	git reset --hard master
+	npm run clean
 	npm run doc
 	cp -r docs/* .
 	git add .

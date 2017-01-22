@@ -1,26 +1,51 @@
 /**
- * This is not a `Promise`.
- * Chain callback functions with `.then(function (res, cb))` and execute them
- * until the previous callbacks have finished.
- * Catch passed or thrown errors with `.catch(function (err, res, cb))` as they may occur.
- * End the chain with `.end(function (err, res))`
- * @name NoPromise
- * @class
- * @param {Any} arg - initial argument which is passed to first chain
- * @example
- * var c = new NoPromise(1)
- * c.then((res, cb) => { cb(null, res + 1) })
- * .then((res, cb) => { cb('error', res + 2) })      // signalled error
- * // deferred usage
- * setTimeout(() => {
- *   c.then((res, cb) => { cb(null, res + 3) })      // error jumps over
- *   .catch((err, res, cb) => { cb(null, res + 4) }) // error is catched here
- *   .end((err, res) => {
- *     //> err === null
- *     //> res === 8
- *   })
- * }, 10)
- */
+* This is not a `Promise`.
+* Chain callback functions with `.then(function (res, cb))` and execute them
+* until the previous callbacks have finished.
+* Catch passed or thrown errors with `.catch(function (err, res, cb))` as they may occur.
+* End the chain with `.end(function (err, res))`
+*
+* @name NoPromise
+* @class
+* @param {Any} arg - initial argument which is passed to first chain
+* @example <caption>Normal usage</caption>
+* var arr = []
+* var n = new NoPromise(arr)
+* n.then((res, cb) => { res.push(1); cb(null, res) })
+* .then((res, cb) => { res.push(2); cb(null, res) })
+* .end((err, res) => {
+*   //> err = null
+*   //> res = [1, 2]
+*   //> (arr ==== res) = true
+* })
+* @example <caption>Catch errors</caption>
+* var arr = []
+* var n = new NoPromise(arr)
+* n.then((res, cb) => { res.push(1); cb(null, res) })
+* .then((res, cb)  => { res.push(2); cb('err1', res) })
+* .catch((err, res, cb) => { res.push(err); cb(null, res) }) // catches err1
+* .then((res, cb)  => { res.push(3); cb(null, res) })
+* .catch((err, res, cb) => { res.push(4); cb(null, res) })   // jumps over as there is no error
+* .then((res, cb)  => { res.push(5); cb('err2', res) })
+* .end((err, res) => {
+*   //> err = 'err2'
+*   //> res = [1, 2, 'err1', 3, 5]
+*   //> (arr ==== res) = true
+* })
+* @example <caption>Deferred usage</caption>
+* var arr = []
+* var n = new NoPromise(arr)
+* n.then((res, cb) => { res.push(1); cb(null, res) })
+*
+* setTimeout(() => {
+*   n.then((res, cb) => { res.push(2); cb(null, res) })
+*   .end((err, res) => {
+*     //> err = null
+*     //> res = [1, 2]
+*     //> (arr ==== res) = true
+*   })
+* }, 10)
+*/
 export default function NoPromise (arg) {
   this._tasks = []
   this.result = arg
@@ -53,7 +78,7 @@ NoPromise.prototype = {
         fn(this.error, this.result)
       } else {
         try {
-          if (fn.length === 3) {      // .catch
+          if (task.type === 'catch') {      // .catch
             fn(this.error, this.result, cb)
           } else {                    // .then
             fn(this.result, cb)

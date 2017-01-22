@@ -2,7 +2,9 @@ import _setImmediate from './_setImmediate'
 
 /**
  * Run `items` on async `task` function in series. Stops at the first error encountered.
+ *
  * @name eachSeries
+ * @memberOf module:serial
  * @static
  * @method
  * @param {Array<any>} items - Array of items

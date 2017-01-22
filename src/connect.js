@@ -4,7 +4,9 @@
  * Passed or thrown errors in tasks get trapped with
  * functions of arity 3 `function (err, res, cb)`.
  * In case that no trap is defined then chain exits to the optional `callback`.
+ *
  * @name connect
+ * @memberOf module:serial
  * @static
  * @method
  * @param {...Function|Array} tasks - Arguments or Array of callback functions of type
@@ -26,8 +28,7 @@
  *   //> res = 6
  * })
  *
- * @example
- * // using error traps
+ * @example <caption>With error traps</caption>
  * var c = connect(
  *   (res, cb) => { cb('error', res + 1) },   // error is passed to next task
  *   (res, cb) => { cb(null, res * 2) },      // jumps over this task

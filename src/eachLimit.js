@@ -1,7 +1,10 @@
 /**
  * Run `items` on async `task` function in parallel limited to `limit` parallel.
- * Does not stop parallel execution on errors. All tasks get executed.
+ *
+ * Does not stop parallel execution on errors. *All tasks get executed.*
+ *
  * @name eachLimit
+ * @memberOf module:parallel
  * @static
  * @method
  * @param {Number} limit - number of tasks running in parallel

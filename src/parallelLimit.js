@@ -1,9 +1,12 @@
 /**
  * Run `tasks` callback functions in parallel limited to `limit` parallel
  * running tasks.
- * Does not stop parallel execution on errors. All tasks get executed.
+ *
+ * Does not stop parallel execution on errors. *All tasks get executed.*
  * The optional `callback` gets called after the longest running task finishes.
+ *
  * @name parallelLimit
+ * @memberOf module:parallel
  * @static
  * @method
  * @param {Number} limit - number of tasks running in parallel

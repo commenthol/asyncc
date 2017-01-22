@@ -1,7 +1,10 @@
 /**
  * Run composed `tasks` callback functions in series.
+ * Results from a task are passed no the next task.
  * Stops on errors and immediatelly calls optional `callback` in this case.
+ *
  * @name compose
+ * @memberOf module:serial
  * @static
  * @method
  * @param {...Function|Array} tasks - Arguments or Array of callback functions of type

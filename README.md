@@ -13,20 +13,20 @@ The modules provided are not compatible with [async][] syntax.
 
 # Serial execution patterns
 
-- [compose](https://commenthol.github.io/asyncc/global.html#compose)
-- [connect](https://commenthol.github.io/asyncc/global.html#connect)
-- [eachSeries](https://commenthol.github.io/asyncc/global.html#eachSeries)
+- [compose](https://commenthol.github.io/asyncc/module-serial.html#.compose)
+- [connect](https://commenthol.github.io/asyncc/module-serial.html#.connect)
+- [eachSeries](https://commenthol.github.io/asyncc/module-serial.html#.eachSeries)
 - [NoPromise](https://commenthol.github.io/asyncc/NoPromise.html)
-- [series](https://commenthol.github.io/asyncc/global.html#series)
-- [times](https://commenthol.github.io/asyncc/global.html#times)
-- [whilst](https://commenthol.github.io/asyncc/global.html#whilst)
+- [series](https://commenthol.github.io/asyncc/module-serial.html#.series)
+- [times](https://commenthol.github.io/asyncc/module-serial.html#.times)
+- [whilst](https://commenthol.github.io/asyncc/module-serial.html#.whilst)
 
 # Parallel execution patterns
 
-- [each](https://commenthol.github.io/asyncc/global.html#each)
-- [eachLimit](https://commenthol.github.io/asyncc/global.html#eachLimit)
-- [parallel](https://commenthol.github.io/asyncc/global.html#parallel)
-- [parallelLimit](https://commenthol.github.io/asyncc/global.html#parallelLimit)
+- [each](https://commenthol.github.io/asyncc/module-parallel.html#.each)
+- [eachLimit](https://commenthol.github.io/asyncc/module-parallel.html#.eachLimit)
+- [parallel](https://commenthol.github.io/asyncc/module-parallel.html#.parallel)
+- [parallelLimit](https://commenthol.github.io/asyncc/module-parallel.html#.parallelLimit)
 
 # Installation
 

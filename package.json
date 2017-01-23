@@ -19,9 +19,9 @@
     "url": "https://github.com/commenthol/asyncc.git"
   },
   "scripts": {
-    "test": "npm run mocha",
-    "dist": "npm run clean && npm run lint && npm test && npm version",
-    "cover": "nyc --check-coverage --reporter=lcov npm run mocha",
+    "test": "npm run build && npm run mocha",
+    "dist": "npm run clean && npm run lint && npm run build && npm run mocha && npm version",
+    "cover": "nyc --check-coverage --reporter=text --reporter=lcov npm run mocha",
     "mocha": "mocha",
     "karma": "karma start",
     "build": "babel -d lib src",

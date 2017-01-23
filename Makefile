@@ -29,8 +29,16 @@ push: gitChanges
 	git push origin master
 	git push origin gh-pages
 
-publish: src gitChanges
+dist: src
 	npm run dist
+
+pack: dist
+	rm *.tgz
+	npm pack
+	tar tvzf *.tgz
+
+publish: dist src gitChanges
+	rm *.tgz
 	npm publish
 
 .PHONY: all test gitChanges push publish

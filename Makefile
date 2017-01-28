@@ -17,6 +17,7 @@ gh-pages: src gitChanges
 	npm run clean
 	npm run doc
 	cp -r docs/* .
+	rm -rf docs/*
 	git add .
 	git commit -a -m 'gh-pages update'
 	git checkout master

@@ -459,9 +459,10 @@ NoPromise.prototype = {
  *   (cb) => { setImmediate(() => { cb(null, 1) })},
  *   (cb) => { setImmediate(() => { cb('error', 2) })},
  *   (cb) => { setImmediate(() => { cb(null, 3) })}
- * ], (err, res) => {
+ * ], (err, res, errorpos) => {
  *   //> err = [ ,'error', ]
  *   //> res = [1, 2, 3]
+ *   //> errorpos = [1]
  * })
  */
 function parallelLimit (limit, tasks, callback) {

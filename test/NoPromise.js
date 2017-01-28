@@ -2,7 +2,7 @@
 
 import assert from 'assert'
 import {Step, asyn} from './src/helper'
-import {NoPromise} from '../src'
+import {NoPromise} from '..'
 
 describe('#NoPromise', function () {
   let s = new Step()

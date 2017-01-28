@@ -7,7 +7,8 @@
 
 Asynchronous patterns, no dependencies, no bloat, more isn't needed.
 
-Runs in the browser and on node.
+Runs in the browser and on node.  
+Minimized `dist/asyncc.min.js` is 3076 bytes.
 
 The modules provided are not compatible with [async][] syntax.
 

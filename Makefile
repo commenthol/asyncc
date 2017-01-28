@@ -1,13 +1,9 @@
 all: test
 
 test: v0.8 v0.12 v4. v6. v7.
-	npm run clean
-	npm run build
 
 v%:
-	#rm -rf node_modules
 	n $@
-	#npm install
 	npm test
 
 gitChanges:
@@ -27,18 +23,37 @@ gh-pages: src gitChanges
 
 push: gitChanges
 	git push origin master
-	git push origin gh-pages
+	git push origin gh-pages -f
 
-dist: src
-	npm run dist
+dist: src dist/asyncc.min.js dist/asyncc.js
 
-pack: dist
+dist/asyncc.js: src
+	npm run lint \
+	&& npm run build \
+	&& npm run mocha \
+	&& npm version
+
+dist/asyncc.min.js: dist/asyncc.js
+	uglifyjs $< -c -m -o $@
+
+build: dist
+
+pack: node_modules build dist
 	rm *.tgz
 	npm pack
 	tar tvzf *.tgz
 
-publish: dist src gitChanges
+publish: node_modules build dist gitChanges
 	rm *.tgz
 	npm publish
+
+node_modules:
+	npm install
+
+clean:
+	rm -rf dist docs coverage
+
+clean-all: clean
+	rm -rf node_modules
 
 .PHONY: all test gitChanges push publish

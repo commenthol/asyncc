@@ -2,7 +2,7 @@
 
 import assert from 'assert'
 import {Timeout} from './src/helper'
-import {parallel} from '../src'
+import {parallel} from '..'
 
 describe('#parallel', function () {
   it('parallel', function (done) {

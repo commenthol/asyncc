@@ -1,7 +1,7 @@
 /* global describe, it */
 
 import assert from 'assert'
-import {whilst} from '../src'
+import {whilst} from '..'
 
 describe('#whilst', function () {
   it('should run until condition returns false', function (done) {

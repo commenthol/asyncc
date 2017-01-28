@@ -4,7 +4,7 @@ import fs from 'fs'
 import path from 'path'
 import assert from 'assert'
 import {Timeout} from './src/helper'
-import {compose, eachLimit} from '../src'
+import {compose, eachLimit} from '..'
 
 describe('#eachLimit', function () {
   let items = [40, 31, 22, 3, 14]

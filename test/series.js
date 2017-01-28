@@ -2,7 +2,7 @@
 
 import assert from 'assert'
 import {Timeout} from './src/helper'
-import {series} from '../src'
+import {series} from '..'
 require('core-js/es6/array.js')
 
 describe('#series', function () {

@@ -2,7 +2,7 @@
 
 import assert from 'assert'
 import {Timeout} from './src/helper'
-import {times, _setImmediate} from '../src'
+import {times, _setImmediate} from '..'
 
 describe('#times', function () {
   it('should run 4 times', function (done) {

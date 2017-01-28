@@ -2,7 +2,7 @@
 
 import assert from 'assert'
 import {Timeout} from './src/helper'
-import {each} from '../src'
+import {each} from '..'
 
 describe('#each', function () {
   let items = [40, 31, 22, 13, 4]

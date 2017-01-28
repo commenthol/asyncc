@@ -2,7 +2,7 @@
 
 import assert from 'assert'
 import {Step} from './src/helper'
-import {connect} from '../src'
+import {connect} from '..'
 
 describe('#connect', function () {
   let s = new Step()

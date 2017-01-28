@@ -2,7 +2,7 @@
 
 import assert from 'assert'
 import {Step} from './src/helper'
-import {compose} from '../src'
+import {compose} from '..'
 
 describe('#compose', function () {
   let s = new Step()

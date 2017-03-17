@@ -13,3 +13,13 @@ nav h2 {
 nav > h2 > a {
   display: inline-block !important;
 }
+
+nav::after {
+  content: '';
+  height: 2em;
+  display: block;
+}
+
+.prettyprint code {
+  margin: 0 0px;
+}

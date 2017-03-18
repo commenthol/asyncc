@@ -39,4 +39,22 @@ describe('#whilst', function () {
       }
     )
   })
+  it('should run as `do {} while ()` loop', function (done) {
+    var index = 4
+    var arr = []
+    whilst(
+      (n) => {
+        if (!n) return true // always perform one iteration
+        return (index < 4)
+      },
+      (cb) => {
+        arr.push(index++)
+        cb()
+      },
+      () => {
+        assert.deepEqual(arr, [4])
+        done()
+      }
+    )
+  })
 })

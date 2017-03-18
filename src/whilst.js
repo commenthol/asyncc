@@ -11,19 +11,36 @@ import _setImmediate from './_setImmediate'
 * @param {Function} test - test function `function (index: number)`. If return value is `false` then `callback` gets called
 * @param {Function} task - iterator function of type `function (cb: Function, index: Number)`
 * @param {Function} [callback] - optional callback `function (errors: <Error>, result: any)` from last callback.
-* @example
+* @example <caption>Normal usage</caption>
 * var arr = []
-* function test (index) {
-*   return index < 4
-* }
-* whilst(test,
-*   (cb, index) => {
+* function test
+* whilst(
+*   (index) => {        // test
+*     return index < 4
+*   },
+*   (cb, index) => {    // task
 *     arr.push(index)
 *     cb(null, index)
-*   }, (err, res) => {
+*   }, (err, res) => {  // callback
 *     //> err = null
 *     //> res = 3
 *     //> arr = [0, 1, 2, 3]
+*   }
+* )
+* @example <caption>Run as `do {} while (index < 4)` loop</caption>
+* var index = 4
+* var arr = []
+* whilst(
+*   (n) => {
+*     if (!n) return true // always perform one iteration
+*     return (index < 4)
+*   },
+*   (cb, n) => {
+*     arr.push(index++)
+*     cb()
+*   },
+*   () => {
+*     //> arr = [4]
 *   }
 * )
 */

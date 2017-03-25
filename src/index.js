@@ -7,46 +7,65 @@
 * @module parallel
 */
 
-import _setImmediate from './_setImmediate'
+import {_setImmediate} from './_setImmediate'
 
 import compose from './compose'
 import connect from './connect'
+import doUntil from './doUntil'
+import doWhilst from './doWhilst'
 import each from './each'
 import eachLimit from './eachLimit'
 import eachSeries from './eachSeries'
-import NoPromise from './NoPromise'
+import {default as NoPromise, noPromise} from './NoPromise'
 import parallel from './parallel'
 import parallelLimit from './parallelLimit'
+import {default as Queue, queue} from './Queue'
+import retry from './retry'
 import series from './series'
 import times from './times'
+import until from './until'
 import whilst from './whilst'
 
 export default {
-  _setImmediate: _setImmediate,
-  compose: compose,
-  connect: connect,
-  each: each,
-  eachLimit: eachLimit,
-  eachSeries: eachSeries,
-  NoPromise: NoPromise,
-  parallel: parallel,
-  parallelLimit: parallelLimit,
-  series: series,
-  times: times,
-  whilst: whilst
+  _setImmediate,
+  compose,
+  connect,
+  doUntil,
+  doWhilst,
+  each,
+  eachLimit,
+  eachSeries,
+  noPromise,
+  NoPromise,
+  parallel,
+  parallelLimit,
+  queue,
+  Queue,
+  retry,
+  series,
+  times,
+  until,
+  whilst
 }
 
 export {
   _setImmediate,
   compose,
   connect,
+  doUntil,
+  doWhilst,
   each,
   eachLimit,
   eachSeries,
+  noPromise,
   NoPromise,
   parallel,
   parallelLimit,
+  queue,
+  Queue,
+  retry,
   series,
   times,
+  until,
   whilst
 }

@@ -2,7 +2,7 @@
 
 import assert from 'assert'
 import {Step, asyn} from './src/helper'
-import {NoPromise} from '..'
+import {noPromise, NoPromise} from '..'
 
 describe('#NoPromise', function () {
   let s = new Step()
@@ -24,7 +24,7 @@ describe('#NoPromise', function () {
     })
   })
   it('can run a number of tasks deferred', function (done) {
-    let p = new NoPromise({})
+    let p = noPromise({})
     p
     .then(s.step)
     .then(s.step)

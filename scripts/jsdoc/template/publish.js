@@ -350,12 +350,13 @@ function linktoExternal (longName, name) {
 function buildNav (members) {
   var nav = '<h2><a href="index.html">asyncc</a>' +
     '<span> </span>' +
-    '<a href="https://github.com/commenthol/asyncc"><i class="ion-social-github" aria-hidden="true"></i></a></h2>'
+    '<a href="https://github.com/commenthol/asyncc"><i class="social-github"></i></a></h2>'
+    // '<a href="https://github.com/commenthol/asyncc"><i class="ion-social-github" aria-hidden="true"></i></a></h2>'
   var seen = {}
   var seenTutorials = {}
 
-  nav += buildMemberNav(members.classes, 'Classes', seen, linkto)
   nav += buildMemberNav(members.modules, 'Modules', {}, linkto)
+  nav += buildMemberNav(members.classes, 'Classes', seen, linkto)
   nav += buildMemberNav(members.externals, 'Externals', seen, linktoExternal)
   nav += buildMemberNav(members.events, 'Events', seen, linkto)
   nav += buildMemberNav(members.namespaces, 'Namespaces', seen, linkto)

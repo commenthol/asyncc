@@ -1,27 +1,28 @@
 /**
  * Run composed `tasks` callback functions in series.
- * Results from a task are passed no the next task.
+ * Results from a **task** are passed no the next task.
  * Passed or thrown errors in tasks get trapped with
- * functions of arity 3 `function (err, res, cb)`.
- * In case that no trap is defined then chain exits to the optional `callback`.
+ * functions of arity 3 `function (err, res, cb)` called here **trap**.
+ * In case that there is no previous error, a **trap** acts as "no-op".
+ * In case that no **trap** is defined then the chain exits to an optional `callback`.
  *
  * @name connect
  * @memberOf module:serial
  * @static
  * @method
- * @param {...Function|Array} tasks - Arguments or Array of callback functions of type
- * `function (arg: any, cb: function)` or `function (err: <Error>, arg: any, cb: function)` where
+ * @param {...Function|Array} tasks - Arguments or Array of callback functions of type **task**
+ * `function (arg: any, cb: function)` or **trap** `function (err: <Error>, arg: any, cb: function)` where
  * `arg` - an argument which is passed from one task to the other
  * `err` - a trapped error from previous tasks
  * `cb` - the callback function which needs to be called on completion
- * @return {Function} - composed function of `function (arg, cb)` where
+ * @return {Function} composed function of `function (arg, cb)` where
  * `arg` - initial argument which is passed from one task to the other
  * `[callback]` - optional callback function `function(err: <Error>, res: any)`
  * @example
  * var c = connect(
- *   (res, cb) => { cb(null, res + 1) },
- *   (err, res, cb) => { cb(null, res + 3) }, // jumps over error trap as there is no error
- *   (res, cb) => { cb(null, res * 2) }
+ *   (res, cb) => { cb(null, res + 1) },      // task
+ *   (err, res, cb) => { cb(null, res + 3) }, // trap - "no-op" here as there is no previous error
+ *   (res, cb) => { cb(null, res * 2) }       // task
  * )
  * c(2, function (err, res) {
  *   //> err = null
@@ -30,10 +31,10 @@
  *
  * @example <caption>With error traps</caption>
  * var c = connect(
- *   (res, cb) => { cb('error', res + 1) },   // error is passed to next task
- *   (res, cb) => { cb(null, res * 2) },      // jumps over this task
- *   (err, res, cb) => { cb(null, res + 3) }, // gets trapped here (arity === 3)
- *   (res, cb) => { cb(null, res * 2) }       // continues
+ *   (res, cb) => { cb('error', res + 1) },   // task - error is passed to next task
+ *   (res, cb) => { cb(null, res * 2) },      // task - "no-op", jumps over this task due to previous error
+ *   (err, res, cb) => { cb(null, res + 3) }, // trap - error gets trapped here (arity === 3)
+ *   (res, cb) => { cb(null, res * 2) }       // task - continues
  * )
  * c(2, function (err, res) {
  *   //> err = null

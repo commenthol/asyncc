@@ -11,14 +11,14 @@
  * `function (arg: any, cb: function)`
  * `arg` - an argument which is passed from one task to the other
  * `cb` - the callback function which needs to be called on completion
- * @return {Function} - composed function of `function (arg: any, cb: function)` where
+ * @return {Function} composed function of `function (arg: any, cb: function)` where
  * `arg` - initial argument which is passed from one task to the other
  * `[callback]` - optional callback `function(err: <Error>, res: any)`
  * @example
  * var c = compose(
- *   (res, cb) => { setImmediate(() => { cb(null, res + 1) }) },
- *   (res, cb) => { setImmediate(() => { cb('error', res * 2) }) }, // breaks here on first error
- *   (res, cb) => { setImmediate(() => { cb(null, res + 3) }) },
+ *   (res, cb) => { cb(null, res + 1) },
+ *   (res, cb) => { cb('error', res * 2) }, // breaks here on first error
+ *   (res, cb) => { cb(null, res + 3) },
  * )
  * c(2, function (err, res) {
  *   //> err = 'error'

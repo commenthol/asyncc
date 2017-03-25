@@ -1,4 +1,4 @@
-@import url(https://fonts.googleapis.com/css?family=Montserrat:400,700);
+/*@import url(https://fonts.googleapis.com/css?family=Montserrat:400,700);*/
 @import url(./custom.css);
 
 * {
@@ -312,7 +312,7 @@ footer {
   font-size: 100%;
   line-height: 18px;
   display: block;
-  margin: 0 30px;
+  margin: 0 6px;
   background-color: #fff;
   color: #4D4E53;
 }

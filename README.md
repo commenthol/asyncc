@@ -8,7 +8,6 @@
 Asynchronous patterns, no dependencies, no bloat, more isn't needed.
 
 Runs in the browser and on node.  
-Minimized `dist/asyncc.min.js` is 3076 bytes.
 
 The modules provided are not compatible with [async][] syntax.
 
@@ -16,10 +15,13 @@ The modules provided are not compatible with [async][] syntax.
 
 - [compose](https://commenthol.github.io/asyncc/module-serial.html#.compose)
 - [connect](https://commenthol.github.io/asyncc/module-serial.html#.connect)
+- [doUntil](https://commenthol.github.io/asyncc/module-serial.html#.doUntil)
+- [doWhilst](https://commenthol.github.io/asyncc/module-serial.html#.doWhilst)
 - [eachSeries](https://commenthol.github.io/asyncc/module-serial.html#.eachSeries)
 - [NoPromise](https://commenthol.github.io/asyncc/NoPromise.html)
 - [series](https://commenthol.github.io/asyncc/module-serial.html#.series)
 - [times](https://commenthol.github.io/asyncc/module-serial.html#.times)
+- [until](https://commenthol.github.io/asyncc/module-serial.html#.until)
 - [whilst](https://commenthol.github.io/asyncc/module-serial.html#.whilst)
 
 # Parallel execution patterns
@@ -28,6 +30,7 @@ The modules provided are not compatible with [async][] syntax.
 - [eachLimit](https://commenthol.github.io/asyncc/module-parallel.html#.eachLimit)
 - [parallel](https://commenthol.github.io/asyncc/module-parallel.html#.parallel)
 - [parallelLimit](https://commenthol.github.io/asyncc/module-parallel.html#.parallelLimit)
+- [Queue](https://commenthol.github.io/asyncc/Queue.html)
 
 # Installation
 
@@ -38,13 +41,19 @@ The modules provided are not compatible with [async][] syntax.
 As ES6 Modules
 
 ```js
-import {NoPromise, connect} from 'asyncc/src'
+import {NoPromise, connect} from 'asyncc'
 ```
 
 As CommonJS Modules
 
 ```js
 const {NoPromise, connect} = require('asyncc')
+```
+
+or picking individual methods
+
+```js
+const connect = require('asyncc/lib/connect')
 ```
 
 # References

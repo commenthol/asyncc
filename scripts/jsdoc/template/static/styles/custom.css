@@ -14,6 +14,14 @@ nav > h2 > a {
   display: inline-block !important;
 }
 
+.social-github {
+  background: url("social-github.svg") no-repeat;
+  vertical-align: text-bottom;
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+}
+
 nav::after {
   content: '';
   height: 2em;

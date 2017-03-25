@@ -20,9 +20,9 @@
  * @example
  * // runs 2 tasks in parallel
  * parallelLimit(2, [
- *   (cb) => { setImmediate(() => { cb(null, 1) })},
- *   (cb) => { setImmediate(() => { cb('error', 2) })},
- *   (cb) => { setImmediate(() => { cb(null, 3) })}
+ *   (cb) => { cb(null, 1) },
+ *   (cb) => { cb('error', 2) },
+ *   (cb) => { cb(null, 3) }
  * ], (err, res, errorpos) => {
  *   //> err = [ ,'error', ]
  *   //> res = [1, 2, 3]

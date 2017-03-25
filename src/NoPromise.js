@@ -1,9 +1,16 @@
 /**
 * This is not a `Promise`.
+*
 * Chain callback functions with `.then(function (res, cb))` and execute them
-* until the previous callbacks have finished.
+* as soon as previous callbacks have finished.
+*
 * Catch passed or thrown errors with `.catch(function (err, res, cb))` as they may occur.
-* End the chain with `.end(function (err, res))`
+* End the chain with `.end(function (err, res))`.
+*
+* If errors are thrown inside a `task` they are catched and can be processed attaching
+* `.catch()` or `.end()` to the chain.
+*
+* This method is similar to {@link module:serial.connect|connect} but allows adding `tasks` on the go through chaining.
 *
 * @name NoPromise
 * @class
@@ -11,9 +18,13 @@
 * @example <caption>Normal usage</caption>
 * var arr = []
 * var n = new NoPromise(arr)
-* n.then((res, cb) => { res.push(1); cb(null, res) })
-* .then((res, cb) => { res.push(2); cb(null, res) })
-* .end((err, res) => {
+* n.then((res, cb) => {
+*   res.push(1)
+*   cb(null, res)
+* }).then((res, cb) => {
+*   res.push(2)
+*   cb(null, res)
+* }).end((err, res) => {
 *   //> err = null
 *   //> res = [1, 2]
 *   //> (arr ==== res) = true
@@ -21,25 +32,45 @@
 * @example <caption>Catch errors</caption>
 * var arr = []
 * var n = new NoPromise(arr)
-* n.then((res, cb) => { res.push(1); cb(null, res) })
-* .then((res, cb)  => { res.push(2); cb('err1', res) })
-* .catch((err, res, cb) => { res.push(err); cb(null, res) }) // catches err1
-* .then((res, cb)  => { res.push(3); cb(null, res) })
-* .catch((err, res, cb) => { res.push(4); cb(null, res) })   // jumps over as there is no error
-* .then((res, cb)  => { res.push(5); cb('err2', res) })
-* .end((err, res) => {
+* n.then((res, cb) => {
+*   res.push(1)
+*   cb(null, res)
+* }).then((res, cb) => {
+*   res.push(2)
+*   cb('err1', res)             // <-- cause an error
+* }).catch((err, res, cb) => {  // catches err1
+*   res.push(err)
+*   cb(null, res)               // <-- continue normally
+* }).then((res, cb) => {
+*   res.push(3)
+*   cb(null, res)
+* }).catch((err, res, cb) => {  // jumps over, as there is no error in the chain
+*   res.push(4)
+*   cb(null, res)
+* }).then((res, cb) => {
+*   res.push(5)
+*   cb('err2', res)             // <-- next error
+* }).end((err, res) => {
 *   //> err = 'err2'
 *   //> res = [1, 2, 'err1', 3, 5]
 *   //> (arr ==== res) = true
 * })
 * @example <caption>Deferred usage</caption>
 * var arr = []
+* // creates a new instance passing `arr`
 * var n = new NoPromise(arr)
-* n.then((res, cb) => { res.push(1); cb(null, res) })
-*
+* // execute the first async method
+* n.then((res, cb) => {
+*   res.push(1)
+*   cb(null, res)
+* })
+* // take a time off
 * setTimeout(() => {
-*   n.then((res, cb) => { res.push(2); cb(null, res) })
-*   .end((err, res) => {
+*   // continue processing
+*   n.then((res, cb) => {
+*     res.push(2)
+*     cb(null, res)
+*   }).end((err, res) => {
 *     //> err = null
 *     //> res = [1, 2]
 *     //> (arr ==== res) = true
@@ -93,30 +124,55 @@ NoPromise.prototype = {
   },
   /**
    * Chain the next async function
-   * @param {Function} fn - async function `function (res: any, cb: Function)`.
+   * @param {Function} task - async function `function (res: any, cb: Function)`.
    * Never forget to call `cb(err: <Error>, res: any)` inside `fn`
    */
-  then: function (fn) {
-    this._tasks.push({type: 'then', fn: fn})
+  then: function (task) {
+    this._tasks.push({type: 'then', fn: task})
     this._run()
     return this
   },
   /**
    * Catch any previous errors from the chain
-   * @param {Function} fn - async function `function (err: <Error>, res: any, cb: Function)`.
+   * @param {Function} trap - async function `function (err: <Error>, res: any, cb: Function)`.
    * Never forget to call `cb(err: <Error>, res: any)` inside `fn`
    */
-  catch: function (fn) {
-    this._tasks.push({type: 'catch', fn: fn})
+  catch: function (trap) {
+    this._tasks.push({type: 'catch', fn: trap})
     this._run()
     return this
   },
   /**
    * End the chain
-   * @param {Function} fn - `function (err: <Error>, res: any)`
+   * @param {Function} callback - `function (err: <Error>, res: any)`
    */
-  end: function (fn) {
-    this._tasks.push({type: 'end', fn: fn})
+  end: function (callback) {
+    this._tasks.push({type: 'end', fn: callback})
     this._run()
   }
+}
+
+/**
+* This is not a `Promise`.
+*
+* Chain callback functions with `.then(function (res, cb))` and execute them
+* as soon as previous callbacks have finished.
+*
+* Catch passed or thrown errors with `.catch(function (err, res, cb))` as they may occur.
+* End the chain with `.end(function (err, res))`.
+*
+* If errors are thrown inside a `task` they are catched and can be processed attaching
+* `.catch()` or `.end()` to the chain.
+*
+* See full API here {@link NoPromise}.
+*
+* @name noPromise
+* @memberOf module:serial
+* @static
+* @method
+* @param {Any} arg - initial argument which is passed to first chain
+* @return {NoPromise}
+*/
+export function noPromise (arg) {
+  return new NoPromise(arg)
 }

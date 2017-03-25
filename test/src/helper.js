@@ -1,5 +1,5 @@
 import assert from 'assert'
-import _setImmediate from '../../src/_setImmediate'
+import {_setImmediate} from '../../src/_setImmediate'
 
 /**
  * execute async tasks after a timeout

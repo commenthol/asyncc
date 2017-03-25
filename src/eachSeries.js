@@ -1,4 +1,4 @@
-import _setImmediate from './_setImmediate'
+import {_setImmediate} from './_setImmediate'
 
 /**
  * Run `items` on async `task` function in series. Stops at the first error encountered.

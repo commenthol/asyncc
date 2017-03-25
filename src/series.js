@@ -1,4 +1,4 @@
-import _setImmediate from './_setImmediate'
+import {_setImmediate} from './_setImmediate'
 
 /**
  * Run `tasks` callback functions in series
@@ -15,9 +15,9 @@ import _setImmediate from './_setImmediate'
  * `function (err: <Error>, res: Array<any>)`
  * @example
  * series([
- *   (cb) => { setImmediate(() => { cb(null, 1) }) },
- *   (cb) => { setImmediate(() => { cb('error', 2) }) }, // breaks on first error
- *   (cb) => { setImmediate(() => { cb(null, 3) }) },
+ *   (cb) => { cb(null, 1) },
+ *   (cb) => { cb('error', 2) }, // breaks on first error
+ *   (cb) => { cb(null, 3) },
  * ], (err, res) => {
  *   //> err = 'error'
  *   //> res = [1, 2]

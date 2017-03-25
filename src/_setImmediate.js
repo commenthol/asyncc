@@ -3,20 +3,18 @@
  * @method _setImmediate
  * @static
  */
-var _setImmediate
-
+export const _setImmediate = (function () {
 /* istanbul ignore else */
-if (typeof process === 'object' && typeof process.nextTick === 'function') {
-  // nodejs
-  _setImmediate = process.nextTick
-} else if (typeof setImmediate === 'function') {
-  // supporting browsers
-  _setImmediate = setImmediate
-} else {
-  // fallback
-  _setImmediate = function (fn) {
-    setTimeout(fn, 0)
+  if (typeof process === 'object' && typeof process.nextTick === 'function') {
+    // nodejs
+    return process.nextTick
+  } else if (typeof setImmediate === 'function') {
+    // supporting browsers
+    return setImmediate
+  } else {
+    // fallback
+    return function (fn) {
+      setTimeout(fn, 0)
+    }
   }
-}
-
-export default _setImmediate
+})()

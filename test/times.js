@@ -91,7 +91,7 @@ describe('#times', function () {
         let end = Date.now() - start
         assert.ok(!err, '' + err)
         assert.equal(res, 3)
-        assert.ok(end > 3 * 10, 'it took ' + end)
+        assert.ok(end >= 3 * 10, 'it took ' + end)
         assert.deepEqual(arr, [0, 1, 2, 3])
         done()
       }

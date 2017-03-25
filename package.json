@@ -1,6 +1,6 @@
 {
   "name": "asyncc",
-  "version": "1.2.0-1",
+  "version": "1.2.0",
   "description": "Just asynchronous patterns",
   "main": "dist/asyncc.js",
   "jsnext:main": "src",

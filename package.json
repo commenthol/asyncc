@@ -1,6 +1,6 @@
 {
   "name": "asyncc",
-  "version": "1.1.2",
+  "version": "1.2.0-1",
   "description": "Just asynchronous patterns",
   "main": "dist/asyncc.js",
   "jsnext:main": "src",
@@ -20,10 +20,11 @@
   },
   "scripts": {
     "test": "npm run mocha",
-    "dist": "npm run clean && npm run lint && npm run build && npm run mocha && npm version",
+    "dist": "npm run clean && npm run lint && npm run transpile && npm run build && npm run mocha && npm version",
     "cover": "nyc --check-coverage --reporter=text --reporter=lcov npm run mocha",
     "mocha": "mocha",
     "karma": "karma start",
+    "transpile": "babel -d lib src",
     "build": "rollup -c scripts/rollup.conf.js",
     "doc": "jsdoc -c scripts/jsdoc/jsdoc.json",
     "lint": "eslint --quiet '**/*.js'",

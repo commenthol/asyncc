@@ -1,4 +1,4 @@
-all: test
+all: clean build
 
 test: v0.8 v0.12 v4. v6. v7.
 
@@ -26,6 +26,9 @@ push: gitChanges
 	git push origin master
 	git push origin gh-pages -f
 
+docs: src scripts
+	npm run doc
+
 dist: src dist/asyncc.min.js dist/asyncc.js
 
 dist/asyncc.js: src
@@ -37,24 +40,27 @@ dist/asyncc.js: src
 dist/asyncc.min.js: dist/asyncc.js
 	uglifyjs $< -c -m -o $@
 
-build: dist
+build: lib dist
 
-pack: node_modules build dist
+lib:
+	npm run transpile
+
+pack: node_modules build
 	rm *.tgz
 	npm pack
 	tar tvzf *.tgz
 
-publish: node_modules build dist gitChanges
+publish: node_modules build gitChanges
 	rm *.tgz
 	npm publish
 
 node_modules:
-	npm install
+	npm update
 
 clean:
-	rm -rf dist docs coverage
+	rm -rf lib dist docs coverage
 
 clean-all: clean
 	rm -rf node_modules
 
-.PHONY: all test gitChanges push publish
+.PHONY: all build test gitChanges push publish

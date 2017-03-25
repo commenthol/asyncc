@@ -1,13 +1,13 @@
 /* global describe, it */
 
 import assert from 'assert'
-import {whilst} from '..'
+import {until} from '..'
 
-describe('#whilst', function () {
-  it('should run until condition returns false', function (done) {
+describe('#until', function () {
+  it('should run until condition returns true', function (done) {
     var arr = []
-    whilst(
-      (index) => (index < 4),
+    until(
+      (index) => (index >= 4),
       (cb, index) => {
         arr.push(index)
         cb(null, index)
@@ -22,18 +22,18 @@ describe('#whilst', function () {
       }
     )
   })
-  it('should run endlessly', function (done) {
-    whilst(
+
+  it('should immediately exit with callback if test is true', function (done) {
+    var arr = []
+    until(
       () => true,
       (cb, index) => {
-        var err
-        if (index >= 10000) { // we stop the test after 10000 cycles
-          err = 'error'
-        }
-        cb(err, index)
+        arr.push(index)
+        cb(null, index)
       }, (err, res) => {
-        assert.equal(err, 'error')
-        assert.equal(res, 10000)
+        assert.ok(!err)
+        assert.equal(res, undefined)
+        assert.deepEqual(arr, [])
         done()
       }
     )

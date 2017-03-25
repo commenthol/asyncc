@@ -24,6 +24,7 @@ describe('#times', function () {
       }
     )
   })
+
   it('should exit on error', function (done) {
     let t = new Timeout()
     times(4, function (cb, index) {
@@ -39,10 +40,10 @@ describe('#times', function () {
       done()
     })
   })
+
   it('should run zero times', function (done) {
     times(0,
       (cb, index) => {
-        console.log('###')
         cb('err')
       }, (err, res) => {
         assert.equal(err, undefined)
@@ -51,21 +52,23 @@ describe('#times', function () {
       }
     )
   })
+
   it('should run endlessly', function (done) {
     times(-1,
       (cb, index) => {
         var err
-        if (index >= 10000) { // we stop the test after 10000 cycles
+        if (index >= 1000) { // we stop the test after 1000 cycles
           err = 'error'
         }
         cb(err, index)
       }, (err, res) => {
         assert.equal(err, 'error')
-        assert.equal(res, 10000)
+        assert.equal(res, 1000)
         done()
       }
     )
   })
+
   it('should process large number of cycles', function (done) {
     var size = 10000
     times(size, function (cb, index) {
@@ -75,5 +78,23 @@ describe('#times', function () {
       assert.ok(res === size - 1)
       done()
     })
+  })
+
+  it('should run with lag', function (done) {
+    let arr = []
+    let start = Date.now()
+    times({times: 4, lag: 10},
+      (cb, index) => {
+        arr.push(index)
+        cb(null, index)
+      }, (err, res) => {
+        let end = Date.now() - start
+        assert.ok(!err, '' + err)
+        assert.equal(res, 3)
+        assert.ok(end > 3 * 10, 'it took ' + end)
+        assert.deepEqual(arr, [0, 1, 2, 3])
+        done()
+      }
+    )
   })
 })

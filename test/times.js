@@ -1,4 +1,5 @@
 /* global describe, it */
+/* eslint standard/no-callback-literal:0 */
 
 import assert from 'assert'
 import {Timeout} from './src/helper'

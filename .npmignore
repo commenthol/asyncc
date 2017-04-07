@@ -9,3 +9,4 @@ tmp/
 .*
 Makefile
 karma.conf.js
+yarn.lock

@@ -9,6 +9,7 @@
 
 import {_setImmediate} from './_setImmediate'
 
+import AsynccError from './AsynccError'
 import compose from './compose'
 import connect from './connect'
 import doUntil from './doUntil'
@@ -28,6 +29,7 @@ import whilst from './whilst'
 
 export default {
   _setImmediate,
+  AsynccError,
   compose,
   connect,
   doUntil,
@@ -50,6 +52,7 @@ export default {
 
 export {
   _setImmediate,
+  AsynccError,
   compose,
   connect,
   doUntil,

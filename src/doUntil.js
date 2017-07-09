@@ -12,8 +12,7 @@ import {_setImmediate} from './_setImmediate'
 * @param {Function} test - test function `function (index: number)`. If return value is `true` then `callback` gets called
 * @param {Function} [callback] - optional callback `function (errors: <Error>, result: any)` from last callback.
 * @example
-* var arr = []
-* function test
+* let arr = []
 * doUntil(
 *   (cb, index) => {    // task
 *     arr.push(index)

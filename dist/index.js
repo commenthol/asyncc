@@ -5,12 +5,12 @@
 }(this, (function (exports) { 'use strict';
 
 /**
- * setImmediate wrapper for different environments
- * @method _setImmediate
- * @static
- */
+* setImmediate wrapper for different environments
+* @method _setImmediate
+* @static
+*/
 var _setImmediate = (function () {
-/* istanbul ignore else */
+  /* istanbul ignore next */
   if (typeof process === 'object' && typeof process.nextTick === 'function') {
     // nodejs
     return process.nextTick
@@ -24,6 +24,25 @@ var _setImmediate = (function () {
     }
   }
 })();
+
+var AsynccError = (function (Error) {
+  function AsynccError (message, errors, errpos) {
+    Error.call(this, message);
+    Object.assign(this, {
+      name: 'AsynccError',
+      message: message,
+      errors: errors,
+      errpos: errpos,
+      stack: this.stack || /* istanbul ignore next */ new Error().stack
+    });
+  }
+
+  if ( Error ) AsynccError.__proto__ = Error;
+  AsynccError.prototype = Object.create( Error && Error.prototype );
+  AsynccError.prototype.constructor = AsynccError;
+
+  return AsynccError;
+}(Error));
 
 /**
  * Run composed `tasks` callback functions in series.
@@ -78,7 +97,7 @@ function compose () {
 
 /**
  * Run composed `tasks` callback functions in series.
- * Results from a **task** are passed no the next task.
+ * Results from a **task** are passed to the next task.
  * Passed or thrown errors in tasks get trapped with
  * functions of arity 3 `function (err, res, cb)` called here **trap**.
  * In case that there is no previous error, a **trap** acts as "no-op".
@@ -171,8 +190,7 @@ function connect () {
 * @param {Function} test - test function `function (index: number)`. If return value is `true` then `callback` gets called
 * @param {Function} [callback] - optional callback `function (errors: <Error>, result: any)` from last callback.
 * @example
-* var arr = []
-* function test
+* let arr = []
 * doUntil(
 *   (cb, index) => {    // task
 *     arr.push(index)
@@ -218,8 +236,7 @@ function doUntil (task, test, callback) {
 * @param {Function} test - test function `function (index: number)`. If return value is `false` then `callback` gets called
 * @param {Function} [callback] - optional callback `function (errors: <Error>, result: any)` from last callback.
 * @example
-* var arr = []
-* function test
+* let arr = []
 * doWhilst(
 *   (cb, index) => {    // task
 *     arr.push(index)
@@ -237,6 +254,60 @@ function doWhilst (task, test, callback) {
   doUntil(task, function (n) { return !test(n); }, callback);
 }
 
+function parallel (limit, length, run, opts, callback) {
+  if ( opts === void 0 ) opts = {};
+
+  if (typeof opts === 'function') {
+    callback = opts;
+    opts = {};
+  }
+  limit = Math.abs(limit || length);
+  var errpos = [];
+  var errors = new Array(length).fill();
+  var results = new Array(length).fill();
+  var i = 0;
+  var l = length;
+  var done = 0;
+
+  function final (errMsg) {
+    if (done++) { return }
+    var err = null;
+    if (errpos.length || errMsg) {
+      err = new AsynccError(errMsg || 'err', errors, errpos);
+    }
+    callback(err, results);
+  }
+
+  function cb (j, err, res) {
+    results[j] = res;
+    errors[j] = err;
+    if (err) {
+      errpos.push(j);
+      if (opts.bail) {
+        final('err_bail');
+        return
+      }
+    }
+    l--;
+    if (i < length) {
+      run(i++, cb);
+    } else if (callback && !l) {
+      final();
+    }
+  }
+
+  if (opts.timeout) {
+    setTimeout(function () {
+      /* istanbul ignore else */
+      if (l) { final('err_timeout'); }
+    }, opts.timeout);
+  }
+  limit = limit < length ? limit : length;
+  while (i < limit) {
+    run(i++, cb);
+  }
+}
+
 /**
 * Run `items` on async `task` function in parallel limited to `limit` parallel.
 *
@@ -249,58 +320,33 @@ function doWhilst (task, test, callback) {
 * @param {Number} limit - number of tasks running in parallel
 * @param {Array} items - Array of items `any[]`
 * @param {Function} task - iterator function of type `function (item: any, cb: Function, index: Number)`
+* @param {Object} [options]
+* @param {Number} [options.timeout] - timeout in ms which throwing `AsynccError` in case that `tasks` are still running
+* @param {Boolean} [options.bail] - bail-out on first error
 * @param {Function} [callback] - optional callback function called by last
 * terminating function from `tasks`, needs to be of type
-* `function (errors: Array<Error>, result: Array<any>, errpos: Array<Number>)`
-* where `err` is either null or an Array containing the errors in the same
-* order as the `res` results array. `errpos` gives the positions of errors in
+* `function (err: AsynccError, result: Array<any>)`
+* where `err.errors` is an Array containing the errors in the same
+* order as the `res` results array. `err.errpos` gives the positions of errors in
 * order as they occur.
 * @example
 * eachLimit(2, [1, 2, 3, 4],
 *   (item, cb, index) => {
 *     cb(index % 2 ? null : 'error', item + index)
-*   }, (err, res, errpos) => {
-*     //> err = [ , 'error', , 'error']
+*   }, (err, res) => {
+*     //> err.errors = [null, 'error', null, 'error']
+*     //> err.errpos = [1, 3]
 *     //> res = [1, 4, 5, 7]
-*     //> errpos = [1, 3]
 *   }
 * )
 */
-function eachLimit (limit, items, task, callback) {
-  var length = items.length;
-  limit = Math.abs(limit || length);
-  var errpos = [];
-  var errors = new Array(length);
-  var results = new Array(length);
-  var i = 0;
-  var l = length;
-
-  function cb (j, err, res) {
-    results[j] = res;
-    errors[j] = err;
-    if (err) { errpos.push(j); }
-    l--;
-    if (i < length) {
-      run(i++);
-    } else if (callback && !l) {
-      if (!errpos.length) { errors = null; }
-      callback(errors, results, errpos);
-    }
-  }
-
-  function run (j) {
-    var item = items[j];
-    task(item, function (err, res) {
+function eachLimit (limit, items, task, opts, callback) {
+  function run (j, cb) {
+    task(items[j], function (err, res) {
       cb(j, err, res);
     }, j);
   }
-
-  (function () {
-    limit = limit < length ? limit : length;
-    while (i < limit) {
-      run(i++);
-    }
-  })();
+  parallel(limit, items.length, run, opts, callback);
 }
 
 /**
@@ -314,25 +360,28 @@ function eachLimit (limit, items, task, callback) {
 * @method
 * @param {Array} items - Array of items `any[]`
 * @param {Function} task - iterator function of type `function (item: any, cb: Function, index: Number)`
+* @param {Object} [options]
+* @param {Number} [options.timeout] - timeout in ms which throwing `AsynccError` in case that `tasks` are still running
+* @param {Boolean} [options.bail] - bail-out on first error
 * @param {Function} [callback] - optional callback function called by last
 * terminating function from `tasks`, needs to be of type
-* `function (errors: Array<Error>, result: Array<any>, errpos: Array<Number>)`
-* where `err` is either null or an Array containing the errors in the same
-* order as the `res` results array. `errpos` gives the positions of errors in
+* `function (err: AsynccError, result: Array<any>)`
+* where `err.errors` is an Array containing the errors in the same
+* order as the `res` results array. `err.errpos` gives the positions of errors in
 * order as they occur.
 * @example
 * each([1, 2, 3],
 *   (item, cb, index) => {
 *     cb(index % 2 ? null : 'error', item + index)
-*   }, (err, res, errpos) => {
-*     //> err = [ , 'error', ]
+*   }, (err, res) => {
+*     //> err.errors = [null, 'error', null]
+*     //> err.errpos = [1]
 *     //> res = [1, 4, 5]
-*     //> errpos = [1]
 *   }
 * )
 */
-function each (items, task, callback) {
-  eachLimit(0, items, task, callback);
+function each (items, task, opts, callback) {
+  eachLimit(0, items, task, opts, callback);
 }
 
 /**
@@ -375,8 +424,7 @@ function eachSeries (items, task, callback) {
   }
 
   function run () {
-    var item = items[i];
-    task(item, cb, i++);
+    task(items[i], cb, i++);
   }
 
   run();
@@ -564,71 +612,47 @@ function noPromise (arg) {
 }
 
 /**
- * Run `tasks` callback functions in parallel limited to `limit` parallel
- * running tasks.
- *
- * Does not stop parallel execution on errors. *All tasks get executed.*
- * The optional `callback` gets called after the longest running task finishes.
- *
- * @name parallelLimit
- * @memberOf module:parallel
- * @static
- * @method
- * @param {Number} limit - number of tasks running in parallel
- * @param {Array} tasks - Array of callback functions of type `function (cb: Function)`
- * @param {Function} [callback] - optional callback function called by last
- * terminating function from `tasks`, needs to be of type
- * `function (errors: Array<Error>, result: Array<any>, errpos: Array<Number>)`
- * where `err` is either null or an Array containing the errors in the same
- * order as the `res` results array. `errpos` gives the positions of errors in
- * order as they occur.
- * @example
- * // runs 2 tasks in parallel
- * parallelLimit(2, [
- *   (cb) => { cb(null, 1) },
- *   (cb) => { cb('error', 2) },
- *   (cb) => { cb(null, 3) }
- * ], (err, res, errorpos) => {
- *   //> err = [ ,'error', ]
- *   //> res = [1, 2, 3]
- *   //> errorpos = [1]
- * })
- */
-function parallelLimit (limit, tasks, callback) {
-  var length = tasks.length;
-  limit = Math.abs(limit || length);
-  var errpos = [];
-  var errors = new Array(length);
-  var results = new Array(length);
-  var i = 0;
-  var l = length;
-
-  function cb (j, err, res) {
-    results[j] = res;
-    errors[j] = err;
-    if (err) { errpos.push(j); }
-    l--;
-    if (i < length) {
-      run(i++);
-    } else if (callback && !l) {
-      if (!errpos.length) { errors = null; }
-      callback(errors, results, errpos);
-    }
-  }
-
-  function run (j) {
-    var fn = tasks[j];
-    fn(function (err, res) {
+* Run `tasks` callback functions in parallel limited to `limit` parallel
+* running tasks.
+*
+* Does not stop parallel execution on errors. *All tasks get executed.*
+* The optional `callback` gets called after the longest running task finishes.
+*
+* @name parallelLimit
+* @memberOf module:parallel
+* @static
+* @method
+* @param {Number} limit - number of tasks running in parallel
+* @param {Array} tasks - Array of callback functions of type `function (cb: Function)`
+* @param {Object} [options]
+* @param {Number} [options.timeout] - timeout in ms which throwing `AsynccError` in case that `tasks` are still running
+* @param {Boolean} [options.bail] - bail-out on first error
+* @param {Function} [callback] - optional callback function called by last
+* terminating function from `tasks`, needs to be of type
+* `function (err: AsynccError, result: Array<any>)`
+* where `err.errors` is an Array containing the errors in the same
+* order as the `res` results array. `err.errpos` gives the positions of errors in
+* order as they occur.
+*
+* @example
+* // runs 2 tasks in parallel
+* parallelLimit(2, [
+*   (cb) => { cb(null, 1) },
+*   (cb) => { cb('error', 2) },
+*   (cb) => { cb(null, 3) }
+* ], (err, res) => {
+*   //> err.errors = [null, 'error', null]
+*   //> err.errorpos = [1]
+*   //> res = [1, 2, 3]
+* })
+*/
+function parallelLimit (limit, tasks, opts, callback) {
+  function run (j, cb) {
+    tasks[j](function (err, res) {
       cb(j, err, res);
     });
   }
-
-  (function () {
-    limit = limit < length ? limit : length;
-    while (i < limit) {
-      run(i++);
-    }
-  })();
+  parallel(limit, tasks.length, run, opts, callback);
 }
 
 /**
@@ -641,26 +665,30 @@ function parallelLimit (limit, tasks, callback) {
 * @memberOf module:parallel
 * @static
 * @method
+
 * @param {Array<Function>} tasks - Array of callback functions of type `function (cb: Function)`
+* @param {Object} [options]
+* @param {Number} [options.timeout] - timeout in ms which throwing `AsynccError` in case that `tasks` are still running
+* @param {Boolean} [options.bail] - bail-out on first error
 * @param {Function} [callback] - optional callback function called by last
 * terminating function from `tasks`, needs to be of type
-* `function (errors: Array<Error>, result: Array<any>, errpos: Array<Number>)`
-* where `err` is either null or an Array containing the errors in the same
-* order as the `res` results array. `errpos` gives the positions of errors in
+* `function (err: AsynccError, result: Array<any>)`
+* where `err.errors` is an Array containing the errors in the same
+* order as the `res` results array. `err.errpos` gives the positions of errors in
 * order as they occur.
 * @example
 * parallel([
 *   (cb) => { cb(null, 1) },
 *   (cb) => { cb('error', 2) },
 *   (cb) => { cb(null, 3) }
-* ], (err, res, errpos) => {
-*   //> err = [ ,'error', ]
+* ], (err, res) => {
+*   //> err.errors = [null, 'error', null]
+*   //> err.errpos = [1]
 *   //> res = [1, 2, 3]
-*   //> errpos = [1]
 * })
 */
-function parallel (tasks, callback) {
-  parallelLimit(0, tasks, callback);
+function parallel$1 (tasks, opts, callback) {
+  parallelLimit(0, tasks, opts, callback);
 }
 
 /**
@@ -683,7 +711,7 @@ PrioArray.prototype = {
   * @return {Any} item
   */
   shift: function shift () {
-    return (this.items.shift() || {}).item
+    return (this.items.shift() || /* istanbul ignore next */ {}).item
   },
 
   /**
@@ -980,26 +1008,27 @@ function _times (num, opts) {
 }
 
 /**
-* Run `task` max. `num` times. Stop when no error is returned.
-* Calls `callback` if `num` is reached or `task` returned no error.
+* Run `task` max. `times` times. Stops at first iteration where no error is returned.
+*
+* Calls `callback` if `times` is reached or `task` returned no error.
 *
 * @name retry
 * @memberOf module:serial
 * @static
 * @method
-* @param {Number|Object} num - retry max. `num` times - default=2
-* @param {Number} [num.times=2] - max. number of retries
-* @param {Number} [num.lag=0] - time-lag in ms between retries
+* @param {Number|Object} times - retry max. `times` times - default=2
+* @param {Number} [times.times=2] - max. number of retries
+* @param {Number} [times.lag=0] - time-lag in ms between retries
 * @param {Function} task - iterator function of type `function (cb: Function, index: Number)`
-* @param {Function} [callback] - optional callback `function (errors: <Error>, result: any)` from last callback.
+* @param {Function} [callback] - optional callback `function (errors: Error, result: any)` from last callback.
 * @example
-* var arr = []
+* let arr = []
 * retry({times: 3, lag: 100}, // max. 3 retries with 100ms time-lag between retries
-*   (cb, index) => {          // task
+*   (cb, index) => { // task
 *     let err = index < 2 ? new Error() : null
 *     arr.push(index)
 *     cb(err, index)
-*   }, (err, res) => {        // callback
+*   }, (err, res) => { // callback
 *     //> err = null
 *     //> res = 2
 *     //> arr = [0, 1, 2]
@@ -1031,28 +1060,29 @@ function retry (num, task, callback) {
 }
 
 /**
- * Run `tasks` callback functions in series
- * The function breaks after the first error encountered and calls optional
- * `callback` function
- *
- * @name series
- * @memberOf module:serial
- * @static
- * @method
- * @param {Array} tasks - Array of callback functions of type `function (cb: Function)`
- * @param {Function} [callback] - optional callback function called by last
- * terminating function from `tasks`, needs to be of type
- * `function (err: <Error>, res: Array<any>)`
- * @example
- * series([
- *   (cb) => { cb(null, 1) },
- *   (cb) => { cb('error', 2) }, // breaks on first error
- *   (cb) => { cb(null, 3) },
- * ], (err, res) => {
- *   //> err = 'error'
- *   //> res = [1, 2]
- * })
- */
+* Run `tasks` callback functions in series
+* The function breaks after the first error encountered and calls optional
+* `callback` function
+*
+* @name series
+* @memberOf module:serial
+* @static
+* @method
+* @param {Array} tasks - Array of callback functions of type `function (cb: Function)`
+* @param {Function} [callback] - optional callback function called by last
+* terminating function from `tasks`, needs to be of type
+* `function (err: Error, res: Array<any>)`
+*
+* @example
+* series([
+*   (cb) => { cb(null, 1) },
+*   (cb) => { cb('error', 2) }, // breaks on first error
+*   (cb) => { cb(null, 3) },
+* ], (err, res) => {
+*   //> err = 'error'
+*   //> res = [1, 2]
+* })
+*/
 function series (tasks, callback) {
   var length = tasks.length;
   var results = [];
@@ -1071,15 +1101,14 @@ function series (tasks, callback) {
   }
 
   function run () {
-    var fn = tasks[i++];
-    fn(cb);
+    tasks[i++](cb);
   }
 
   run();
 }
 
 /**
-* Run `task` repeatedly until number `num` is reached.
+* Run `task` repeatedly until number `times` is reached.
 *
 * Stops at the first error encountered.
 * An optional `lag` between retries may be used.
@@ -1088,13 +1117,14 @@ function series (tasks, callback) {
 * @memberOf module:serial
 * @static
 * @method
-* @param {Number|Object} num - runs `num` times. If `num < 0` then "times" cycles endlessly until an error occurs.
-* @param {Number} [num.times=0] - max. number of retries
-* @param {Number} [num.lag=0] - time-lag in ms between retries
+* @param {Number|Object} times - runs `times` times. If `times < 0` then "times" cycles endlessly until an error occurs.
+* @param {Number} [times.times=0] - max. number of retries
+* @param {Number} [times.lag=0] - time-lag in ms between retries
 * @param {Function} task - iterator function of type `function (cb: Function, index: Number)`
-* @param {Function} [callback] - optional callback `function (errors: <Error>, result: Array<any>)`
+* @param {Function} [callback] - optional callback `function (errors: Error, result: Array<any>)`
+*
 * @example
-* var arr = []
+* let arr = []
 * times({times: 4, lag: 100}, // 4 times with 100ms time-lag between retries
 *   (cb, index) => {
 *     arr.push(index)
@@ -1145,9 +1175,9 @@ function times (num, task, callback) {
 * @param {Function} test - test function `function (index: number)`. If return value is `true` then `callback` gets called
 * @param {Function} task - iterator function of type `function (cb: Function, index: Number)`
 * @param {Function} [callback] - optional callback `function (errors: <Error>, result: any)` from last callback.
+*
 * @example
-* var arr = []
-* function test
+* let arr = []
 * until(
 *   (index) => {        // test
 *     return index >= 4
@@ -1195,17 +1225,16 @@ function until (test, task, callback) {
 * @method
 * @param {Function} test - test function `function (index: number)`. If return value is `false` then `callback` gets called
 * @param {Function} task - iterator function of type `function (cb: Function, index: Number)`
-* @param {Function} [callback] - optional callback `function (errors: <Error>, result: any)` from last callback.
+* @param {Function} [callback] - optional callback `function (errors: Error, result: any)` from last callback.
+*
 * @example
-* var arr = []
-* function test
+* let arr = []
 * whilst(
-*   (index) => {        // test
-*     return index < 4
-*   }, (cb, index) => { // task
+*   (index) => (index < 4), // test
+*   (cb, index) => { // task
 *     arr.push(index)
 *     cb(null, index)
-*   }, (err, res) => {  // callback
+*   }, (err, res) => { // callback
 *     //> err = null
 *     //> res = 3
 *     //> arr = [0, 1, 2, 3]
@@ -1227,6 +1256,7 @@ function whilst (test, task, callback) {
 
 var index = {
   _setImmediate: _setImmediate,
+  AsynccError: AsynccError,
   compose: compose,
   connect: connect,
   doUntil: doUntil,
@@ -1236,7 +1266,7 @@ var index = {
   eachSeries: eachSeries,
   noPromise: noPromise,
   NoPromise: NoPromise,
-  parallel: parallel,
+  parallel: parallel$1,
   parallelLimit: parallelLimit,
   queue: queue,
   Queue: Queue,
@@ -1249,6 +1279,7 @@ var index = {
 
 exports['default'] = index;
 exports._setImmediate = _setImmediate;
+exports.AsynccError = AsynccError;
 exports.compose = compose;
 exports.connect = connect;
 exports.doUntil = doUntil;
@@ -1258,7 +1289,7 @@ exports.eachLimit = eachLimit;
 exports.eachSeries = eachSeries;
 exports.noPromise = noPromise;
 exports.NoPromise = NoPromise;
-exports.parallel = parallel;
+exports.parallel = parallel$1;
 exports.parallelLimit = parallelLimit;
 exports.queue = queue;
 exports.Queue = Queue;

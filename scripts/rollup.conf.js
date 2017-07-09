@@ -2,7 +2,7 @@ import buble from 'rollup-plugin-buble'
 
 export default {
   entry: 'src/index.js',
-  dest: 'dist/asyncc.js',
+  dest: 'dist/index.js',
   plugins: [ buble() ],
   format: 'umd',
   moduleName: 'asyncc',

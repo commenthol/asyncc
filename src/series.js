@@ -1,28 +1,29 @@
 import {_setImmediate} from './_setImmediate'
 
 /**
- * Run `tasks` callback functions in series
- * The function breaks after the first error encountered and calls optional
- * `callback` function
- *
- * @name series
- * @memberOf module:serial
- * @static
- * @method
- * @param {Array} tasks - Array of callback functions of type `function (cb: Function)`
- * @param {Function} [callback] - optional callback function called by last
- * terminating function from `tasks`, needs to be of type
- * `function (err: <Error>, res: Array<any>)`
- * @example
- * series([
- *   (cb) => { cb(null, 1) },
- *   (cb) => { cb('error', 2) }, // breaks on first error
- *   (cb) => { cb(null, 3) },
- * ], (err, res) => {
- *   //> err = 'error'
- *   //> res = [1, 2]
- * })
- */
+* Run `tasks` callback functions in series
+* The function breaks after the first error encountered and calls optional
+* `callback` function
+*
+* @name series
+* @memberOf module:serial
+* @static
+* @method
+* @param {Array} tasks - Array of callback functions of type `function (cb: Function)`
+* @param {Function} [callback] - optional callback function called by last
+* terminating function from `tasks`, needs to be of type
+* `function (err: Error, res: Array<any>)`
+*
+* @example
+* series([
+*   (cb) => { cb(null, 1) },
+*   (cb) => { cb('error', 2) }, // breaks on first error
+*   (cb) => { cb(null, 3) },
+* ], (err, res) => {
+*   //> err = 'error'
+*   //> res = [1, 2]
+* })
+*/
 export default function series (tasks, callback) {
   let length = tasks.length
   let results = []
@@ -41,8 +42,7 @@ export default function series (tasks, callback) {
   }
 
   function run () {
-    let fn = tasks[i++]
-    fn(cb)
+    tasks[i++](cb)
   }
 
   run()

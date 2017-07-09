@@ -1,6 +1,6 @@
 /**
  * Run composed `tasks` callback functions in series.
- * Results from a **task** are passed no the next task.
+ * Results from a **task** are passed to the next task.
  * Passed or thrown errors in tasks get trapped with
  * functions of arity 3 `function (err, res, cb)` called here **trap**.
  * In case that there is no previous error, a **trap** acts as "no-op".

@@ -7,9 +7,7 @@
 
 Asynchronous patterns, no dependencies, no bloat, more isn't needed.
 
-Runs in the browser and on node.  
-
-The modules provided are not compatible with [async][] syntax.
+Runs in the browser and on node. Less than 6kB in size.
 
 # Serial execution patterns
 
@@ -60,10 +58,8 @@ const connect = require('asyncc/lib/connect')
 
 <!-- !ref -->
 
-* [async][async]
 * [LICENSE][LICENSE]
 
 <!-- ref! -->
 
-[async]: https://github.com/caolan/async
 [LICENSE]: ./LICENSE.txt

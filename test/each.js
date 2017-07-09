@@ -10,11 +10,10 @@ describe('#each', function () {
     let t = new Timeout()
     each(items, function (item, cb) {
       t.task(item)(cb)
-    }, function (err, res, errpos) {
+    }, function (err, res) {
       assert.deepEqual(t.order, [4, 13, 22, 31, 40])
       assert.equal(err, null)
       assert.deepEqual(res, items)
-      assert.deepEqual(errpos, [])
       done()
     })
   })
@@ -30,9 +29,9 @@ describe('#each', function () {
       t.task(item, err)(cb)
     }, function (err, res, errpos) {
       assert.deepEqual(t.order, [4, 13, 22, 31, 40])
-      assert.deepEqual(err, [undefined, 'error1', undefined, 'error2', undefined])
+      assert.deepEqual(err.errors, [undefined, 'error1', undefined, 'error2', undefined])
+      assert.deepEqual(err.errpos, [3, 1])
       assert.deepEqual(res, items)
-      assert.deepEqual(errpos, [3, 1])
       done()
     })
   })

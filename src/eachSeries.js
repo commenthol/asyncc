@@ -40,8 +40,7 @@ export default function eachSeries (items, task, callback) {
   }
 
   function run () {
-    let item = items[i]
-    task(item, cb, i++)
+    task(items[i], cb, i++)
   }
 
   run()

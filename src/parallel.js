@@ -10,24 +10,28 @@ import parallelLimit from './parallelLimit'
 * @memberOf module:parallel
 * @static
 * @method
+
 * @param {Array<Function>} tasks - Array of callback functions of type `function (cb: Function)`
+* @param {Object} [options]
+* @param {Number} [options.timeout] - timeout in ms which throwing `AsynccError` in case that `tasks` are still running
+* @param {Boolean} [options.bail] - bail-out on first error
 * @param {Function} [callback] - optional callback function called by last
 * terminating function from `tasks`, needs to be of type
-* `function (errors: Array<Error>, result: Array<any>, errpos: Array<Number>)`
-* where `err` is either null or an Array containing the errors in the same
-* order as the `res` results array. `errpos` gives the positions of errors in
+* `function (err: AsynccError, result: Array<any>)`
+* where `err.errors` is an Array containing the errors in the same
+* order as the `res` results array. `err.errpos` gives the positions of errors in
 * order as they occur.
 * @example
 * parallel([
 *   (cb) => { cb(null, 1) },
 *   (cb) => { cb('error', 2) },
 *   (cb) => { cb(null, 3) }
-* ], (err, res, errpos) => {
-*   //> err = [ ,'error', ]
+* ], (err, res) => {
+*   //> err.errors = [null, 'error', null]
+*   //> err.errpos = [1]
 *   //> res = [1, 2, 3]
-*   //> errpos = [1]
 * })
 */
-export default function parallel (tasks, callback) {
-  parallelLimit(0, tasks, callback)
+export default function parallel (tasks, opts, callback) {
+  parallelLimit(0, tasks, opts, callback)
 }

@@ -28,11 +28,11 @@ describe('#parallel', function () {
       t.task(22),
       t.task(13, 'error2'),
       t.task(4)
-    ], function (err, res, errpos) {
+    ], function (err, res) {
       assert.deepEqual(t.order, [4, 13, 22, 31, 40])
-      assert.deepEqual(err, [undefined, 'error1', undefined, 'error2', undefined])
+      assert.deepEqual(err.errors, [undefined, 'error1', undefined, 'error2', undefined])
+      assert.deepEqual(err.errpos, [3, 1])
       assert.deepEqual(res, [40, 31, 22, 13, 4])
-      assert.deepEqual(errpos, [3, 1])
       done()
     })
   })

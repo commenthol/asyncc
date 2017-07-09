@@ -1,6 +1,6 @@
 all: clean build
 
-test: v0.8 v0.12 v4. v6. v7.
+test: v0.8 v0.12 v4. v6. v8.
 
 v%:
 	n $@
@@ -29,16 +29,16 @@ push: gitChanges
 docs: src scripts
 	npm run doc
 
-dist: src dist/asyncc.min.js dist/asyncc.js
+dist: src dist/index.min.js dist/index.js
 
-dist/asyncc.js: src
+dist/index.js: src
 	npm run lint \
 	&& npm run build \
 	&& npm run mocha \
 	&& npm version
 
-dist/asyncc.min.js: dist/asyncc.js
-	uglifyjs $< -c -m -o $@
+dist/index.min.js: dist/index.js
+	`npm bin`/uglifyjs $< -c -m -o $@
 
 build: lib dist
 

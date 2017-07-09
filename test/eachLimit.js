@@ -8,18 +8,31 @@ import {compose, eachLimit} from '..'
 
 describe('#eachLimit', function () {
   let items = [40, 31, 22, 3, 14]
+
   it('eachLimit', function (done) {
     let t = new Timeout()
     eachLimit(2, items, function (item, cb) {
       t.task(item)(cb)
-    }, function (err, res, errpos) {
+    }, function (err, res) {
       // assert.deepEqual(t.order, [31, 40, 3, 22, 14]) // correct order of processing is not guaranteed
       assert.equal(err, null)
       assert.deepEqual(res, items)
-      assert.deepEqual(errpos, [])
       done()
     })
   })
+
+  it('with undefined options', function (done) {
+    let t = new Timeout()
+    eachLimit(2, items, function (item, cb) {
+      t.task(item)(cb)
+    }, undefined, function (err, res) {
+      // assert.deepEqual(t.order, [31, 40, 3, 22, 14]) // correct order of processing is not guaranteed
+      assert.equal(err, null)
+      assert.deepEqual(res, items)
+      done()
+    })
+  })
+
   it('with errors', function (done) {
     let t = new Timeout()
     eachLimit(2, items, function (item, cb, index) {
@@ -32,12 +45,48 @@ describe('#eachLimit', function () {
       t.task(item, err)(cb)
     }, function (err, res, errpos) {
       // assert.deepEqual(t.order, [31, 40, 3, 22, 14]) // correct order of processing is not guaranteed
-      assert.deepEqual(err, [undefined, 'error1', undefined, 'error2', undefined])
+      assert.equal(err.message, 'err')
+      assert.deepEqual(err.errors, [undefined, 'error1', undefined, 'error2', undefined])
+      assert.deepEqual(err.errpos, [1, 3])
       assert.deepEqual(res, items)
-      assert.deepEqual(errpos, [1, 3])
       done()
     })
   })
+
+  it('bails out at first error', function (done) {
+    let t = new Timeout()
+    eachLimit(2, items, function (item, cb, index) {
+      let err
+      if (index === 1) {
+        err = 'error1'
+      } else if (index === 3) {
+        err = 'error2'
+      }
+      t.task(item, err)(cb)
+    }, {
+      bail: true
+    }, function (err, res) {
+      // assert.deepEqual(t.order, [31, 40, 3, 22, 14]) // correct order of processing is not guaranteed
+      assert.equal(err.message, 'err_bail')
+      assert.deepEqual(err.errors, [undefined, 'error1', undefined, undefined, undefined])
+      assert.deepEqual(err.errpos, [1])
+      assert.deepEqual(res, [undefined, 31, undefined, undefined, undefined])
+      done()
+    })
+  })
+
+  it('returns with timeout error', function (done) {
+    eachLimit(2, items, function (item, cb) {
+      setTimeout(() => { cb(null, item) }, 6)
+    }, {
+      timeout: 10
+    }, function (err, res) {
+      assert.equal(err.message, 'err_timeout')
+      assert.deepEqual(res, [ 40, 31, undefined, undefined, undefined ])
+      done()
+    })
+  })
+
   it('fs.stat', function (done) {
     compose(
       fs.readdir,

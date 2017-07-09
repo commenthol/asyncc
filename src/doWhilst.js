@@ -12,8 +12,7 @@ import doUntil from './doUntil'
 * @param {Function} test - test function `function (index: number)`. If return value is `false` then `callback` gets called
 * @param {Function} [callback] - optional callback `function (errors: <Error>, result: any)` from last callback.
 * @example
-* var arr = []
-* function test
+* let arr = []
 * doWhilst(
 *   (cb, index) => {    // task
 *     arr.push(index)

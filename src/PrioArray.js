@@ -18,7 +18,7 @@ PrioArray.prototype = {
   * @return {Any} item
   */
   shift () {
-    return (this.items.shift() || {}).item
+    return (this.items.shift() || /* istanbul ignore next */ {}).item
   },
 
   /**

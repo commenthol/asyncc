@@ -1,7 +1,7 @@
 import {_times} from './_utils'
 
 /**
-* Run `task` repeatedly until number `num` is reached.
+* Run `task` repeatedly until number `times` is reached.
 *
 * Stops at the first error encountered.
 * An optional `lag` between retries may be used.
@@ -10,13 +10,14 @@ import {_times} from './_utils'
 * @memberOf module:serial
 * @static
 * @method
-* @param {Number|Object} num - runs `num` times. If `num < 0` then "times" cycles endlessly until an error occurs.
-* @param {Number} [num.times=0] - max. number of retries
-* @param {Number} [num.lag=0] - time-lag in ms between retries
+* @param {Number|Object} times - runs `times` times. If `times < 0` then "times" cycles endlessly until an error occurs.
+* @param {Number} [times.times=0] - max. number of retries
+* @param {Number} [times.lag=0] - time-lag in ms between retries
 * @param {Function} task - iterator function of type `function (cb: Function, index: Number)`
-* @param {Function} [callback] - optional callback `function (errors: <Error>, result: Array<any>)`
+* @param {Function} [callback] - optional callback `function (errors: Error, result: Array<any>)`
+*
 * @example
-* var arr = []
+* let arr = []
 * times({times: 4, lag: 100}, // 4 times with 100ms time-lag between retries
 *   (cb, index) => {
 *     arr.push(index)

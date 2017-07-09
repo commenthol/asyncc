@@ -9,6 +9,10 @@ Asynchronous patterns, no dependencies, no bloat, more isn't needed.
 
 Runs in the browser and on node. Less than 6kB in size.
 
+- [Latest Documentation](https://commenthol.github.io/asyncc)
+- [Documentation for v1](https://commenthol.github.io/asyncc/docs_v1)
+- [Migrating to v2](https://github.com/commenthol/asyncc/doc/migrate-to-v2.md)
+
 # Serial execution patterns
 
 - [compose](https://commenthol.github.io/asyncc/module-serial.html#.compose)

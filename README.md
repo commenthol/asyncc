@@ -11,7 +11,7 @@ Runs in the browser and on node. Less than 6kB in size.
 
 - [Latest Documentation](https://commenthol.github.io/asyncc)
 - [Documentation for v1](https://commenthol.github.io/asyncc/docs_v1)
-- [Migrating to v2](https://github.com/commenthol/asyncc/doc/migrate-to-v2.md)
+- [Migrating to v2](https://github.com/commenthol/asyncc/blob/master/doc/migrate-to-v2.md)
 
 # Serial execution patterns
 

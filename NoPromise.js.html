@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>NoPromise.js - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!-- <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css"> -->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <h2><a href="index.html">asyncc</a><span> </span><a href="https://github.com/commenthol/asyncc"><i class="social-github"></i></a></h2><h3>Modules</h3><ul><li><a href="module-parallel.html">parallel</a><ul class='methods'><li data-type='method'><a href="module-parallel.html#.each">each</a></li><li data-type='method'><a href="module-parallel.html#.eachLimit">eachLimit</a></li><li data-type='method'><a href="module-parallel.html#.parallel">parallel</a></li><li data-type='method'><a href="module-parallel.html#.parallelLimit">parallelLimit</a></li><li data-type='method'><a href="module-parallel.html#.queue">queue</a></li></ul></li><li><a href="module-serial.html">serial</a><ul class='methods'><li data-type='method'><a href="module-serial.html#.compose">compose</a></li><li data-type='method'><a href="module-serial.html#.connect">connect</a></li><li data-type='method'><a href="module-serial.html#.doUntil">doUntil</a></li><li data-type='method'><a href="module-serial.html#.doWhilst">doWhilst</a></li><li data-type='method'><a href="module-serial.html#.eachSeries">eachSeries</a></li><li data-type='method'><a href="module-serial.html#.noPromise">noPromise</a></li><li data-type='method'><a href="module-serial.html#.retry">retry</a></li><li data-type='method'><a href="module-serial.html#.series">series</a></li><li data-type='method'><a href="module-serial.html#.times">times</a></li><li data-type='method'><a href="module-serial.html#.until">until</a></li><li data-type='method'><a href="module-serial.html#.whilst">whilst</a></li></ul></li></ul><h3>Classes</h3><ul><li><a href="NoPromise.html">NoPromise</a><ul class='methods'><li data-type='method'><a href="NoPromise.html#catch">catch</a></li><li data-type='method'><a href="NoPromise.html#end">end</a></li><li data-type='method'><a href="NoPromise.html#then">then</a></li></ul></li><li><a href="Queue.html">Queue</a><ul class='methods'><li data-type='method'><a href="Queue.html#concat">concat</a></li><li data-type='method'><a href="Queue.html#drain">drain</a></li><li data-type='method'><a href="Queue.html#pause">pause</a></li><li data-type='method'><a href="Queue.html#push">push</a></li><li data-type='method'><a href="Queue.html#reset">reset</a></li><li data-type='method'><a href="Queue.html#resume">resume</a></li><li data-type='method'><a href="Queue.html#running">running</a></li><li data-type='method'><a href="Queue.html#unshift">unshift</a></li></ul></li></ul><h3>Global</h3><ul><li><a href="global.html#_setImmediate">_setImmediate</a></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">
+      NoPromise.js
+    </h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+* This is not a `Promise`.
+*
+* Chain callback functions with `.then(function (res, cb))` and execute them
+* as soon as previous callbacks have finished.
+*
+* Catch passed or thrown errors with `.catch(function (err, res, cb))` as they may occur.
+* End the chain with `.end(function (err, res))`.
+*
+* If errors are thrown inside a `task` they are catched and can be processed attaching
+* `.catch()` or `.end()` to the chain.
+*
+* This method is similar to {@link module:serial.connect|connect} but allows adding `tasks` on the go through chaining.
+*
+* @name NoPromise
+* @class
+* @param {Any} arg - initial argument which is passed to first chain
+* @example &lt;caption>Normal usage&lt;/caption>
+* var arr = []
+* var n = new NoPromise(arr)
+* n.then((res, cb) => {
+*   res.push(1)
+*   cb(null, res)
+* }).then((res, cb) => {
+*   res.push(2)
+*   cb(null, res)
+* }).end((err, res) => {
+*   //> err = null
+*   //> res = [1, 2]
+*   //> (arr ==== res) = true
+* })
+* @example &lt;caption>Catch errors&lt;/caption>
+* var arr = []
+* var n = new NoPromise(arr)
+* n.then((res, cb) => {
+*   res.push(1)
+*   cb(null, res)
+* }).then((res, cb) => {
+*   res.push(2)
+*   cb('err1', res)             // &lt;-- cause an error
+* }).catch((err, res, cb) => {  // catches err1
+*   res.push(err)
+*   cb(null, res)               // &lt;-- continue normally
+* }).then((res, cb) => {
+*   res.push(3)
+*   cb(null, res)
+* }).catch((err, res, cb) => {  // jumps over, as there is no error in the chain
+*   res.push(4)
+*   cb(null, res)
+* }).then((res, cb) => {
+*   res.push(5)
+*   cb('err2', res)             // &lt;-- next error
+* }).end((err, res) => {
+*   //> err = 'err2'
+*   //> res = [1, 2, 'err1', 3, 5]
+*   //> (arr ==== res) = true
+* })
+* @example &lt;caption>Deferred usage&lt;/caption>
+* var arr = []
+* // creates a new instance passing `arr`
+* var n = new NoPromise(arr)
+* // execute the first async method
+* n.then((res, cb) => {
+*   res.push(1)
+*   cb(null, res)
+* })
+* // take a time off
+* setTimeout(() => {
+*   // continue processing
+*   n.then((res, cb) => {
+*     res.push(2)
+*     cb(null, res)
+*   }).end((err, res) => {
+*     //> err = null
+*     //> res = [1, 2]
+*     //> (arr ==== res) = true
+*   })
+* }, 10)
+*/
+export default function NoPromise (arg) {
+  this._tasks = []
+  this.result = arg
+  this.error = undefined
+  this._lock = false
+}
+
+NoPromise.prototype = {
+  /**
+   * runs the next function
+   * @private
+   */
+  _run: function () {
+    if (this._lock) return
+    this._lock = true
+    let task = this._tasks.shift()
+    let tstType = this.error ? ['catch', 'end'] : ['then', 'end']
+    while (task &amp;&amp; !~tstType.indexOf(task.type)) {
+      task = this._tasks.shift()
+    }
+    if (task) {
+      let cb = (err, res) => {
+        this.error = err
+        this.result = res || this.result
+        this._lock = false
+        this._run()
+      }
+      let fn = task.fn
+      if (task.type === 'end') {      // .end
+        fn(this.error, this.result)
+      } else {
+        try {
+          if (task.type === 'catch') {      // .catch
+            fn(this.error, this.result, cb)
+          } else {                    // .then
+            fn(this.result, cb)
+          }
+        } catch (e) {
+          cb(e)
+        }
+      }
+    } else {
+      this._lock = false
+    }
+  },
+  /**
+   * Chain the next async function
+   * @param {Function} task - async function `function (res: any, cb: Function)`.
+   * Never forget to call `cb(err: &lt;Error>, res: any)` inside `fn`
+   */
+  then: function (task) {
+    this._tasks.push({type: 'then', fn: task})
+    this._run()
+    return this
+  },
+  /**
+   * Catch any previous errors from the chain
+   * @param {Function} trap - async function `function (err: &lt;Error>, res: any, cb: Function)`.
+   * Never forget to call `cb(err: &lt;Error>, res: any)` inside `fn`
+   */
+  catch: function (trap) {
+    this._tasks.push({type: 'catch', fn: trap})
+    this._run()
+    return this
+  },
+  /**
+   * End the chain
+   * @param {Function} callback - `function (err: &lt;Error>, res: any)`
+   */
+  end: function (callback) {
+    this._tasks.push({type: 'end', fn: callback})
+    this._run()
+  }
+}
+
+/**
+* This is not a `Promise`.
+*
+* Chain callback functions with `.then(function (res, cb))` and execute them
+* as soon as previous callbacks have finished.
+*
+* Catch passed or thrown errors with `.catch(function (err, res, cb))` as they may occur.
+* End the chain with `.end(function (err, res))`.
+*
+* If errors are thrown inside a `task` they are catched and can be processed attaching
+* `.catch()` or `.end()` to the chain.
+*
+* See full API here {@link NoPromise}.
+*
+* @name noPromise
+* @memberOf module:serial
+* @static
+* @method
+* @param {Any} arg - initial argument which is passed to first chain
+* @return {NoPromise}
+*/
+export function noPromise (arg) {
+  return new NoPromise(arg)
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

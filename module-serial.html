@@ -1,0 +1,2663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>serial - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!-- <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css"> -->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <h2><a href="index.html">asyncc</a><span> </span><a href="https://github.com/commenthol/asyncc"><i class="social-github"></i></a></h2><h3>Modules</h3><ul><li><a href="module-parallel.html">parallel</a><ul class='methods'><li data-type='method'><a href="module-parallel.html#.each">each</a></li><li data-type='method'><a href="module-parallel.html#.eachLimit">eachLimit</a></li><li data-type='method'><a href="module-parallel.html#.parallel">parallel</a></li><li data-type='method'><a href="module-parallel.html#.parallelLimit">parallelLimit</a></li><li data-type='method'><a href="module-parallel.html#.queue">queue</a></li></ul></li><li><a href="module-serial.html">serial</a><ul class='methods'><li data-type='method'><a href="module-serial.html#.compose">compose</a></li><li data-type='method'><a href="module-serial.html#.connect">connect</a></li><li data-type='method'><a href="module-serial.html#.doUntil">doUntil</a></li><li data-type='method'><a href="module-serial.html#.doWhilst">doWhilst</a></li><li data-type='method'><a href="module-serial.html#.eachSeries">eachSeries</a></li><li data-type='method'><a href="module-serial.html#.noPromise">noPromise</a></li><li data-type='method'><a href="module-serial.html#.retry">retry</a></li><li data-type='method'><a href="module-serial.html#.series">series</a></li><li data-type='method'><a href="module-serial.html#.times">times</a></li><li data-type='method'><a href="module-serial.html#.until">until</a></li><li data-type='method'><a href="module-serial.html#.whilst">whilst</a></li></ul></li></ul><h3>Classes</h3><ul><li><a href="NoPromise.html">NoPromise</a><ul class='methods'><li data-type='method'><a href="NoPromise.html#catch">catch</a></li><li data-type='method'><a href="NoPromise.html#end">end</a></li><li data-type='method'><a href="NoPromise.html#then">then</a></li></ul></li><li><a href="Queue.html">Queue</a><ul class='methods'><li data-type='method'><a href="Queue.html#concat">concat</a></li><li data-type='method'><a href="Queue.html#drain">drain</a></li><li data-type='method'><a href="Queue.html#pause">pause</a></li><li data-type='method'><a href="Queue.html#push">push</a></li><li data-type='method'><a href="Queue.html#reset">reset</a></li><li data-type='method'><a href="Queue.html#resume">resume</a></li><li data-type='method'><a href="Queue.html#running">running</a></li><li data-type='method'><a href="Queue.html#unshift">unshift</a></li></ul></li></ul><h3>Global</h3><ul><li><a href="global.html#_setImmediate">_setImmediate</a></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">
+      serial
+    </h1>
+    
+
+    
+
+
+
+
+<section>
+
+<header>
+    
+        
+            
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Serial execution patterns</p></div>
+        
+
+        
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line1">line 1</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id=".compose"><span class="type-signature">(static) </span>compose<span class="signature">(tasks)</span><span class="type-signature"> &rarr; {function}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Run composed <code>tasks</code> callback functions in series.
+Results from a task are passed no the next task.
+Stops on errors and immediatelly calls optional <code>callback</code> in this case.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>tasks</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+|
+
+<span class="param-type">Array</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Arguments or Array of callback functions of type
+<code>function (arg: any, cb: function)</code>
+<code>arg</code> - an argument which is passed from one task to the other
+<code>cb</code> - the callback function which needs to be called on completion</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="compose.js.html">compose.js</a>, <a href="compose.js.html#line1">line 1</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>composed function of <code>function (arg: any, cb: function)</code> where
+<code>arg</code> - initial argument which is passed from one task to the other
+<code>[callback]</code> - optional callback <code>function(err: &lt;Error&gt;, res: any)</code></p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">function</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>var c = compose(
+  (res, cb) => { cb(null, res + 1) },
+  (res, cb) => { cb('error', res * 2) }, // breaks here on first error
+  (res, cb) => { cb(null, res + 3) },
+)
+c(2, function (err, res) {
+  //> err = 'error'
+  //> res = 6
+})</code></pre>
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".connect"><span class="type-signature">(static) </span>connect<span class="signature">(tasks)</span><span class="type-signature"> &rarr; {function}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Run composed <code>tasks</code> callback functions in series.
+Results from a <strong>task</strong> are passed to the next task.
+Passed or thrown errors in tasks get trapped with
+functions of arity 3 <code>function (err, res, cb)</code> called here <strong>trap</strong>.
+In case that there is no previous error, a <strong>trap</strong> acts as &quot;no-op&quot;.
+In case that no <strong>trap</strong> is defined then the chain exits to an optional <code>callback</code>.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>tasks</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+|
+
+<span class="param-type">Array</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Arguments or Array of callback functions of type <strong>task</strong>
+<code>function (arg: any, cb: function)</code> or <strong>trap</strong> <code>function (err: &lt;Error&gt;, arg: any, cb: function)</code> where
+<code>arg</code> - an argument which is passed from one task to the other
+<code>err</code> - a trapped error from previous tasks
+<code>cb</code> - the callback function which needs to be called on completion</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="connect.js.html">connect.js</a>, <a href="connect.js.html#line1">line 1</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>composed function of <code>function (arg, cb)</code> where
+<code>arg</code> - initial argument which is passed from one task to the other
+<code>[callback]</code> - optional callback function <code>function(err: &lt;Error&gt;, res: any)</code></p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">function</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+    <h5>Examples</h5>
+    
+    <pre class="prettyprint"><code>var c = connect(
+  (res, cb) => { cb(null, res + 1) },      // task
+  (err, res, cb) => { cb(null, res + 3) }, // trap - "no-op" here as there is no previous error
+  (res, cb) => { cb(null, res * 2) }       // task
+)
+c(2, function (err, res) {
+  //> err = null
+  //> res = 6
+})</code></pre>
+
+        <p class="code-caption">With error traps</p>
+    
+    <pre class="prettyprint"><code>var c = connect(
+  (res, cb) => { cb('error', res + 1) },   // task - error is passed to next task
+  (res, cb) => { cb(null, res * 2) },      // task - "no-op", jumps over this task due to previous error
+  (err, res, cb) => { cb(null, res + 3) }, // trap - error gets trapped here (arity === 3)
+  (res, cb) => { cb(null, res * 2) }       // task - continues
+)
+c(2, function (err, res) {
+  //> err = null
+  //> res = 12
+})</code></pre>
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".doUntil"><span class="type-signature">(static) </span>doUntil<span class="signature">(task, test, callback<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Run <code>task</code> one or more times until <code>test</code> returns <code>true</code>.
+Calls <code>callback</code> at the first error encountered.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>task</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>iterator function of type <code>function (cb: Function, index: Number)</code></p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>test</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>test function <code>function (index: number)</code>. If return value is <code>true</code> then <code>callback</code> gets called</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>optional callback <code>function (errors: &lt;Error&gt;, result: any)</code> from last callback.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="doUntil.js.html">doUntil.js</a>, <a href="doUntil.js.html#line3">line 3</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>let arr = []
+doUntil(
+  (cb, index) => {    // task
+    arr.push(index)
+    cb(null, index)
+  }, (index) => {     // test
+    return index >= 4
+  }, (err, res) => {  // callback
+    //> err = null
+    //> res = 3
+    //> arr = [0, 1, 2, 3]
+  }
+)</code></pre>
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".doWhilst"><span class="type-signature">(static) </span>doWhilst<span class="signature">(task, test, callback<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Run <code>task</code> one or more times until <code>test</code> returns <code>false</code>.
+Calls <code>callback</code> at the first error encountered.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>task</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>iterator function of type <code>function (cb: Function, index: Number)</code></p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>test</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>test function <code>function (index: number)</code>. If return value is <code>false</code> then <code>callback</code> gets called</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>optional callback <code>function (errors: &lt;Error&gt;, result: any)</code> from last callback.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="doWhilst.js.html">doWhilst.js</a>, <a href="doWhilst.js.html#line3">line 3</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>let arr = []
+doWhilst(
+  (cb, index) => {    // task
+    arr.push(index)
+    cb(null, index)
+  }, (index) => {     // test
+    return index &lt; 4
+  }, (err, res) => {  // callback
+    //> err = null
+    //> res = 3
+    //> arr = [0, 1, 2, 3]
+  }
+)</code></pre>
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".eachSeries"><span class="type-signature">(static) </span>eachSeries<span class="signature">(items, task, callback<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Run <code>items</code> on async <code>task</code> function in series. Stops at the first error encountered.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>items</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;any></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Array of items</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>task</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>iterator function of type <code>function (item: any, cb: Function, index: Number)</code></p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>optional callback <code>function (errors: &lt;Error&gt;, result: Array&lt;any&gt;)</code></p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="eachSeries.js.html">eachSeries.js</a>, <a href="eachSeries.js.html#line3">line 3</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>eachSeries([1, 2, 3],
+  (item, cb, index) => {
+    setImmediate(() => {
+      cb(index % 2 ? null : 'error', item + index)
+    })
+  }, (err, res) => {
+    //> err = 'error'
+    //> res = [1, 4]
+  }
+)</code></pre>
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".noPromise"><span class="type-signature">(static) </span>noPromise<span class="signature">(arg)</span><span class="type-signature"> &rarr; {<a href="NoPromise.html">NoPromise</a>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>This is not a <code>Promise</code>.</p>
+<p>Chain callback functions with <code>.then(function (res, cb))</code> and execute them
+as soon as previous callbacks have finished.</p>
+<p>Catch passed or thrown errors with <code>.catch(function (err, res, cb))</code> as they may occur.
+End the chain with <code>.end(function (err, res))</code>.</p>
+<p>If errors are thrown inside a <code>task</code> they are catched and can be processed attaching
+<code>.catch()</code> or <code>.end()</code> to the chain.</p>
+<p>See full API here <a href="NoPromise.html"><code>NoPromise</code></a>.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>arg</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Any</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>initial argument which is passed to first chain</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="NoPromise.js.html">NoPromise.js</a>, <a href="NoPromise.js.html#line155">line 155</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="NoPromise.html">NoPromise</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".retry"><span class="type-signature">(static) </span>retry<span class="signature">(times, task, callback<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Run <code>task</code> max. <code>times</code> times. Stops at first iteration where no error is returned.</p>
+<p>Calls <code>callback</code> if <code>times</code> is reached or <code>task</code> returned no error.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>times</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+|
+
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>retry max. <code>times</code> times - default=2</p>
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>times</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    2
+                
+                </td>
+            
+
+            <td class="description last"><p>max. number of retries</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>lag</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    0
+                
+                </td>
+            
+
+            <td class="description last"><p>time-lag in ms between retries</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>task</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>iterator function of type <code>function (cb: Function, index: Number)</code></p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>optional callback <code>function (errors: Error, result: any)</code> from last callback.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="retry.js.html">retry.js</a>, <a href="retry.js.html#line3">line 3</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>let arr = []
+retry({times: 3, lag: 100}, // max. 3 retries with 100ms time-lag between retries
+  (cb, index) => { // task
+    let err = index &lt; 2 ? new Error() : null
+    arr.push(index)
+    cb(err, index)
+  }, (err, res) => { // callback
+    //> err = null
+    //> res = 2
+    //> arr = [0, 1, 2]
+  }
+)</code></pre>
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".series"><span class="type-signature">(static) </span>series<span class="signature">(tasks, callback<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Run <code>tasks</code> callback functions in series
+The function breaks after the first error encountered and calls optional
+<code>callback</code> function</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>tasks</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Array of callback functions of type <code>function (cb: Function)</code></p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>optional callback function called by last
+terminating function from <code>tasks</code>, needs to be of type
+<code>function (err: Error, res: Array&lt;any&gt;)</code></p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="series.js.html">series.js</a>, <a href="series.js.html#line3">line 3</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>series([
+  (cb) => { cb(null, 1) },
+  (cb) => { cb('error', 2) }, // breaks on first error
+  (cb) => { cb(null, 3) },
+], (err, res) => {
+  //> err = 'error'
+  //> res = [1, 2]
+})</code></pre>
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".times"><span class="type-signature">(static) </span>times<span class="signature">(times, task, callback<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Run <code>task</code> repeatedly until number <code>times</code> is reached.</p>
+<p>Stops at the first error encountered.
+An optional <code>lag</code> between retries may be used.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>times</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+|
+
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>runs <code>times</code> times. If <code>times &lt; 0</code> then &quot;times&quot; cycles endlessly until an error occurs.</p>
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>times</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    0
+                
+                </td>
+            
+
+            <td class="description last"><p>max. number of retries</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>lag</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    0
+                
+                </td>
+            
+
+            <td class="description last"><p>time-lag in ms between retries</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>task</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>iterator function of type <code>function (cb: Function, index: Number)</code></p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>optional callback <code>function (errors: Error, result: Array&lt;any&gt;)</code></p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="times.js.html">times.js</a>, <a href="times.js.html#line3">line 3</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>let arr = []
+times({times: 4, lag: 100}, // 4 times with 100ms time-lag between retries
+  (cb, index) => {
+    arr.push(index)
+    cb(null, index)
+  }, (err, res) => {
+    //> err = null
+    //> res = 3
+    //> arr = [0, 1, 2, 3]
+  }
+)</code></pre>
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".until"><span class="type-signature">(static) </span>until<span class="signature">(test, task, callback<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Run <code>task</code> repeatedly until <code>test</code> returns <code>true</code>.
+Calls <code>callback</code> at the first error encountered.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>test</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>test function <code>function (index: number)</code>. If return value is <code>true</code> then <code>callback</code> gets called</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>task</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>iterator function of type <code>function (cb: Function, index: Number)</code></p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>optional callback <code>function (errors: &lt;Error&gt;, result: any)</code> from last callback.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="until.js.html">until.js</a>, <a href="until.js.html#line3">line 3</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>let arr = []
+until(
+  (index) => {        // test
+    return index >= 4
+  }, (cb, index) => { // task
+    arr.push(index)
+    cb(null, index)
+  }, (err, res) => {  // callback
+    //> err = null
+    //> res = 3
+    //> arr = [0, 1, 2, 3]
+  }
+)</code></pre>
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".whilst"><span class="type-signature">(static) </span>whilst<span class="signature">(test, task, callback<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Run <code>task</code> repeatedly until <code>test</code> returns <code>false</code>.
+Calls <code>callback</code> at the first error encountered.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>test</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>test function <code>function (index: number)</code>. If return value is <code>false</code> then <code>callback</code> gets called</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>task</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>iterator function of type <code>function (cb: Function, index: Number)</code></p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>optional callback <code>function (errors: Error, result: any)</code> from last callback.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="whilst.js.html">whilst.js</a>, <a href="whilst.js.html#line3">line 3</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>let arr = []
+whilst(
+  (index) => (index &lt; 4), // test
+  (cb, index) => { // task
+    arr.push(index)
+    cb(null, index)
+  }, (err, res) => { // callback
+    //> err = null
+    //> res = 3
+    //> arr = [0, 1, 2, 3]
+  }
+)</code></pre>
+
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

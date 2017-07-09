@@ -1,0 +1,33 @@
+/* custom */
+blockquote {
+  padding: 0 1em;
+  color: #777;
+  border-left: 0.25em solid #ddd;
+  margin-left: 0px;
+}
+
+nav h2 {
+  font-size: 18px !important; 
+}
+
+nav > h2 > a {
+  display: inline-block !important;
+}
+
+.social-github {
+  background: url("social-github.svg") no-repeat;
+  vertical-align: text-bottom;
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+}
+
+nav::after {
+  content: '';
+  height: 2em;
+  display: block;
+}
+
+.prettyprint code {
+  margin: 0 0px;
+}

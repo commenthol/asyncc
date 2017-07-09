@@ -1,0 +1,1756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>parallel - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!-- <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css"> -->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <h2><a href="index.html">asyncc</a><span> </span><a href="https://github.com/commenthol/asyncc"><i class="social-github"></i></a></h2><h3>Modules</h3><ul><li><a href="module-parallel.html">parallel</a><ul class='methods'><li data-type='method'><a href="module-parallel.html#.each">each</a></li><li data-type='method'><a href="module-parallel.html#.eachLimit">eachLimit</a></li><li data-type='method'><a href="module-parallel.html#.parallel">parallel</a></li><li data-type='method'><a href="module-parallel.html#.parallelLimit">parallelLimit</a></li><li data-type='method'><a href="module-parallel.html#.queue">queue</a></li></ul></li><li><a href="module-serial.html">serial</a><ul class='methods'><li data-type='method'><a href="module-serial.html#.compose">compose</a></li><li data-type='method'><a href="module-serial.html#.connect">connect</a></li><li data-type='method'><a href="module-serial.html#.doUntil">doUntil</a></li><li data-type='method'><a href="module-serial.html#.doWhilst">doWhilst</a></li><li data-type='method'><a href="module-serial.html#.eachSeries">eachSeries</a></li><li data-type='method'><a href="module-serial.html#.noPromise">noPromise</a></li><li data-type='method'><a href="module-serial.html#.retry">retry</a></li><li data-type='method'><a href="module-serial.html#.series">series</a></li><li data-type='method'><a href="module-serial.html#.times">times</a></li><li data-type='method'><a href="module-serial.html#.until">until</a></li><li data-type='method'><a href="module-serial.html#.whilst">whilst</a></li></ul></li></ul><h3>Classes</h3><ul><li><a href="NoPromise.html">NoPromise</a><ul class='methods'><li data-type='method'><a href="NoPromise.html#catch">catch</a></li><li data-type='method'><a href="NoPromise.html#end">end</a></li><li data-type='method'><a href="NoPromise.html#then">then</a></li></ul></li><li><a href="Queue.html">Queue</a><ul class='methods'><li data-type='method'><a href="Queue.html#concat">concat</a></li><li data-type='method'><a href="Queue.html#drain">drain</a></li><li data-type='method'><a href="Queue.html#pause">pause</a></li><li data-type='method'><a href="Queue.html#push">push</a></li><li data-type='method'><a href="Queue.html#reset">reset</a></li><li data-type='method'><a href="Queue.html#resume">resume</a></li><li data-type='method'><a href="Queue.html#running">running</a></li><li data-type='method'><a href="Queue.html#unshift">unshift</a></li></ul></li></ul><h3>Global</h3><ul><li><a href="global.html#_setImmediate">_setImmediate</a></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">
+      parallel
+    </h1>
+    
+
+    
+
+
+
+
+<section>
+
+<header>
+    
+        
+            
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Parallel execution patterns</p></div>
+        
+
+        
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line5">line 5</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id=".each"><span class="type-signature">(static) </span>each<span class="signature">(items, task, options<span class="signature-attributes">opt</span>, callback<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Run <code>items</code> on async <code>task</code> function in parallel.</p>
+<p>Does not stop parallel execution on errors. <em>All tasks get executed.</em></p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>items</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Array of items <code>any[]</code></p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>task</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>iterator function of type <code>function (item: any, cb: Function, index: Number)</code></p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>timeout</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>timeout in ms which throwing <code>AsynccError</code> in case that <code>tasks</code> are still running</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>bail</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>bail-out on first error</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>optional callback function called by last
+terminating function from <code>tasks</code>, needs to be of type
+<code>function (err: AsynccError, result: Array&lt;any&gt;)</code>
+where <code>err.errors</code> is an Array containing the errors in the same
+order as the <code>res</code> results array. <code>err.errpos</code> gives the positions of errors in
+order as they occur.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="each.js.html">each.js</a>, <a href="each.js.html#line3">line 3</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>each([1, 2, 3],
+  (item, cb, index) => {
+    cb(index % 2 ? null : 'error', item + index)
+  }, (err, res) => {
+    //> err.errors = [null, 'error', null]
+    //> err.errpos = [1]
+    //> res = [1, 4, 5]
+  }
+)</code></pre>
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".eachLimit"><span class="type-signature">(static) </span>eachLimit<span class="signature">(limit, items, task, options<span class="signature-attributes">opt</span>, callback<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Run <code>items</code> on async <code>task</code> function in parallel limited to <code>limit</code> parallel.</p>
+<p>Does not stop parallel execution on errors. <em>All tasks get executed.</em></p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>limit</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>number of tasks running in parallel</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>items</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Array of items <code>any[]</code></p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>task</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>iterator function of type <code>function (item: any, cb: Function, index: Number)</code></p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>timeout</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>timeout in ms which throwing <code>AsynccError</code> in case that <code>tasks</code> are still running</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>bail</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>bail-out on first error</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>optional callback function called by last
+terminating function from <code>tasks</code>, needs to be of type
+<code>function (err: AsynccError, result: Array&lt;any&gt;)</code>
+where <code>err.errors</code> is an Array containing the errors in the same
+order as the <code>res</code> results array. <code>err.errpos</code> gives the positions of errors in
+order as they occur.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="eachLimit.js.html">eachLimit.js</a>, <a href="eachLimit.js.html#line3">line 3</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>eachLimit(2, [1, 2, 3, 4],
+  (item, cb, index) => {
+    cb(index % 2 ? null : 'error', item + index)
+  }, (err, res) => {
+    //> err.errors = [null, 'error', null, 'error']
+    //> err.errpos = [1, 3]
+    //> res = [1, 4, 5, 7]
+  }
+)</code></pre>
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".parallel"><span class="type-signature">(static) </span>parallel<span class="signature">(tasks, options<span class="signature-attributes">opt</span>, callback<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Run <code>tasks</code> callback functions in parallel.</p>
+<p>Does not stop parallel execution on errors. <em>All tasks get executed.</em>
+The optional <code>callback</code> gets called after the longest running task finishes.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>tasks</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;function()></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Array of callback functions of type <code>function (cb: Function)</code></p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>timeout</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>timeout in ms which throwing <code>AsynccError</code> in case that <code>tasks</code> are still running</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>bail</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>bail-out on first error</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>optional callback function called by last
+terminating function from <code>tasks</code>, needs to be of type
+<code>function (err: AsynccError, result: Array&lt;any&gt;)</code>
+where <code>err.errors</code> is an Array containing the errors in the same
+order as the <code>res</code> results array. <code>err.errpos</code> gives the positions of errors in
+order as they occur.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="parallel.js.html">parallel.js</a>, <a href="parallel.js.html#line3">line 3</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>parallel([
+  (cb) => { cb(null, 1) },
+  (cb) => { cb('error', 2) },
+  (cb) => { cb(null, 3) }
+], (err, res) => {
+  //> err.errors = [null, 'error', null]
+  //> err.errpos = [1]
+  //> res = [1, 2, 3]
+})</code></pre>
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".parallelLimit"><span class="type-signature">(static) </span>parallelLimit<span class="signature">(limit, tasks, options<span class="signature-attributes">opt</span>, callback<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Run <code>tasks</code> callback functions in parallel limited to <code>limit</code> parallel
+running tasks.</p>
+<p>Does not stop parallel execution on errors. <em>All tasks get executed.</em>
+The optional <code>callback</code> gets called after the longest running task finishes.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>limit</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>number of tasks running in parallel</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>tasks</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Array of callback functions of type <code>function (cb: Function)</code></p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>timeout</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>timeout in ms which throwing <code>AsynccError</code> in case that <code>tasks</code> are still running</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>bail</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>bail-out on first error</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>optional callback function called by last
+terminating function from <code>tasks</code>, needs to be of type
+<code>function (err: AsynccError, result: Array&lt;any&gt;)</code>
+where <code>err.errors</code> is an Array containing the errors in the same
+order as the <code>res</code> results array. <code>err.errpos</code> gives the positions of errors in
+order as they occur.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="parallelLimit.js.html">parallelLimit.js</a>, <a href="parallelLimit.js.html#line3">line 3</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// runs 2 tasks in parallel
+parallelLimit(2, [
+  (cb) => { cb(null, 1) },
+  (cb) => { cb('error', 2) },
+  (cb) => { cb(null, 3) }
+], (err, res) => {
+  //> err.errors = [null, 'error', null]
+  //> err.errorpos = [1]
+  //> res = [1, 2, 3]
+})</code></pre>
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".queue"><span class="type-signature">(static) </span>queue<span class="signature">(task, concurrency)</span><span class="type-signature"> &rarr; {<a href="Queue.html">Queue</a>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Run queued <code>items</code> through an asynchronous <code>task</code>.</p>
+<p>Once finishing the <code>task</code> an optional callback is called.
+While pushing to the queue, you may define a priority for execution.
+Lower values means faster execution.</p>
+<p>See full API here <a href="Queue.html"><code>Queue</code></a>.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>task</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>iterator function of type <code>function (item: any, cb: Function, index: Number)</code></p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>concurrency</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>max. number of tasks running in parallel</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Queue.js.html">Queue.js</a>, <a href="Queue.js.html#line205">line 205</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="Queue.html">Queue</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

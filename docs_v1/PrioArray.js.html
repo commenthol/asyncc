@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>PrioArray.js - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!-- <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css"> -->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <h2><a href="index.html">asyncc v1</a><span> </span><a href="https://github.com/commenthol/asyncc"><i class="social-github"></i></a></h2><h3>Modules</h3><ul><li><a href="module-parallel.html">parallel</a><ul class='methods'><li data-type='method'><a href="module-parallel.html#.each">each</a></li><li data-type='method'><a href="module-parallel.html#.eachLimit">eachLimit</a></li><li data-type='method'><a href="module-parallel.html#.parallel">parallel</a></li><li data-type='method'><a href="module-parallel.html#.parallelLimit">parallelLimit</a></li><li data-type='method'><a href="module-parallel.html#.queue">queue</a></li></ul></li><li><a href="module-serial.html">serial</a><ul class='methods'><li data-type='method'><a href="module-serial.html#.compose">compose</a></li><li data-type='method'><a href="module-serial.html#.connect">connect</a></li><li data-type='method'><a href="module-serial.html#.doUntil">doUntil</a></li><li data-type='method'><a href="module-serial.html#.doWhilst">doWhilst</a></li><li data-type='method'><a href="module-serial.html#.eachSeries">eachSeries</a></li><li data-type='method'><a href="module-serial.html#.noPromise">noPromise</a></li><li data-type='method'><a href="module-serial.html#.retry">retry</a></li><li data-type='method'><a href="module-serial.html#.series">series</a></li><li data-type='method'><a href="module-serial.html#.times">times</a></li><li data-type='method'><a href="module-serial.html#.until">until</a></li><li data-type='method'><a href="module-serial.html#.whilst">whilst</a></li></ul></li></ul><h3>Classes</h3><ul><li><a href="NoPromise.html">NoPromise</a><ul class='methods'><li data-type='method'><a href="NoPromise.html#catch">catch</a></li><li data-type='method'><a href="NoPromise.html#end">end</a></li><li data-type='method'><a href="NoPromise.html#then">then</a></li></ul></li><li><a href="Queue.html">Queue</a><ul class='methods'><li data-type='method'><a href="Queue.html#concat">concat</a></li><li data-type='method'><a href="Queue.html#drain">drain</a></li><li data-type='method'><a href="Queue.html#pause">pause</a></li><li data-type='method'><a href="Queue.html#push">push</a></li><li data-type='method'><a href="Queue.html#reset">reset</a></li><li data-type='method'><a href="Queue.html#resume">resume</a></li><li data-type='method'><a href="Queue.html#running">running</a></li><li data-type='method'><a href="Queue.html#unshift">unshift</a></li></ul></li></ul><h3>Global</h3><ul><li><a href="global.html#_setImmediate">_setImmediate</a></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">
+      PrioArray.js
+    </h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+* Creates an Array which adds items by priority
+*/
+export default function PrioArray () {
+  this.reset()
+}
+
+PrioArray.prototype = {
+  /**
+  * length of Array
+  */
+  get length () {
+    return this.items.length
+  },
+
+  /**
+  * shift item from array
+  * @return {Any} item
+  */
+  shift () {
+    return (this.items.shift() || {}).item
+  },
+
+  /**
+  * push `item` to Array using priority
+  * @param {Any} item
+  * @param {Number} [prio=Infinity] - priority `0 ... Infinity` - lower values have higher priority
+  */
+  push (item, prio) {
+    let items = this.items
+    if (typeof prio !== 'number') {
+      prio = Infinity
+      items.push({prio, item})
+    } else {
+      let found
+      prio = Math.abs(prio)
+      for (let i = 0; i &lt; items.length; i++) {
+        if (prio &lt; items[i].prio) {
+          items.splice(i, 0, {prio, item})
+          found = true
+          break
+        }
+      }
+      if (!found) {
+        items.push({prio, item})
+      }
+    }
+    return this
+  },
+
+  /**
+  * unshift `item` to Array using priority
+  * @param {Any} item
+  */
+  unshift (item) {
+    this.items.unshift({prio: 0, item})
+    return this
+  },
+
+  /**
+  * removes all items in the Array
+  */
+  reset () {
+    this.items = []
+  }
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

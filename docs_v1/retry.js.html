@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>retry.js - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!-- <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css"> -->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <h2><a href="index.html">asyncc v1</a><span> </span><a href="https://github.com/commenthol/asyncc"><i class="social-github"></i></a></h2><h3>Modules</h3><ul><li><a href="module-parallel.html">parallel</a><ul class='methods'><li data-type='method'><a href="module-parallel.html#.each">each</a></li><li data-type='method'><a href="module-parallel.html#.eachLimit">eachLimit</a></li><li data-type='method'><a href="module-parallel.html#.parallel">parallel</a></li><li data-type='method'><a href="module-parallel.html#.parallelLimit">parallelLimit</a></li><li data-type='method'><a href="module-parallel.html#.queue">queue</a></li></ul></li><li><a href="module-serial.html">serial</a><ul class='methods'><li data-type='method'><a href="module-serial.html#.compose">compose</a></li><li data-type='method'><a href="module-serial.html#.connect">connect</a></li><li data-type='method'><a href="module-serial.html#.doUntil">doUntil</a></li><li data-type='method'><a href="module-serial.html#.doWhilst">doWhilst</a></li><li data-type='method'><a href="module-serial.html#.eachSeries">eachSeries</a></li><li data-type='method'><a href="module-serial.html#.noPromise">noPromise</a></li><li data-type='method'><a href="module-serial.html#.retry">retry</a></li><li data-type='method'><a href="module-serial.html#.series">series</a></li><li data-type='method'><a href="module-serial.html#.times">times</a></li><li data-type='method'><a href="module-serial.html#.until">until</a></li><li data-type='method'><a href="module-serial.html#.whilst">whilst</a></li></ul></li></ul><h3>Classes</h3><ul><li><a href="NoPromise.html">NoPromise</a><ul class='methods'><li data-type='method'><a href="NoPromise.html#catch">catch</a></li><li data-type='method'><a href="NoPromise.html#end">end</a></li><li data-type='method'><a href="NoPromise.html#then">then</a></li></ul></li><li><a href="Queue.html">Queue</a><ul class='methods'><li data-type='method'><a href="Queue.html#concat">concat</a></li><li data-type='method'><a href="Queue.html#drain">drain</a></li><li data-type='method'><a href="Queue.html#pause">pause</a></li><li data-type='method'><a href="Queue.html#push">push</a></li><li data-type='method'><a href="Queue.html#reset">reset</a></li><li data-type='method'><a href="Queue.html#resume">resume</a></li><li data-type='method'><a href="Queue.html#running">running</a></li><li data-type='method'><a href="Queue.html#unshift">unshift</a></li></ul></li></ul><h3>Global</h3><ul><li><a href="global.html#_setImmediate">_setImmediate</a></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">
+      retry.js
+    </h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import {_times} from './_utils'
+
+/**
+* Run `task` max. `num` times. Stop when no error is returned.
+* Calls `callback` if `num` is reached or `task` returned no error.
+*
+* @name retry
+* @memberOf module:serial
+* @static
+* @method
+* @param {Number|Object} num - retry max. `num` times - default=2
+* @param {Number} [num.times=2] - max. number of retries
+* @param {Number} [num.lag=0] - time-lag in ms between retries
+* @param {Function} task - iterator function of type `function (cb: Function, index: Number)`
+* @param {Function} [callback] - optional callback `function (errors: &lt;Error>, result: any)` from last callback.
+* @example
+* var arr = []
+* retry({times: 3, lag: 100}, // max. 3 retries with 100ms time-lag between retries
+*   (cb, index) => {          // task
+*     let err = index &lt; 2 ? new Error() : null
+*     arr.push(index)
+*     cb(err, index)
+*   }, (err, res) => {        // callback
+*     //> err = null
+*     //> res = 2
+*     //> arr = [0, 1, 2]
+*   }
+* )
+*/
+export default function retry (num, task, callback) {
+  let i = 0
+  let {times, lag, fn} = _times(num, {times: 2})
+
+  function cb (err, res) {
+    if (!err || i >= times) {
+      callback &amp;&amp; callback(err, res)
+    } else {
+      fn(() => {
+        run()
+      }, lag)
+    }
+  }
+
+  function run () {
+    task(cb, i++)
+  }
+
+  run()
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

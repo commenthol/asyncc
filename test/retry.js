@@ -5,7 +5,7 @@ import {retry} from '..'
 
 describe('#retry', function () {
   it('should retry min. 2 times - passing num=0', function (done) {
-    let arr = []
+    const arr = []
     retry(0,
       (cb, index) => {
         arr.push(index)
@@ -20,7 +20,7 @@ describe('#retry', function () {
   })
 
   it('should retry min. 2 times - passing times=0', function (done) {
-    let arr = []
+    const arr = []
     retry({times: 0},
       (cb, index) => {
         arr.push(index)
@@ -35,7 +35,7 @@ describe('#retry', function () {
   })
 
   it('should retry 4 times on errors', function (done) {
-    let arr = []
+    const arr = []
     retry(4,
       (cb, index) => {
         arr.push(index)
@@ -50,13 +50,13 @@ describe('#retry', function () {
   })
 
   it('should try to retry 3 times but stop on first non error', function (done) {
-    var arr = []
+    const arr = []
     retry(3,
-      (cb, index) => {    // task
+      (cb, index) => { // task
         let err = index < 2 ? new Error() : null
         arr.push(index)
         cb(err, index)
-      }, (err, res) => {  // callback
+      }, (err, res) => { // callback
         assert.ok(!err)
         assert.equal(res, 2)
         assert.deepEqual(arr, [0, 1, 2])
@@ -66,7 +66,7 @@ describe('#retry', function () {
   })
 
   it('should retry 1 time', function (done) {
-    let arr = []
+    const arr = []
     retry(1,
       (cb, index) => {
         arr.push(index)
@@ -81,8 +81,8 @@ describe('#retry', function () {
   })
 
   it('should run with lag', function (done) {
-    let arr = []
-    let start = Date.now()
+    const arr = []
+    const start = Date.now()
     retry({times: 4, lag: 10},
       (cb, index) => {
         arr.push(index)

@@ -5,12 +5,12 @@ import PrioArray from '../src/PrioArray'
 
 describe('#PrioArray', function () {
   it('should create an instance', function () {
-    let a = new PrioArray()
+    const a = new PrioArray()
     assert.equal(a.shift(), undefined)
   })
 
   it('should push items', function () {
-    let a = new PrioArray()
+    const a = new PrioArray()
     a.push('a').push('b').push('c')
     assert.deepEqual(a.items, [
       {prio: Infinity, item: 'a'},
@@ -20,7 +20,7 @@ describe('#PrioArray', function () {
   })
 
   it('should unshift items', function () {
-    let a = new PrioArray()
+    const a = new PrioArray()
     a.unshift('c').unshift('b').unshift('a')
     assert.deepEqual(a.items, [
       {prio: 0, item: 'a'},
@@ -30,7 +30,7 @@ describe('#PrioArray', function () {
   })
 
   it('should push item with prio - add in front', function () {
-    let a = new PrioArray()
+    const a = new PrioArray()
     a.push('a').push('b').push('c').push('d', 1)
     assert.deepEqual(a.items, [
       {prio: 1, item: 'd'},
@@ -41,7 +41,7 @@ describe('#PrioArray', function () {
   })
 
   it('should push item with prio - add in middle', function () {
-    let a = new PrioArray()
+    const a = new PrioArray()
     a.unshift('a').push('b').push('c').push('d', 2)
     assert.deepEqual(a.items, [
       {prio: 0, item: 'a'},
@@ -52,7 +52,7 @@ describe('#PrioArray', function () {
   })
 
   it('should push item with prio - add at end', function () {
-    let a = new PrioArray()
+    const a = new PrioArray()
     a.unshift('c').unshift('b').unshift('a').push('d', 3)
     assert.deepEqual(a.items, [
       {prio: 0, item: 'a'},
@@ -63,7 +63,7 @@ describe('#PrioArray', function () {
   })
 
   it('should push item with same prio', function () {
-    let a = new PrioArray()
+    const a = new PrioArray()
     a.unshift('a').push('b', 1).push('c', 1).push('d')
     a.push('e', 1)
     assert.deepEqual(a.items, [
@@ -76,7 +76,7 @@ describe('#PrioArray', function () {
   })
 
   it('should shift item from array', function () {
-    let a = new PrioArray()
+    const a = new PrioArray()
     a.unshift('a').push('b', 1).push('c', 1).push('d')
     a.unshift('e', 0)
 

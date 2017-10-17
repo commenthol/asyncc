@@ -27,7 +27,7 @@ describe('#times', function () {
   })
 
   it('should exit on error', function (done) {
-    let t = new Timeout()
+    const t = new Timeout()
     times(4, function (cb, index) {
       let err
       if (index === 2) {

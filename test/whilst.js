@@ -5,7 +5,7 @@ import {whilst} from '..'
 
 describe('#whilst', function () {
   it('should run until condition returns false', function (done) {
-    var arr = []
+    const arr = []
     whilst(
       (index) => (index < 4),
       (cb, index) => {
@@ -22,11 +22,12 @@ describe('#whilst', function () {
       }
     )
   })
+
   it('should run endlessly', function (done) {
     whilst(
       () => true,
       (cb, index) => {
-        var err
+        let err
         if (index >= 10000) { // we stop the test after 10000 cycles
           err = 'error'
         }

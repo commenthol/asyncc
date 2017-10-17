@@ -32,6 +32,8 @@ export default function retry (num, task, callback) {
   let i = 0
   let {times, lag, fn} = _times(num, {times: 2})
 
+  run()
+
   function cb (err, res) {
     if (!err || i >= times) {
       callback && callback(err, res)
@@ -45,6 +47,4 @@ export default function retry (num, task, callback) {
   function run () {
     task(cb, i++)
   }
-
-  run()
 }

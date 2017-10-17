@@ -5,7 +5,8 @@ import {until} from '..'
 
 describe('#until', function () {
   it('should run until condition returns true', function (done) {
-    var arr = []
+    const arr = []
+
     until(
       (index) => (index >= 4),
       (cb, index) => {
@@ -24,7 +25,8 @@ describe('#until', function () {
   })
 
   it('should immediately exit with callback if test is true', function (done) {
-    var arr = []
+    const arr = []
+
     until(
       () => true,
       (cb, index) => {

@@ -50,6 +50,8 @@ export default function connect (...tasks) {
   return function (arg, callback) {
     let i = 0
 
+    run(null, arg)
+
     function run (err, res) {
       let fn = tasks[i++]
       try {
@@ -73,7 +75,5 @@ export default function connect (...tasks) {
         callback && callback(err, res)
       }
     }
-
-    run(null, arg)
   }
 }

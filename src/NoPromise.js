@@ -105,13 +105,13 @@ NoPromise.prototype = {
         this._run()
       }
       let fn = task.fn
-      if (task.type === 'end') {      // .end
+      if (task.type === 'end') { // .end
         fn(this.error, this.result)
       } else {
         try {
-          if (task.type === 'catch') {      // .catch
+          if (task.type === 'catch') { // .catch
             fn(this.error, this.result, cb)
-          } else {                    // .then
+          } else { // .then
             fn(this.result, cb)
           }
         } catch (e) {

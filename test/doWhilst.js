@@ -5,8 +5,8 @@ import {doWhilst} from '..'
 
 describe('#doWhilst', function () {
   it('should run 3 times', function (done) {
-    var index = 3
-    var arr = []
+    let index = 3
+    const arr = []
     doWhilst(
       (cb) => {
         arr.push(index++)

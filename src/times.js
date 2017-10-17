@@ -33,6 +33,12 @@ export default function times (num, task, callback) {
   let i = 0
   let {times, lag, fn} = _times(num)
 
+  if (times) {
+    run()
+  } else {
+    callback && callback()
+  }
+
   function cb (err, res) {
     if (err || (times > 0 && i >= times)) {
       callback && callback(err, res)
@@ -45,11 +51,5 @@ export default function times (num, task, callback) {
 
   function run () {
     task(cb, i++)
-  }
-
-  if (times) {
-    run()
-  } else {
-    callback && callback()
   }
 }

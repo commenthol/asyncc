@@ -5,7 +5,7 @@ import {queue, Queue, _setImmediate} from '..'
 
 describe('#Queue', function () {
   it('should create an instance', function () {
-    let q = new Queue((item, cb) => cb())
+    const q = new Queue((item, cb) => cb())
     assert.equal(q.running(), 0)
     assert.equal(q.length, 0)
     assert.equal(q.paused, false)
@@ -13,22 +13,22 @@ describe('#Queue', function () {
   })
 
   it('should create an paused instance', function () {
-    let q = new Queue((item, cb) => cb())
+    const q = new Queue((item, cb) => cb())
     q.pause()
     assert.equal(q.paused, true)
   })
 
   it('should create and process a queue', function (done) {
-    let arr = []
+    const arr = []
 
-    let q = new Queue(function (item, cb) {
+    const q = new Queue(function (item, cb) {
       _setImmediate(() => {
         arr.push(item)
         cb(null, item + 1)
       })
     })
 
-    let arrCb = []
+    const arrCb = []
     for (let i = 20; i > 0; i -= 5) {
       q.push(i, (errr, res) => { // called if item has finished
         arrCb.push(res)
@@ -43,9 +43,9 @@ describe('#Queue', function () {
   })
 
   it('should create a queue with concurrency 3', function (done) {
-    let arr = []
+    const arr = []
 
-    let q = queue(function (item, cb) {
+    const q = queue(function (item, cb) {
       _setImmediate(() => {
         arr.push([item, q.running()])
         cb()
@@ -63,9 +63,9 @@ describe('#Queue', function () {
   })
 
   it('should create a priority queue ', function (done) {
-    let arr = []
+    const arr = []
 
-    let q = new Queue(function (item, cb) {
+    const q = new Queue(function (item, cb) {
       _setImmediate(() => {
         arr.push(item)
         cb()
@@ -87,9 +87,9 @@ describe('#Queue', function () {
   })
 
   it('should process by priority', function (done) {
-    let arr = []
+    const arr = []
 
-    let q = new Queue(function (item, cb) {
+    const q = new Queue(function (item, cb) {
       arr.push(item)
       cb()
     }, 2)
@@ -106,9 +106,9 @@ describe('#Queue', function () {
   })
 
   it('should pause and resume processing', function (done) {
-    let arr = []
+    const arr = []
 
-    let q = new Queue(function (item, cb) {
+    const q = new Queue(function (item, cb) {
       arr.push(item)
       cb()
     }, 2)
@@ -127,9 +127,9 @@ describe('#Queue', function () {
   })
 
   it('should reset queue', function (done) {
-    let arr = []
+    const arr = []
 
-    let q = new Queue(function (item, cb) {
+    const q = new Queue(function (item, cb) {
       arr.push(item)
       cb()
     }, 2)

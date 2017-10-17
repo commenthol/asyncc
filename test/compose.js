@@ -5,10 +5,11 @@ import {Step} from './src/helper'
 import {compose} from '..'
 
 describe('#compose', function () {
-  let s = new Step()
+  const s = new Step()
+
   it('compose', function (done) {
-    let arg = {}
-    let c = compose(
+    const arg = {}
+    const c = compose(
       s.step,
       s.step,
       s.step
@@ -20,6 +21,18 @@ describe('#compose', function () {
       done()
     })
   })
+
+  it('without tasks', function (done) {
+    const arg = {}
+    const c = compose()
+    c(arg, function (err, res) {
+      assert.equal(err, null)
+      assert.ok(arg === res) // are the same object
+      assert.deepEqual(res, {})
+      done()
+    })
+  })
+
   it('with errors', function (done) {
     compose([
       s.step,

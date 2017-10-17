@@ -7,7 +7,7 @@ require('core-js/es6/array.js')
 
 describe('#series', function () {
   it('series', function (done) {
-    let t = new Timeout()
+    const t = new Timeout()
     series([
       t.task(14),
       t.task(13),
@@ -21,8 +21,18 @@ describe('#series', function () {
       done()
     })
   })
+
+  it('without tasks', function (done) {
+    series([
+    ], function (err, res) {
+      assert.equal(err, null)
+      assert.deepEqual(res, [])
+      done()
+    })
+  })
+
   it('with errors', function (done) {
-    let t = new Timeout()
+    const t = new Timeout()
     series([
       t.task(14),
       t.task(13, 'error1'),
@@ -36,6 +46,7 @@ describe('#series', function () {
       done()
     })
   })
+
   it('can process a very huge array', function (done) {
     var size = 100000
     var tasks = new Array(size).fill((cb) => cb())

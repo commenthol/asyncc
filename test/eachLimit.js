@@ -7,10 +7,10 @@ import {Timeout} from './src/helper'
 import {compose, eachLimit} from '..'
 
 describe('#eachLimit', function () {
-  let items = [40, 31, 22, 3, 14]
+  const items = [40, 31, 22, 3, 14]
 
   it('eachLimit', function (done) {
-    let t = new Timeout()
+    const t = new Timeout()
     eachLimit(2, items, function (item, cb) {
       t.task(item)(cb)
     }, function (err, res) {
@@ -21,8 +21,19 @@ describe('#eachLimit', function () {
     })
   })
 
+  it('with empty items array', function (done) {
+    const items = []
+    eachLimit(10, items, function (item, cb) {
+      assert.ok(false, 'should not reach here')
+    }, function (err, res) {
+      assert.equal(err, null)
+      assert.deepEqual(res, [])
+      done()
+    })
+  })
+
   it('with undefined options', function (done) {
-    let t = new Timeout()
+    const t = new Timeout()
     eachLimit(2, items, function (item, cb) {
       t.task(item)(cb)
     }, undefined, function (err, res) {
@@ -34,7 +45,7 @@ describe('#eachLimit', function () {
   })
 
   it('with errors', function (done) {
-    let t = new Timeout()
+    const t = new Timeout()
     eachLimit(2, items, function (item, cb, index) {
       let err
       if (index === 1) {
@@ -54,7 +65,7 @@ describe('#eachLimit', function () {
   })
 
   it('bails out at first error', function (done) {
-    let t = new Timeout()
+    const t = new Timeout()
     eachLimit(2, items, function (item, cb, index) {
       let err
       if (index === 1) {

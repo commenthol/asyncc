@@ -27,6 +27,13 @@ export default function eachSeries (items, task, callback) {
   let results = []
   let i = 0
 
+  if (length === 0) {
+    callback(null, [])
+    return
+  }
+
+  run()
+
   function cb (err, res) {
     results.push(res)
     /* istanbul ignore else  */
@@ -42,6 +49,4 @@ export default function eachSeries (items, task, callback) {
   function run () {
     task(items[i], cb, i++)
   }
-
-  run()
 }

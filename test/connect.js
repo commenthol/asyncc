@@ -5,10 +5,10 @@ import {Step} from './src/helper'
 import {connect} from '..'
 
 describe('#connect', function () {
-  let s = new Step()
+  const s = new Step()
+
   it('connect', function (done) {
-    let arg
-    let c = connect(
+    const c = connect(
       s.step,
       s.step,
       s.trap,
@@ -17,12 +17,22 @@ describe('#connect', function () {
       s.trap,
       s.step
     )
-    c(arg, function (err, res) {
+    c(null, function (err, res) {
       assert.equal(err, null)
       assert.deepEqual(res, {value: 5})
       done()
     })
   })
+
+  it('without tasks', function (done) {
+    const c = connect()
+    c(null, function (err, res) {
+      assert.equal(err, null)
+      assert.deepEqual(res, null)
+      done()
+    })
+  })
+
   it('with errors but no trap', function (done) {
     connect([
       s.step,
@@ -34,6 +44,7 @@ describe('#connect', function () {
       done()
     })
   })
+
   it('with errors and trap', function (done) {
     connect(
       s.step,
@@ -49,6 +60,7 @@ describe('#connect', function () {
       done()
     })
   })
+
   it('with 2 errors and two traps', function (done) {
     connect(
       s.step,
@@ -66,6 +78,7 @@ describe('#connect', function () {
       done()
     })
   })
+
   it('with 2 thrown errors and two traps', function (done) {
     connect(
       s.step,

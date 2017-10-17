@@ -6,12 +6,29 @@ export default function parallel (limit, length, run, opts = {}, callback) {
     opts = {}
   }
   limit = Math.abs(limit || length)
-  let errpos = []
-  let errors = new Array(length).fill()
-  let results = new Array(length).fill()
+  const errpos = []
+  const errors = new Array(length).fill()
+  const results = new Array(length).fill()
   let i = 0
   let l = length
   let done = 0
+
+  if (l === 0) {
+    final()
+    return
+  }
+
+  if (opts.timeout) {
+    setTimeout(() => {
+      /* istanbul ignore else */
+      if (l) final('err_timeout')
+    }, opts.timeout)
+  }
+  limit = limit < length ? limit : length
+
+  while (i < limit) {
+    run(i++, cb)
+  }
 
   function final (errMsg) {
     if (done++) return
@@ -38,16 +55,5 @@ export default function parallel (limit, length, run, opts = {}, callback) {
     } else if (callback && !l) {
       final()
     }
-  }
-
-  if (opts.timeout) {
-    setTimeout(() => {
-      /* istanbul ignore else */
-      if (l) final('err_timeout')
-    }, opts.timeout)
-  }
-  limit = limit < length ? limit : length
-  while (i < limit) {
-    run(i++, cb)
   }
 }

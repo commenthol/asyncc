@@ -29,6 +29,17 @@ export default function series (tasks, callback) {
   let results = []
   let i = 0
 
+  if (length === 0) {
+    callback(null, [])
+    return
+  }
+
+  run()
+
+  function run () {
+    tasks[i++](cb)
+  }
+
   function cb (err, res) {
     results.push(res)
     /* istanbul ignore else */
@@ -40,10 +51,4 @@ export default function series (tasks, callback) {
       })
     }
   }
-
-  function run () {
-    tasks[i++](cb)
-  }
-
-  run()
 }

@@ -6,7 +6,7 @@ import {parallelLimit} from '..'
 
 describe('#parallelLimit', function () {
   it('parallelLimit', function (done) {
-    let t = new Timeout()
+    const t = new Timeout()
     parallelLimit(2, [
       t.task(40),
       t.task(31),
@@ -21,8 +21,18 @@ describe('#parallelLimit', function () {
       done()
     })
   })
+
+  it('without tasks', function (done) {
+    parallelLimit(2, [
+    ], function (err, res) {
+      assert.equal(err, null)
+      assert.deepEqual(res, [])
+      done()
+    })
+  })
+
   it('with errors', function (done) {
-    let t = new Timeout()
+    const t = new Timeout()
     parallelLimit(4, [
       t.task(40),
       t.task(31, 'error1'),

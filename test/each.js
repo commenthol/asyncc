@@ -7,7 +7,7 @@ import {each} from '..'
 describe('#each', function () {
   let items = [40, 31, 22, 13, 4]
   it('each', function (done) {
-    let t = new Timeout()
+    const t = new Timeout()
     each(items, function (item, cb) {
       t.task(item)(cb)
     }, function (err, res) {
@@ -17,8 +17,20 @@ describe('#each', function () {
       done()
     })
   })
+
+  it('with empty items array', function (done) {
+    const items = []
+    each(items, function (item, cb) {
+      assert.ok(false, 'should not reach here')
+    }, function (err, res) {
+      assert.equal(err, null)
+      assert.deepEqual(res, [])
+      done()
+    })
+  })
+
   it('with errors', function (done) {
-    let t = new Timeout()
+    const t = new Timeout()
     each(items, function (item, cb, index) {
       let err
       if (index === 1) {

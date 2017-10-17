@@ -7,7 +7,7 @@ require('core-js/es6/array.js')
 
 describe('#eachSeries', function () {
   it('eachSeries', function (done) {
-    let t = new Timeout()
+    const t = new Timeout()
     eachSeries([14, 13, 12, 11, 10], function (item, cb, index) {
       t.task(item)(cb)
     }, function (err, res) {
@@ -17,8 +17,20 @@ describe('#eachSeries', function () {
       done()
     })
   })
+
+  it('with empty items array', function (done) {
+    const items = []
+    eachSeries(items, function (item, cb) {
+      assert.ok(false, 'should not reach here')
+    }, function (err, res) {
+      assert.equal(err, null)
+      assert.deepEqual(res, [])
+      done()
+    })
+  })
+
   it('with errors', function (done) {
-    let t = new Timeout()
+    const t = new Timeout()
     eachSeries([14, 13, 12, 11, 10], function (item, cb, index) {
       let err
       if (index === 1) {
@@ -32,6 +44,7 @@ describe('#eachSeries', function () {
       done()
     })
   })
+
   it('can process a very huge array', function (done) {
     var size = 100000
     var items = new Array(size).fill(1)

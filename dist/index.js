@@ -1,7 +1,7 @@
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
 	typeof define === 'function' && define.amd ? define(['exports'], factory) :
-	(factory((global.asyncc = global.asyncc || {})));
+	(factory((global.asyncc = {})));
 }(this, (function (exports) { 'use strict';
 
 /**
@@ -150,6 +150,8 @@ function connect () {
   return function (arg, callback) {
     var i = 0;
 
+    run(null, arg);
+
     function run (err, res) {
       var fn = tasks[i++];
       try {
@@ -173,8 +175,6 @@ function connect () {
         callback && callback(err, res);
       }
     }
-
-    run(null, arg);
   }
 }
 
@@ -269,6 +269,23 @@ function parallel (limit, length, run, opts, callback) {
   var l = length;
   var done = 0;
 
+  if (l === 0) {
+    final();
+    return
+  }
+
+  if (opts.timeout) {
+    setTimeout(function () {
+      /* istanbul ignore else */
+      if (l) { final('err_timeout'); }
+    }, opts.timeout);
+  }
+  limit = limit < length ? limit : length;
+
+  while (i < limit) {
+    run(i++, cb);
+  }
+
   function final (errMsg) {
     if (done++) { return }
     var err = null;
@@ -294,17 +311,6 @@ function parallel (limit, length, run, opts, callback) {
     } else if (callback && !l) {
       final();
     }
-  }
-
-  if (opts.timeout) {
-    setTimeout(function () {
-      /* istanbul ignore else */
-      if (l) { final('err_timeout'); }
-    }, opts.timeout);
-  }
-  limit = limit < length ? limit : length;
-  while (i < limit) {
-    run(i++, cb);
   }
 }
 
@@ -411,6 +417,13 @@ function eachSeries (items, task, callback) {
   var results = [];
   var i = 0;
 
+  if (length === 0) {
+    callback(null, []);
+    return
+  }
+
+  run();
+
   function cb (err, res) {
     results.push(res);
     /* istanbul ignore else  */
@@ -426,8 +439,6 @@ function eachSeries (items, task, callback) {
   function run () {
     task(items[i], cb, i++);
   }
-
-  run();
 }
 
 /**
@@ -539,13 +550,13 @@ NoPromise.prototype = {
         this$1._run();
       };
       var fn = task.fn;
-      if (task.type === 'end') {      // .end
+      if (task.type === 'end') { // .end
         fn(this.error, this.result);
       } else {
         try {
-          if (task.type === 'catch') {      // .catch
+          if (task.type === 'catch') { // .catch
             fn(this.error, this.result, cb);
-          } else {                    // .then
+          } else { // .then
             fn(this.result, cb);
           }
         } catch (e) {
@@ -1042,6 +1053,8 @@ function retry (num, task, callback) {
   var lag = ref.lag;
   var fn = ref.fn;
 
+  run();
+
   function cb (err, res) {
     if (!err || i >= times) {
       callback && callback(err, res);
@@ -1055,8 +1068,6 @@ function retry (num, task, callback) {
   function run () {
     task(cb, i++);
   }
-
-  run();
 }
 
 /**
@@ -1088,6 +1099,17 @@ function series (tasks, callback) {
   var results = [];
   var i = 0;
 
+  if (length === 0) {
+    callback(null, []);
+    return
+  }
+
+  run();
+
+  function run () {
+    tasks[i++](cb);
+  }
+
   function cb (err, res) {
     results.push(res);
     /* istanbul ignore else */
@@ -1099,12 +1121,6 @@ function series (tasks, callback) {
       });
     }
   }
-
-  function run () {
-    tasks[i++](cb);
-  }
-
-  run();
 }
 
 /**
@@ -1143,6 +1159,12 @@ function times (num, task, callback) {
   var lag = ref.lag;
   var fn = ref.fn;
 
+  if (times) {
+    run();
+  } else {
+    callback && callback();
+  }
+
   function cb (err, res) {
     if (err || (times > 0 && i >= times)) {
       callback && callback(err, res);
@@ -1155,12 +1177,6 @@ function times (num, task, callback) {
 
   function run () {
     task(cb, i++);
-  }
-
-  if (times) {
-    run();
-  } else {
-    callback && callback();
   }
 }
 

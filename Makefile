@@ -35,6 +35,7 @@ dist/index.js: src
 	npm run lint \
 	&& npm run build \
 	&& npm run mocha \
+	&& npm run karma \
 	&& npm version
 
 dist/index.min.js: dist/index.js

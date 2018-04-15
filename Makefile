@@ -1,6 +1,6 @@
 all: clean build
 
-test: v0.8 v0.12 v4. v6. v8.
+test: v4. v6. v8. v9.
 
 v%:
 	n $@
@@ -29,7 +29,7 @@ push: gitChanges
 docs: src scripts
 	npm run doc
 
-dist: src dist/index.min.js dist/index.js
+dist: src dist/index.js
 
 dist/index.js: src
 	npm run lint \
@@ -37,9 +37,6 @@ dist/index.js: src
 	&& npm run mocha \
 	&& npm run karma \
 	&& npm version
-
-dist/index.min.js: dist/index.js
-	`npm bin`/uglifyjs $< -c -m -o $@
 
 build: lib dist
 

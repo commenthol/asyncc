@@ -1,6 +1,6 @@
-coverage/*
+coverage/
 dist/
 docs*/
 scripts/jsdoc/*
-tmp/*
-lib/*
+tmp/
+lib/

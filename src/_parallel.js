@@ -36,7 +36,7 @@ export default function parallel (limit, length, run, opts = {}, callback) {
     if (errpos.length || errMsg) {
       err = new AsynccError(errMsg || 'err', errors, errpos)
     }
-    callback(err, results)
+    callback && callback(err, results)
   }
 
   function cb (j, err, res) {
@@ -52,7 +52,7 @@ export default function parallel (limit, length, run, opts = {}, callback) {
     l--
     if (i < length) {
       run(i++, cb)
-    } else if (callback && !l) {
+    } else if (!l) {
       final()
     }
   }

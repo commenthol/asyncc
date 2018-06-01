@@ -2,6 +2,7 @@ node_modules/
 coverage/
 scripts/
 test/
+doc/
 docs/
 docs_v1/
 tmp/
@@ -11,3 +12,4 @@ tmp/
 Makefile
 karma.conf.js
 yarn.lock
+package-lock.json

@@ -32,6 +32,14 @@ describe('#eachLimit', function () {
     })
   })
 
+  it('with empty items array and no callback', function (done) {
+    const items = []
+    eachLimit(10, items)
+    setTimeout(() => {
+      done()
+    }, 10)
+  })
+
   it('with undefined options', function (done) {
     const t = new Timeout()
     eachLimit(2, items, function (item, cb) {

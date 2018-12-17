@@ -3,8 +3,8 @@
 import fs from 'fs'
 import path from 'path'
 import assert from 'assert'
-import {Timeout} from './src/helper'
-import {compose, eachLimit} from '..'
+import { Timeout } from './src/helper'
+import { compose, eachLimit } from '..'
 
 describe('#eachLimit', function () {
   const items = [40, 31, 22, 3, 14]
@@ -14,9 +14,9 @@ describe('#eachLimit', function () {
     eachLimit(2, items, function (item, cb) {
       t.task(item)(cb)
     }, function (err, res) {
-      // assert.deepEqual(t.order, [31, 40, 3, 22, 14]) // correct order of processing is not guaranteed
-      assert.equal(err, null)
-      assert.deepEqual(res, items)
+      // assert.deepStrictEqual(t.order, [31, 40, 3, 22, 14]) // correct order of processing is not guaranteed
+      assert.strictEqual(err, null)
+      assert.deepStrictEqual(res, items)
       done()
     })
   })
@@ -26,8 +26,8 @@ describe('#eachLimit', function () {
     eachLimit(10, items, function (item, cb) {
       assert.ok(false, 'should not reach here')
     }, function (err, res) {
-      assert.equal(err, null)
-      assert.deepEqual(res, [])
+      assert.strictEqual(err, null)
+      assert.deepStrictEqual(res, [])
       done()
     })
   })
@@ -45,9 +45,9 @@ describe('#eachLimit', function () {
     eachLimit(2, items, function (item, cb) {
       t.task(item)(cb)
     }, undefined, function (err, res) {
-      // assert.deepEqual(t.order, [31, 40, 3, 22, 14]) // correct order of processing is not guaranteed
-      assert.equal(err, null)
-      assert.deepEqual(res, items)
+      // assert.deepStrictEqual(t.order, [31, 40, 3, 22, 14]) // correct order of processing is not guaranteed
+      assert.strictEqual(err, null)
+      assert.deepStrictEqual(res, items)
       done()
     })
   })
@@ -63,11 +63,11 @@ describe('#eachLimit', function () {
       }
       t.task(item, err)(cb)
     }, function (err, res, errpos) {
-      // assert.deepEqual(t.order, [31, 40, 3, 22, 14]) // correct order of processing is not guaranteed
-      assert.equal(err.message, 'err')
-      assert.deepEqual(err.errors, [undefined, 'error1', undefined, 'error2', undefined])
-      assert.deepEqual(err.errpos, [1, 3])
-      assert.deepEqual(res, items)
+      // assert.deepStrictEqual(t.order, [31, 40, 3, 22, 14]) // correct order of processing is not guaranteed
+      assert.strictEqual(err.message, 'err')
+      assert.deepStrictEqual(err.errors, [undefined, 'error1', undefined, 'error2', undefined])
+      assert.deepStrictEqual(err.errpos, [1, 3])
+      assert.deepStrictEqual(res, items)
       done()
     })
   })
@@ -85,11 +85,11 @@ describe('#eachLimit', function () {
     }, {
       bail: true
     }, function (err, res) {
-      // assert.deepEqual(t.order, [31, 40, 3, 22, 14]) // correct order of processing is not guaranteed
-      assert.equal(err.message, 'err_bail')
-      assert.deepEqual(err.errors, [undefined, 'error1', undefined, undefined, undefined])
-      assert.deepEqual(err.errpos, [1])
-      assert.deepEqual(res, [undefined, 31, undefined, undefined, undefined])
+      // assert.deepStrictEqual(t.order, [31, 40, 3, 22, 14]) // correct order of processing is not guaranteed
+      assert.strictEqual(err.message, 'err_bail')
+      assert.deepStrictEqual(err.errors, [undefined, 'error1', undefined, undefined, undefined])
+      assert.deepStrictEqual(err.errpos, [1])
+      assert.deepStrictEqual(res, [undefined, 31, undefined, undefined, undefined])
       done()
     })
   })
@@ -100,8 +100,8 @@ describe('#eachLimit', function () {
     }, {
       timeout: 10
     }, function (err, res) {
-      assert.equal(err.message, 'err_timeout')
-      assert.deepEqual(res, [ 40, 31, undefined, undefined, undefined ])
+      assert.strictEqual(err.message, 'err_timeout')
+      assert.deepStrictEqual(res, [ 40, 31, undefined, undefined, undefined ])
       done()
     })
   })
@@ -123,7 +123,7 @@ describe('#eachLimit', function () {
       }
     )(__dirname, function (err, res) {
       // console.log(res)
-      assert.equal(err, null)
+      assert.strictEqual(err, null)
       assert.ok(res.length > 1)
       done()
     })

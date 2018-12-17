@@ -1,4 +1,4 @@
-import {_setImmediate} from './_setImmediate'
+import { _setImmediate } from './_setImmediate'
 
 /**
 * @private
@@ -14,5 +14,5 @@ export function _times (num, opts) {
   }
   times = times || opts.times || 0
   if (lag) fn = setTimeout
-  return {times, lag, fn}
+  return { times, lag, fn }
 }

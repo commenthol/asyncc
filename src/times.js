@@ -1,4 +1,4 @@
-import {_times} from './_utils'
+import { _times } from './_utils'
 
 /**
 * Run `task` repeatedly until number `times` is reached.
@@ -31,7 +31,7 @@ import {_times} from './_utils'
 */
 export default function times (num, task, callback) {
   let i = 0
-  let {times, lag, fn} = _times(num)
+  let { times, lag, fn } = _times(num)
 
   if (times) {
     run()

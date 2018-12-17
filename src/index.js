@@ -7,7 +7,7 @@
 * @module parallel
 */
 
-import {_setImmediate} from './_setImmediate'
+import { _setImmediate } from './_setImmediate'
 
 import AsynccError from './AsynccError'
 import compose from './compose'
@@ -17,10 +17,10 @@ import doWhilst from './doWhilst'
 import each from './each'
 import eachLimit from './eachLimit'
 import eachSeries from './eachSeries'
-import {default as NoPromise, noPromise} from './NoPromise'
+import NoPromise, { noPromise } from './NoPromise'
 import parallel from './parallel'
 import parallelLimit from './parallelLimit'
-import {default as Queue, queue} from './Queue'
+import Queue, { queue } from './Queue'
 import retry from './retry'
 import series from './series'
 import times from './times'

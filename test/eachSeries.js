@@ -1,8 +1,8 @@
 /* global describe, it */
 
 import assert from 'assert'
-import {Timeout} from './src/helper'
-import {eachSeries} from '..'
+import { Timeout } from './src/helper'
+import { eachSeries } from '..'
 require('core-js/es6/array.js')
 
 describe('#eachSeries', function () {
@@ -11,9 +11,9 @@ describe('#eachSeries', function () {
     eachSeries([14, 13, 12, 11, 10], function (item, cb, index) {
       t.task(item)(cb)
     }, function (err, res) {
-      assert.deepEqual(t.order, [14, 13, 12, 11, 10])
-      assert.equal(err, null)
-      assert.deepEqual(res, [14, 13, 12, 11, 10])
+      assert.deepStrictEqual(t.order, [14, 13, 12, 11, 10])
+      assert.strictEqual(err, undefined)
+      assert.deepStrictEqual(res, [14, 13, 12, 11, 10])
       done()
     })
   })
@@ -23,8 +23,8 @@ describe('#eachSeries', function () {
     eachSeries(items, function (item, cb) {
       assert.ok(false, 'should not reach here')
     }, function (err, res) {
-      assert.equal(err, null)
-      assert.deepEqual(res, [])
+      assert.strictEqual(err, null)
+      assert.deepStrictEqual(res, [])
       done()
     })
   })
@@ -38,9 +38,9 @@ describe('#eachSeries', function () {
       }
       t.task(item, err)(cb)
     }, function (err, res) {
-      assert.deepEqual(t.order, [14, 13])
-      assert.deepEqual(err, 'error1')
-      assert.deepEqual(res, [14, 13])
+      assert.deepStrictEqual(t.order, [14, 13])
+      assert.deepStrictEqual(err, 'error1')
+      assert.deepStrictEqual(res, [14, 13])
       done()
     })
   })

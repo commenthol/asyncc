@@ -1,4 +1,4 @@
-import {_times} from './_utils'
+import { _times } from './_utils'
 
 /**
 * Run `task` max. `times` times. Stops at first iteration where no error is returned.
@@ -30,7 +30,7 @@ import {_times} from './_utils'
 */
 export default function retry (num, task, callback) {
   let i = 0
-  let {times, lag, fn} = _times(num, {times: 2})
+  let { times, lag, fn } = _times(num, { times: 2 })
 
   run()
 

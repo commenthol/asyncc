@@ -1,4 +1,4 @@
-import {_setImmediate} from './_setImmediate'
+import { _setImmediate } from './_setImmediate'
 
 /**
 * Run `task` one or more times until `test` returns `true`.

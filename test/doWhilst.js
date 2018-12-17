@@ -1,7 +1,7 @@
 /* global describe, it */
 
 import assert from 'assert'
-import {doWhilst} from '..'
+import { doWhilst } from '..'
 
 describe('#doWhilst', function () {
   it('should run 3 times', function (done) {
@@ -14,7 +14,7 @@ describe('#doWhilst', function () {
       },
       (n) => (n < 3),
       () => {
-        assert.deepEqual(arr, [3, 4, 5])
+        assert.deepStrictEqual(arr, [3, 4, 5])
         done()
       }
     )
@@ -31,7 +31,7 @@ describe('#doWhilst', function () {
       () => true,
       (err, res) => {
         assert.ok(err)
-        assert.equal(res, 100)
+        assert.strictEqual(res, 100)
         done()
       }
     )

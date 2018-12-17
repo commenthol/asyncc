@@ -1,4 +1,4 @@
-import {_setImmediate} from './_setImmediate'
+import { _setImmediate } from './_setImmediate'
 import PrioArray from './PrioArray'
 
 /**
@@ -62,7 +62,7 @@ Queue.prototype = {
   * @private
   */
   _run () {
-    let {_items, _drain} = this
+    let { _items, _drain } = this
     this._worker -= 1
     if (_items.length === 0) {
       if (this._worker <= 0) {

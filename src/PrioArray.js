@@ -30,19 +30,19 @@ PrioArray.prototype = {
     let items = this.items
     if (typeof prio !== 'number') {
       prio = Infinity
-      items.push({prio, item})
+      items.push({ prio, item })
     } else {
       let found
       prio = Math.abs(prio)
       for (let i = 0; i < items.length; i++) {
         if (prio < items[i].prio) {
-          items.splice(i, 0, {prio, item})
+          items.splice(i, 0, { prio, item })
           found = true
           break
         }
       }
       if (!found) {
-        items.push({prio, item})
+        items.push({ prio, item })
       }
     }
     return this
@@ -53,7 +53,7 @@ PrioArray.prototype = {
   * @param {Any} item
   */
   unshift (item) {
-    this.items.unshift({prio: 0, item})
+    this.items.unshift({ prio: 0, item })
     return this
   },
 

@@ -1,4 +1,4 @@
-import {_setImmediate} from './_setImmediate'
+import { _setImmediate } from './_setImmediate'
 
 /**
 * Run `tasks` callback functions in series

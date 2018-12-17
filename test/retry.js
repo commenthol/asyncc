@@ -1,7 +1,7 @@
 /* global describe, it */
 
 import assert from 'assert'
-import {retry} from '..'
+import { retry } from '..'
 
 describe('#retry', function () {
   it('should retry min. 2 times - passing num=0', function (done) {
@@ -12,8 +12,8 @@ describe('#retry', function () {
         cb(new Error(), index)
       }, (err, res) => {
         assert.ok(err)
-        assert.equal(res, 1)
-        assert.deepEqual(arr, [0, 1])
+        assert.strictEqual(res, 1)
+        assert.deepStrictEqual(arr, [0, 1])
         done()
       }
     )
@@ -21,14 +21,14 @@ describe('#retry', function () {
 
   it('should retry min. 2 times - passing times=0', function (done) {
     const arr = []
-    retry({times: 0},
+    retry({ times: 0 },
       (cb, index) => {
         arr.push(index)
         cb(new Error(), index)
       }, (err, res) => {
         assert.ok(err)
-        assert.equal(res, 1)
-        assert.deepEqual(arr, [0, 1])
+        assert.strictEqual(res, 1)
+        assert.deepStrictEqual(arr, [0, 1])
         done()
       }
     )
@@ -42,8 +42,8 @@ describe('#retry', function () {
         cb(new Error(), index)
       }, (err, res) => {
         assert.ok(err)
-        assert.equal(res, 3)
-        assert.deepEqual(arr, [0, 1, 2, 3])
+        assert.strictEqual(res, 3)
+        assert.deepStrictEqual(arr, [0, 1, 2, 3])
         done()
       }
     )
@@ -58,8 +58,8 @@ describe('#retry', function () {
         cb(err, index)
       }, (err, res) => { // callback
         assert.ok(!err)
-        assert.equal(res, 2)
-        assert.deepEqual(arr, [0, 1, 2])
+        assert.strictEqual(res, 2)
+        assert.deepStrictEqual(arr, [0, 1, 2])
         done()
       }
     )
@@ -73,8 +73,8 @@ describe('#retry', function () {
         cb(new Error(), index)
       }, (err, res) => {
         assert.ok(err)
-        assert.equal(res, 0)
-        assert.deepEqual(arr, [0])
+        assert.strictEqual(res, 0)
+        assert.deepStrictEqual(arr, [0])
         done()
       }
     )
@@ -83,16 +83,16 @@ describe('#retry', function () {
   it('should run with lag', function (done) {
     const arr = []
     const start = Date.now()
-    retry({times: 4, lag: 10},
+    retry({ times: 4, lag: 10 },
       (cb, index) => {
         arr.push(index)
         cb(new Error(), index)
       }, (err, res) => {
         let end = Date.now() - start
         assert.ok(err)
-        assert.equal(res, 3)
+        assert.strictEqual(res, 3)
         assert.ok(end >= 3 * 10, 'it took ' + end)
-        assert.deepEqual(arr, [0, 1, 2, 3])
+        assert.deepStrictEqual(arr, [0, 1, 2, 3])
         done()
       }
     )

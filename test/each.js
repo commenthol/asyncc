@@ -1,8 +1,8 @@
 /* global describe, it */
 
 import assert from 'assert'
-import {Timeout} from './src/helper'
-import {each} from '..'
+import { Timeout } from './src/helper'
+import { each } from '..'
 
 describe('#each', function () {
   let items = [40, 31, 22, 13, 4]
@@ -11,9 +11,9 @@ describe('#each', function () {
     each(items, function (item, cb) {
       t.task(item)(cb)
     }, function (err, res) {
-      assert.deepEqual(t.order, [4, 13, 22, 31, 40])
-      assert.equal(err, null)
-      assert.deepEqual(res, items)
+      assert.deepStrictEqual(t.order, [4, 13, 22, 31, 40])
+      assert.strictEqual(err, null)
+      assert.deepStrictEqual(res, items)
       done()
     })
   })
@@ -23,8 +23,8 @@ describe('#each', function () {
     each(items, function (item, cb) {
       assert.ok(false, 'should not reach here')
     }, function (err, res) {
-      assert.equal(err, null)
-      assert.deepEqual(res, [])
+      assert.strictEqual(err, null)
+      assert.deepStrictEqual(res, [])
       done()
     })
   })
@@ -40,10 +40,10 @@ describe('#each', function () {
       }
       t.task(item, err)(cb)
     }, function (err, res, errpos) {
-      assert.deepEqual(t.order, [4, 13, 22, 31, 40])
-      assert.deepEqual(err.errors, [undefined, 'error1', undefined, 'error2', undefined])
-      assert.deepEqual(err.errpos, [3, 1])
-      assert.deepEqual(res, items)
+      assert.deepStrictEqual(t.order, [4, 13, 22, 31, 40])
+      assert.deepStrictEqual(err.errors, [undefined, 'error1', undefined, 'error2', undefined])
+      assert.deepStrictEqual(err.errpos, [3, 1])
+      assert.deepStrictEqual(res, items)
       done()
     })
   })

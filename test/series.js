@@ -1,8 +1,8 @@
 /* global describe, it */
 
 import assert from 'assert'
-import {Timeout} from './src/helper'
-import {series} from '..'
+import { Timeout } from './src/helper'
+import { series } from '..'
 require('core-js/es6/array.js')
 
 describe('#series', function () {
@@ -15,9 +15,9 @@ describe('#series', function () {
       t.task(11),
       t.task(10)
     ], function (err, res) {
-      assert.deepEqual(t.order, [14, 13, 12, 11, 10])
-      assert.equal(err, null)
-      assert.deepEqual(res, [14, 13, 12, 11, 10])
+      assert.deepStrictEqual(t.order, [14, 13, 12, 11, 10])
+      assert.strictEqual(err, undefined)
+      assert.deepStrictEqual(res, [14, 13, 12, 11, 10])
       done()
     })
   })
@@ -25,8 +25,8 @@ describe('#series', function () {
   it('without tasks', function (done) {
     series([
     ], function (err, res) {
-      assert.equal(err, null)
-      assert.deepEqual(res, [])
+      assert.strictEqual(err, null)
+      assert.deepStrictEqual(res, [])
       done()
     })
   })
@@ -40,9 +40,9 @@ describe('#series', function () {
       t.task(11, 'error2'),
       t.task(10)
     ], function (err, res) {
-      assert.deepEqual(t.order, [14, 13])
-      assert.deepEqual(err, 'error1')
-      assert.deepEqual(res, [14, 13])
+      assert.deepStrictEqual(t.order, [14, 13])
+      assert.deepStrictEqual(err, 'error1')
+      assert.deepStrictEqual(res, [14, 13])
       done()
     })
   })

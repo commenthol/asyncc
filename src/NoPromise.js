@@ -128,7 +128,7 @@ NoPromise.prototype = {
    * Never forget to call `cb(err: <Error>, res: any)` inside `fn`
    */
   then: function (task) {
-    this._tasks.push({type: 'then', fn: task})
+    this._tasks.push({ type: 'then', fn: task })
     this._run()
     return this
   },
@@ -138,7 +138,7 @@ NoPromise.prototype = {
    * Never forget to call `cb(err: <Error>, res: any)` inside `fn`
    */
   catch: function (trap) {
-    this._tasks.push({type: 'catch', fn: trap})
+    this._tasks.push({ type: 'catch', fn: trap })
     this._run()
     return this
   },
@@ -147,7 +147,7 @@ NoPromise.prototype = {
    * @param {Function} callback - `function (err: <Error>, res: any)`
    */
   end: function (callback) {
-    this._tasks.push({type: 'end', fn: callback})
+    this._tasks.push({ type: 'end', fn: callback })
     this._run()
   }
 }

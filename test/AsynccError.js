@@ -1,7 +1,7 @@
 /* global describe, it */
 
 import assert from 'assert'
-import {AsynccError} from '..'
+import { AsynccError } from '..'
 
 describe('#AsynccError', function () {
   it('should create instance', function () {
@@ -11,9 +11,9 @@ describe('#AsynccError', function () {
     const err = new AsynccError(msg, errors, errpos)
     assert.ok(err)
     assert.ok(err.stack)
-    assert.equal(err.message, msg)
-    assert.deepEqual(err.errors, errors)
-    assert.deepEqual(err.errpos, errpos)
+    assert.strictEqual(err.message, msg)
+    assert.deepStrictEqual(err.errors, errors)
+    assert.deepStrictEqual(err.errpos, errpos)
     assert.ok(!err.results)
   })
 })

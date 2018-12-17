@@ -1,8 +1,8 @@
 /* global describe, it */
 
 import assert from 'assert'
-import {Step} from './src/helper'
-import {compose} from '..'
+import { Step } from './src/helper'
+import { compose } from '..'
 
 describe('#compose', function () {
   const s = new Step()
@@ -15,9 +15,9 @@ describe('#compose', function () {
       s.step
     )
     c(arg, function (err, res) {
-      assert.equal(err, null)
+      assert.strictEqual(err, null)
       assert.ok(arg === res) // are the same object
-      assert.deepEqual(res, {value: 3})
+      assert.deepStrictEqual(res, { value: 3 })
       done()
     })
   })
@@ -26,9 +26,9 @@ describe('#compose', function () {
     const arg = {}
     const c = compose()
     c(arg, function (err, res) {
-      assert.equal(err, null)
+      assert.strictEqual(err, null)
       assert.ok(arg === res) // are the same object
-      assert.deepEqual(res, {})
+      assert.deepStrictEqual(res, {})
       done()
     })
   })
@@ -39,9 +39,9 @@ describe('#compose', function () {
       s.step,
       s.error('error'),
       s.neverReach
-    ])([], function (err, res) {
-      assert.deepEqual(err, 'error')
-      assert.deepEqual(res, {value: 12})
+    ])({}, function (err, res) {
+      assert.deepStrictEqual(err, 'error')
+      assert.deepStrictEqual(res, { value: 12 })
       done()
     })
   })

@@ -2,8 +2,8 @@
 /* eslint standard/no-callback-literal:0 */
 
 import assert from 'assert'
-import {Timeout} from './src/helper'
-import {times, _setImmediate} from '..'
+import { Timeout } from './src/helper'
+import { times, _setImmediate } from '..'
 
 describe('#times', function () {
   it('should run 4 times', function (done) {
@@ -19,8 +19,8 @@ describe('#times', function () {
         //> res = 3
         //> arr = [0, 1, 2, 3]
         assert.ok(!err)
-        assert.equal(res, 3)
-        assert.deepEqual(arr, [0, 1, 2, 3])
+        assert.strictEqual(res, 3)
+        assert.deepStrictEqual(arr, [0, 1, 2, 3])
         done()
       }
     )
@@ -35,9 +35,9 @@ describe('#times', function () {
       }
       t.task(index, err)(cb)
     }, function (err, res) {
-      assert.deepEqual(err, 'error')
-      assert.deepEqual(res, 2)
-      assert.deepEqual(t.order, [0, 1, 2])
+      assert.deepStrictEqual(err, 'error')
+      assert.deepStrictEqual(res, 2)
+      assert.deepStrictEqual(t.order, [0, 1, 2])
       done()
     })
   })
@@ -47,8 +47,8 @@ describe('#times', function () {
       (cb, index) => {
         cb('err')
       }, (err, res) => {
-        assert.equal(err, undefined)
-        assert.equal(res, undefined)
+        assert.strictEqual(err, undefined)
+        assert.strictEqual(res, undefined)
         done()
       }
     )
@@ -63,8 +63,8 @@ describe('#times', function () {
         }
         cb(err, index)
       }, (err, res) => {
-        assert.equal(err, 'error')
-        assert.equal(res, 1000)
+        assert.strictEqual(err, 'error')
+        assert.strictEqual(res, 1000)
         done()
       }
     )
@@ -84,16 +84,16 @@ describe('#times', function () {
   it('should run with lag', function (done) {
     let arr = []
     let start = Date.now()
-    times({times: 4, lag: 10},
+    times({ times: 4, lag: 10 },
       (cb, index) => {
         arr.push(index)
         cb(null, index)
       }, (err, res) => {
         let end = Date.now() - start
         assert.ok(!err, '' + err)
-        assert.equal(res, 3)
+        assert.strictEqual(res, 3)
         assert.ok(end >= 3 * 10, 'it took ' + end)
-        assert.deepEqual(arr, [0, 1, 2, 3])
+        assert.deepStrictEqual(arr, [0, 1, 2, 3])
         done()
       }
     )

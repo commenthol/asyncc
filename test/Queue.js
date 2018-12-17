@@ -1,21 +1,21 @@
 /* global describe, it */
 
 import assert from 'assert'
-import {queue, Queue, _setImmediate} from '..'
+import { queue, Queue, _setImmediate } from '..'
 
 describe('#Queue', function () {
   it('should create an instance', function () {
     const q = new Queue((item, cb) => cb())
-    assert.equal(q.running(), 0)
-    assert.equal(q.length, 0)
-    assert.equal(q.paused, false)
-    assert.equal(q.idle, true)
+    assert.strictEqual(q.running(), 0)
+    assert.strictEqual(q.length, 0)
+    assert.strictEqual(q.paused, false)
+    assert.strictEqual(q.idle, true)
   })
 
   it('should create an paused instance', function () {
     const q = new Queue((item, cb) => cb())
     q.pause()
-    assert.equal(q.paused, true)
+    assert.strictEqual(q.paused, true)
   })
 
   it('should create and process a queue', function (done) {
@@ -36,8 +36,37 @@ describe('#Queue', function () {
     }
 
     q.drain(() => {
-      assert.deepEqual(arr, [20, 15, 10, 5])
-      assert.deepEqual(arrCb, [21, 16, 11, 6])
+      assert.deepStrictEqual(arr, [20, 15, 10, 5])
+      assert.deepStrictEqual(arrCb, [21, 16, 11, 6])
+      done()
+    })
+  })
+
+  it('should create and process a queue with class', function (done) {
+    const arr = []
+
+    class Test {
+      constructor (i) {
+        this.i = i
+      }
+      do () {
+        return this.i
+      }
+    }
+
+    const q = new Queue(function (item, cb) {
+      _setImmediate(() => {
+        arr.push(item.do())
+        cb(null)
+      })
+    })
+
+    for (let i = 20; i > 0; i -= 5) {
+      q.push(new Test(i))
+    }
+
+    q.drain(() => {
+      assert.deepStrictEqual(arr, [20, 15, 10, 5])
       done()
     })
   })
@@ -57,7 +86,7 @@ describe('#Queue', function () {
     }
 
     q.drain(() => {
-      assert.deepEqual(arr, [[0, 3], [1, 3], [2, 3], [3, 3], [4, 3], [5, 3], [6, 3], [7, 3], [8, 3], [9, 1]])
+      assert.deepStrictEqual(arr, [[0, 3], [1, 3], [2, 3], [3, 3], [4, 3], [5, 3], [6, 3], [7, 3], [8, 3], [9, 1]])
       done()
     })
   })
@@ -81,7 +110,7 @@ describe('#Queue', function () {
     }
 
     q.drain(() => {
-      assert.deepEqual(arr, [10, 8, 6, 5, 1, 2, 3, 4, 7, 9])
+      assert.deepStrictEqual(arr, [10, 8, 6, 5, 1, 2, 3, 4, 7, 9])
       done()
     })
   })
@@ -97,10 +126,10 @@ describe('#Queue', function () {
     q.concat([100, 101, 102], 3)
     q.concat([0, 1, 2], 1)
     q.concat([10, 11, 12], 2)
-    assert.equal(q.idle, false)
+    assert.strictEqual(q.idle, false)
 
     q.drain(() => {
-      assert.deepEqual(arr, [ 100, 101, 0, 1, 2, 10, 11, 12, 102 ])
+      assert.deepStrictEqual(arr, [ 100, 101, 0, 1, 2, 10, 11, 12, 102 ])
       done()
     })
   })
@@ -119,7 +148,7 @@ describe('#Queue', function () {
     q.concat([10, 11, 12], 2)
 
     q.drain(() => {
-      assert.deepEqual(arr, [ 0, 1, 2, 10, 11, 12, 100, 101, 102 ])
+      assert.deepStrictEqual(arr, [ 0, 1, 2, 10, 11, 12, 100, 101, 102 ])
       done()
     })
 
@@ -140,7 +169,7 @@ describe('#Queue', function () {
     q.reset()
 
     q.drain(() => {
-      assert.deepEqual(arr, [ 100, 101 ])
+      assert.deepStrictEqual(arr, [ 100, 101 ])
       done()
     })
   })

@@ -1,0 +1,23 @@
+{
+  "ignore": [
+    "./lib",
+    "./dist/index.js"
+  ],
+  "env": {
+    "development": {
+      "presets": [
+        "@babel/env"
+      ]
+    },
+    "es5": {
+      "presets": [
+        [
+          "@babel/env",
+          {
+            "modules": false
+          }
+        ]
+      ]
+    }
+  }
+}

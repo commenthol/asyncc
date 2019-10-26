@@ -101,7 +101,7 @@ describe('#eachLimit', function () {
       timeout: 10
     }, function (err, res) {
       assert.strictEqual(err.message, 'err_timeout')
-      assert.deepStrictEqual(res, [ 40, 31, undefined, undefined, undefined ])
+      assert.deepStrictEqual(res, [40, 31, undefined, undefined, undefined])
       done()
     })
   })

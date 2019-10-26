@@ -1,6 +1,6 @@
 all: clean build
 
-test: v4. v6. v8. v9.
+test: v8. v10. v12. v13.
 
 v%:
 	n $@

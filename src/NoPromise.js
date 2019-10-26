@@ -93,18 +93,18 @@ NoPromise.prototype = {
     if (this._lock) return
     this._lock = true
     let task = this._tasks.shift()
-    let tstType = this.error ? ['catch', 'end'] : ['then', 'end']
+    const tstType = this.error ? ['catch', 'end'] : ['then', 'end']
     while (task && !~tstType.indexOf(task.type)) {
       task = this._tasks.shift()
     }
     if (task) {
-      let cb = (err, res) => {
+      const cb = (err, res) => {
         this.error = err
         this.result = res || this.result
         this._lock = false
         this._run()
       }
-      let fn = task.fn
+      const fn = task.fn
       if (task.type === 'end') { // .end
         fn(this.error, this.result)
       } else {

@@ -53,7 +53,7 @@ describe('#retry', function () {
     const arr = []
     retry(3,
       (cb, index) => { // task
-        let err = index < 2 ? new Error() : null
+        const err = index < 2 ? new Error() : null
         arr.push(index)
         cb(err, index)
       }, (err, res) => { // callback
@@ -88,7 +88,7 @@ describe('#retry', function () {
         arr.push(index)
         cb(new Error(), index)
       }, (err, res) => {
-        let end = Date.now() - start
+        const end = Date.now() - start
         assert.ok(err)
         assert.strictEqual(res, 3)
         assert.ok(end >= 3 * 10, 'it took ' + end)

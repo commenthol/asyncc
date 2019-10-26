@@ -5,7 +5,7 @@ import { Timeout } from './src/helper'
 import { each } from '..'
 
 describe('#each', function () {
-  let items = [40, 31, 22, 13, 4]
+  const items = [40, 31, 22, 13, 4]
   it('each', function (done) {
     const t = new Timeout()
     each(items, function (item, cb) {

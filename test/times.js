@@ -82,14 +82,14 @@ describe('#times', function () {
   })
 
   it('should run with lag', function (done) {
-    let arr = []
-    let start = Date.now()
+    const arr = []
+    const start = Date.now()
     times({ times: 4, lag: 10 },
       (cb, index) => {
         arr.push(index)
         cb(null, index)
       }, (err, res) => {
-        let end = Date.now() - start
+        const end = Date.now() - start
         assert.ok(!err, '' + err)
         assert.strictEqual(res, 3)
         assert.ok(end >= 3 * 10, 'it took ' + end)

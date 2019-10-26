@@ -27,7 +27,7 @@ PrioArray.prototype = {
   * @param {Number} [prio=Infinity] - priority `0 ... Infinity` - lower values have higher priority
   */
   push (item, prio) {
-    let items = this.items
+    const items = this.items
     if (typeof prio !== 'number') {
       prio = Infinity
       items.push({ prio, item })

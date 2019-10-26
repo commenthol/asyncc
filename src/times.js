@@ -31,7 +31,7 @@ import { _times } from './_utils'
 */
 export default function times (num, task, callback) {
   let i = 0
-  let { times, lag, fn } = _times(num)
+  const { times, lag, fn } = _times(num)
 
   if (times) {
     run()

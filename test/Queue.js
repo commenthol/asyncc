@@ -49,6 +49,7 @@ describe('#Queue', function () {
       constructor (i) {
         this.i = i
       }
+
       do () {
         return this.i
       }
@@ -129,7 +130,7 @@ describe('#Queue', function () {
     assert.strictEqual(q.idle, false)
 
     q.drain(() => {
-      assert.deepStrictEqual(arr, [ 100, 101, 0, 1, 2, 10, 11, 12, 102 ])
+      assert.deepStrictEqual(arr, [100, 101, 0, 1, 2, 10, 11, 12, 102])
       done()
     })
   })
@@ -148,7 +149,7 @@ describe('#Queue', function () {
     q.concat([10, 11, 12], 2)
 
     q.drain(() => {
-      assert.deepStrictEqual(arr, [ 0, 1, 2, 10, 11, 12, 100, 101, 102 ])
+      assert.deepStrictEqual(arr, [0, 1, 2, 10, 11, 12, 100, 101, 102])
       done()
     })
 
@@ -169,7 +170,7 @@ describe('#Queue', function () {
     q.reset()
 
     q.drain(() => {
-      assert.deepStrictEqual(arr, [ 100, 101 ])
+      assert.deepStrictEqual(arr, [100, 101])
       done()
     })
   })

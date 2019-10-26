@@ -11,6 +11,7 @@ export class Timeout {
     this.taskArg = this.taskArg.bind(this)
     this.trapError = this.trapError.bind(this)
   }
+
   /**
    * execute task in `time` ms and collect the order of processing this task
    * @param {number} time - in ms
@@ -27,6 +28,7 @@ export class Timeout {
       }, time)
     }
   }
+
   /**
    * @param {number} time - in ms
    * @param {Error} [err] - pass optional error
@@ -42,6 +44,7 @@ export class Timeout {
       }, time)
     }
   }
+
   /**
    * trap error with function of arity 3
    * @return {Function} `function(err: <Error>, res: any, cb: function)`
@@ -73,10 +76,12 @@ export class Step {
     this.step = this.step.bind(this)
     this.trap = this.trap.bind(this)
   }
+
   /** run a step */
   step (res, cb) {
     this.next(res, cb)
   }
+
   /** shortcut */
   next (res, cb) {
     res = this._init(res)
@@ -85,6 +90,7 @@ export class Step {
       cb(null, res)
     })
   }
+
   /** pass on error `err: String` */
   error (err) {
     return function (res, cb) {
@@ -94,22 +100,26 @@ export class Step {
       })
     }
   }
+
   /** throw an error `err: String` */
   throw (err) {
     return function (res, cb) {
       throw new Error(err)
     }
   }
+
   /** trap an error `err` */
   trap (err, res, cb) {
     if (!res.trap) res.trap = []
     res.trap.push(err)
     this.next(res, cb)
   }
+
   /** assertion test that code never reaches this task */
   neverReach (res, cb) {
     assert.ok(true, 'Should never reach here')
   }
+
   /** initialization */
   _init (res) {
     if (!res) res = {}

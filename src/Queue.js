@@ -62,7 +62,7 @@ Queue.prototype = {
   * @private
   */
   _run () {
-    let { _items, _drain } = this
+    const { _items, _drain } = this
     this._worker -= 1
     if (_items.length === 0) {
       if (this._worker <= 0) {
@@ -71,7 +71,7 @@ Queue.prototype = {
       }
     } else {
       this._worker += 1
-      let [item, cb] = _items.shift()
+      const [item, cb] = _items.shift()
       this._task(item, (err, res) => {
         cb && cb(err, res)
         _setImmediate(() => { // prevent RangeError: Maximum call stack size exceeded for sync tasks

@@ -34,7 +34,7 @@ export default function compose (...tasks) {
     let i = 0
 
     function run (err, res) {
-      let fn = tasks[i++]
+      const fn = tasks[i++]
       if (err || !fn) {
         callback && callback(err, res)
       } else {

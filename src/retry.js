@@ -30,7 +30,7 @@ import { _times } from './_utils'
 */
 export default function retry (num, task, callback) {
   let i = 0
-  let { times, lag, fn } = _times(num, { times: 2 })
+  const { times, lag, fn } = _times(num, { times: 2 })
 
   run()
 

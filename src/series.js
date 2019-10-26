@@ -25,8 +25,8 @@ import { _setImmediate } from './_setImmediate'
 * })
 */
 export default function series (tasks, callback) {
-  let length = tasks.length
-  let results = []
+  const length = tasks.length
+  const results = []
   let i = 0
 
   if (length === 0) {

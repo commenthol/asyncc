@@ -3,7 +3,7 @@
 import assert from 'assert'
 import { Timeout } from './src/helper'
 import { series } from '..'
-require('core-js/es6/array.js')
+require('core-js/modules/es.array.fill.js')
 
 describe('#series', function () {
   it('series', function (done) {

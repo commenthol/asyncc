@@ -1,7 +1,6 @@
 // import babel from 'rollup-plugin-babel'
 // buble has a smaller footprint than babel
 import buble from 'rollup-plugin-buble'
-// import { uglify } from 'rollup-plugin-uglify'
 import { terser } from 'rollup-plugin-terser'
 
 process.env.BABEL_ENV = 'es5'

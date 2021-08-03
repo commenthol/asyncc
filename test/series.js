@@ -48,8 +48,8 @@ describe('#series', function () {
   })
 
   it('can process a very huge array', function (done) {
-    var size = 100000
-    var tasks = new Array(size).fill((cb) => cb())
+    const size = 100000
+    const tasks = new Array(size).fill((cb) => cb())
     series(tasks, function (err, res) {
       assert.ok(!err, '' + err)
       assert.ok(res.length === size)

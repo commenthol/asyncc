@@ -1,5 +1,5 @@
 /* global describe, it */
-/* eslint standard/no-callback-literal:0 */
+/* eslint node/no-callback-literal:0 */
 
 import assert from 'assert'
 import { Timeout } from './src/helper'
@@ -7,7 +7,7 @@ import { times, _setImmediate } from '..'
 
 describe('#times', function () {
   it('should run 4 times', function (done) {
-    var arr = []
+    const arr = []
     times(4,
       (cb, index) => {
         _setImmediate(() => {
@@ -57,7 +57,7 @@ describe('#times', function () {
   it('should run endlessly', function (done) {
     times(-1,
       (cb, index) => {
-        var err
+        let err
         if (index >= 1000) { // we stop the test after 1000 cycles
           err = 'error'
         }
@@ -71,7 +71,7 @@ describe('#times', function () {
   })
 
   it('should process large number of cycles', function (done) {
-    var size = 10000
+    const size = 10000
     times(size, function (cb, index) {
       cb(null, index)
     }, function (err, res) {

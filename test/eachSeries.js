@@ -46,8 +46,8 @@ describe('#eachSeries', function () {
   })
 
   it('can process a very huge array', function (done) {
-    var size = 100000
-    var items = new Array(size).fill(1)
+    const size = 100000
+    const items = new Array(size).fill(1)
     eachSeries(items, function (item, cb, index) {
       cb(null, item)
     }, function (err, res) {

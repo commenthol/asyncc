@@ -1,7 +1,5 @@
 // import babel from 'rollup-plugin-babel'
-// buble has a smaller footprint than babel
-import buble from 'rollup-plugin-buble'
-import { terser } from 'rollup-plugin-terser'
+import terser from '@rollup/plugin-terser'
 
 process.env.BABEL_ENV = 'es5'
 
@@ -17,7 +15,6 @@ export default [
       exports: 'named'
     }],
     plugins: [
-      buble()
     ]
   },
   {
@@ -28,7 +25,6 @@ export default [
       exports: 'named'
     }],
     plugins: [
-      buble(),
       terser()
     ]
   },
@@ -39,7 +35,6 @@ export default [
       format: 'es'
     }],
     plugins: [
-      buble(),
       terser()
     ]
   }

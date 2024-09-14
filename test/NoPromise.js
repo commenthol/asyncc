@@ -1,5 +1,5 @@
 /* global describe, it */
-/* eslint node/no-callback-literal:0 */
+/* eslint n/no-callback-literal:0 */
 
 import assert from 'assert'
 import { Step, asyn } from './src/helper'
@@ -27,9 +27,7 @@ describe('#NoPromise', function () {
   it('can run a number of tasks deferred', function (done) {
     const p = noPromise({})
 
-    p.then(s.step)
-      .then(s.step)
-      .catch(s.trap)
+    p.then(s.step).then(s.step).catch(s.trap)
 
     setTimeout(() => {
       p.then(s.step)
@@ -45,9 +43,7 @@ describe('#NoPromise', function () {
   })
   it('can run a number of tasks deferred throwing an error', function (done) {
     const p = new NoPromise({})
-    p.then(s.step)
-      .then(s.step)
-      .then(s.error('error'))
+    p.then(s.step).then(s.step).then(s.error('error'))
 
     setTimeout(() => {
       p.then(s.neverReach)
@@ -77,9 +73,7 @@ describe('#NoPromise', function () {
   })
   it('can catch a thrown error', function (done) {
     const p = new NoPromise({})
-    p.then(s.step)
-      .then(s.throw('error1'))
-      .then(s.neverReach)
+    p.then(s.step).then(s.throw('error1')).then(s.neverReach)
     setTimeout(() => {
       p.catch(s.trap)
         .then(s.step)
@@ -87,7 +81,10 @@ describe('#NoPromise', function () {
         .then(s.neverReach)
         .end((err, res) => {
           assert.deepStrictEqual(err, new Error('error2'))
-          assert.deepStrictEqual(res, { value: 3, trap: [new Error('error1')] })
+          assert.deepStrictEqual(res, {
+            value: 3,
+            trap: [new Error('error1')]
+          })
           done()
         })
     }, 10)
@@ -110,13 +107,34 @@ describe('#NoPromise', function () {
   })
   it('can run synchronous', function (done) {
     const p = new NoPromise({ arr: [] })
-    p.then((res, cb) => { res.arr.push(1); cb() })
-      .then((res, cb) => { res.arr.push(2); cb() })
-      .catch((err, res, cb) => { res.err.push(err); cb() })
-      .then((res, cb) => { res.arr.push(3); cb() })
-      .then((res, cb) => { res.arr.push(4); cb() })
-      .then((res, cb) => { res.arr.push(5); cb() })
-      .then((res, cb) => { res.arr.push(6); cb() })
+    p.then((res, cb) => {
+      res.arr.push(1)
+      cb()
+    })
+      .then((res, cb) => {
+        res.arr.push(2)
+        cb()
+      })
+      .catch((err, res, cb) => {
+        res.err.push(err)
+        cb()
+      })
+      .then((res, cb) => {
+        res.arr.push(3)
+        cb()
+      })
+      .then((res, cb) => {
+        res.arr.push(4)
+        cb()
+      })
+      .then((res, cb) => {
+        res.arr.push(5)
+        cb()
+      })
+      .then((res, cb) => {
+        res.arr.push(6)
+        cb()
+      })
       .end((err, res) => {
         assert.strictEqual(err, undefined)
         assert.deepStrictEqual(res.arr, [1, 2, 3, 4, 5, 6])
@@ -125,30 +143,81 @@ describe('#NoPromise', function () {
   })
   it('can run synchronous with errors', function (done) {
     const p = new NoPromise({ arr: [], err: [] })
-    p.then((res, cb) => { res.arr.push(1); cb() })
-      .then((res, cb) => { res.arr.push(2); cb('error1') })
-      .catch((err, res, cb) => { res.err.push(err); cb() })
-      .then((res, cb) => { res.arr.push(3); cb('error2') })
-      .then((res, cb) => { res.arr.push(4); cb() })
-      .catch((err, res, cb) => { res.err.push(err); cb() })
-      .then((res, cb) => { res.arr.push(5); cb() })
-      .then((res, cb) => { res.arr.push(6); cb() })
-      .catch((err, res, cb) => { res.err.push(err); cb() })
+    p.then((res, cb) => {
+      res.arr.push(1)
+      cb()
+    })
+      .then((res, cb) => {
+        res.arr.push(2)
+        cb('error1')
+      })
+      .catch((err, res, cb) => {
+        res.err.push(err)
+        cb()
+      })
+      .then((res, cb) => {
+        res.arr.push(3)
+        cb('error2')
+      })
+      .then((res, cb) => {
+        res.arr.push(4)
+        cb()
+      })
+      .catch((err, res, cb) => {
+        res.err.push(err)
+        cb()
+      })
+      .then((res, cb) => {
+        res.arr.push(5)
+        cb()
+      })
+      .then((res, cb) => {
+        res.arr.push(6)
+        cb()
+      })
+      .catch((err, res, cb) => {
+        res.err.push(err)
+        cb()
+      })
       .end((err, res) => {
         assert.strictEqual(err, undefined)
-        assert.deepStrictEqual(res, { arr: [1, 2, 3, 5, 6], err: ['error1', 'error2'] })
+        assert.deepStrictEqual(res, {
+          arr: [1, 2, 3, 5, 6],
+          err: ['error1', 'error2']
+        })
         done()
       })
   })
   it('can run asynchronous', function (done) {
     const p = new NoPromise({ arr: [] })
-    p.then((res, cb) => { res.arr.push(1); asyn(cb) })
-      .then((res, cb) => { res.arr.push(2); asyn(cb) })
-      .catch((err, res, cb) => { res.err.push(err); asyn(cb) })
-      .then((res, cb) => { res.arr.push(3); asyn(cb) })
-      .then((res, cb) => { res.arr.push(4); asyn(cb) })
-      .then((res, cb) => { res.arr.push(5); asyn(cb) })
-      .then((res, cb) => { res.arr.push(6); asyn(cb) })
+    p.then((res, cb) => {
+      res.arr.push(1)
+      asyn(cb)
+    })
+      .then((res, cb) => {
+        res.arr.push(2)
+        asyn(cb)
+      })
+      .catch((err, res, cb) => {
+        res.err.push(err)
+        asyn(cb)
+      })
+      .then((res, cb) => {
+        res.arr.push(3)
+        asyn(cb)
+      })
+      .then((res, cb) => {
+        res.arr.push(4)
+        asyn(cb)
+      })
+      .then((res, cb) => {
+        res.arr.push(5)
+        asyn(cb)
+      })
+      .then((res, cb) => {
+        res.arr.push(6)
+        asyn(cb)
+      })
       .end((err, res) => {
         assert.strictEqual(err, undefined)
         assert.deepStrictEqual(res.arr, [1, 2, 3, 4, 5, 6])
@@ -157,18 +226,48 @@ describe('#NoPromise', function () {
   })
   it('can run asynchronous with errors', function (done) {
     const p = new NoPromise({ arr: [], err: [] })
-    p.then((res, cb) => { res.arr.push(1); asyn(cb) })
-      .then((res, cb) => { res.arr.push(2); asyn(cb, 'error1') })
-      .catch((err, res, cb) => { res.err.push(err); asyn(cb) })
-      .then((res, cb) => { res.arr.push(3); asyn(cb, 'error2') })
-      .then((res, cb) => { res.arr.push(4); asyn(cb) })
-      .catch((err, res, cb) => { res.err.push(err); asyn(cb) })
-      .then((res, cb) => { res.arr.push(5); asyn(cb) })
-      .then((res, cb) => { res.arr.push(6); asyn(cb) })
-      .catch((err, res, cb) => { res.err.push(err); asyn(cb) })
+    p.then((res, cb) => {
+      res.arr.push(1)
+      asyn(cb)
+    })
+      .then((res, cb) => {
+        res.arr.push(2)
+        asyn(cb, 'error1')
+      })
+      .catch((err, res, cb) => {
+        res.err.push(err)
+        asyn(cb)
+      })
+      .then((res, cb) => {
+        res.arr.push(3)
+        asyn(cb, 'error2')
+      })
+      .then((res, cb) => {
+        res.arr.push(4)
+        asyn(cb)
+      })
+      .catch((err, res, cb) => {
+        res.err.push(err)
+        asyn(cb)
+      })
+      .then((res, cb) => {
+        res.arr.push(5)
+        asyn(cb)
+      })
+      .then((res, cb) => {
+        res.arr.push(6)
+        asyn(cb)
+      })
+      .catch((err, res, cb) => {
+        res.err.push(err)
+        asyn(cb)
+      })
       .end((err, res) => {
         assert.strictEqual(err, undefined)
-        assert.deepStrictEqual(res, { arr: [1, 2, 3, 5, 6], err: ['error1', 'error2'] })
+        assert.deepStrictEqual(res, {
+          arr: [1, 2, 3, 5, 6],
+          err: ['error1', 'error2']
+        })
         done()
       })
   })

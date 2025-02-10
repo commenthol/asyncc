@@ -1,3 +1,6 @@
+## 2.0.8 (2025-02-10)
+
+- chore: bump dev dependencies (#54cca66)
 
 ## v2.0.5 (2019-12-25)
 

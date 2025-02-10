@@ -19,6 +19,7 @@
   "maintainers": [
     "commenthol <commenthol@gmail.com>"
   ],
+  "type": "module",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
   "jsnext:main": "dist/index.es.js",
@@ -27,6 +28,12 @@
     "doc": "doc",
     "test": "test"
   },
+  "files": [
+    "dist",
+    "lib",
+    "src",
+    "bower.json"
+  ],
   "scripts": {
     "all": "npm run clean && npm run lint && npm run build && npm test",
     "build": "npm run build:cjs && npm run build:dist",
@@ -51,26 +58,26 @@
     }
   },
   "devDependencies": {
-    "@babel/cli": "^7.25.6",
-    "@babel/core": "^7.25.2",
-    "@babel/preset-env": "^7.25.4",
-    "@babel/register": "^7.24.6",
+    "@babel/cli": "^7.26.4",
+    "@babel/core": "^7.26.8",
+    "@babel/preset-env": "^7.26.8",
+    "@babel/register": "^7.25.9",
     "@rollup/plugin-terser": "^0.4.4",
     "babelify": "^10.0.0",
-    "browserify": "^17.0.0",
-    "core-js": "^3.38.1",
-    "eslint": "^8.57.0",
+    "browserify": "^17.0.1",
+    "core-js": "^3.40.0",
+    "eslint": "^8.57.1",
     "eslint-config-standard": "^17.1.0",
-    "eslint-plugin-import": "^2.30.0",
+    "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^6.6.0",
     "eslint-plugin-standard": "^5.0.0",
-    "jsdoc": "^3.6.11",
+    "jsdoc": "^4.0.4",
     "minami": "^1.2.3",
-    "mocha": "^10.7.3",
-    "nyc": "^17.0.0",
+    "mocha": "^11.1.0",
+    "nyc": "^17.1.0",
     "rimraf": "^6.0.1",
-    "rollup": "^4.21.3"
+    "rollup": "^4.34.6"
   },
   "engines": {
     "node": ">=6.0.0"

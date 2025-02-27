@@ -20,14 +20,8 @@
     "commenthol <commenthol@gmail.com>"
   ],
   "type": "module",
-  "main": "dist/index.js",
+  "main": "dist/index.cjs",
   "module": "dist/index.es.js",
-  "jsnext:main": "dist/index.es.js",
-  "directories": {
-    "lib": "lib",
-    "doc": "doc",
-    "test": "test"
-  },
   "files": [
     "dist",
     "lib",
@@ -39,7 +33,7 @@
     "build": "npm run build:cjs && npm run build:dist",
     "build:cjs": "babel -d lib src",
     "build:dist": "rollup -c scripts/rollup.conf.mjs",
-    "clean": "rimraf lib es coverage .nyc_output",
+    "clean": "rimraf dist lib es coverage .nyc_output",
     "clean:all": "rimraf node_modules && npm run clean",
     "coverage": "nyc -r text -r html npm run test:mocha",
     "doc": "jsdoc -c scripts/jsdoc/jsdoc.json",

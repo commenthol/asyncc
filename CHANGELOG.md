@@ -1,3 +1,7 @@
+# 2.0.9 (2025-02-27)
+
+- fix: commonjs exports (#cd51feb)
+
 ## 2.0.8 (2025-02-10)
 
 - chore: bump dev dependencies (#54cca66)
